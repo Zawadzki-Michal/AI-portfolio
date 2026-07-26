@@ -9,9 +9,11 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.md` (front-matter, no database)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
-  - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn
+  - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
   - `generate-draft.yml` — scheduled job that pulls RSS feeds, asks Claude to draft a post, and opens a PR for review
+  - `ci.yml` — typecheck, unit tests, and build on every push/PR to `main`
 - **AI drafting:** Anthropic API (Claude)
+- **Testing:** Vitest, unit tests for the content layer and the LinkedIn API client
 
 ## Local development
 
@@ -21,6 +23,16 @@ npm run dev
 ```
 
 Open http://localhost:3000.
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm test            # vitest — lib/posts, lib/slugify, lib/linkedin
+npm run build       # production build
+```
+
+`.github/workflows/ci.yml` runs typecheck + tests + build on every push/PR to
+`main`. None of this requires any secrets — the LinkedIn and Anthropic env
+vars are only read by the automation scripts, not by the site itself.
 
 ## Adding a post
 
@@ -118,4 +130,11 @@ scripts/              CLI scripts run by GitHub Actions
 - `/about` — bio, stack/skills grid
 - `/projects` — case studies proving the Azure/AI/DevOps expertise claimed on `/about`
 - `/posts`, `/posts/[slug]` — the blog/log
-- `/collaborate` — concrete offer + contact form
+- `/collaborate` — concrete offer, contact form, and direct channels (email, LinkedIn, Telegram, GitHub)
+
+## Contact channels
+
+`lib/site-config.ts` holds `email` and `social.{linkedin,github,telegram}`.
+Any channel left as an empty string renders as "pending setup" on
+`/collaborate` instead of a broken/dead link — fill in `social.linkedin` and
+`social.telegram` (handle only, no `@` or URL needed) once you have them.

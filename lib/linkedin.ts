@@ -15,6 +15,22 @@ export type LinkedInConfig = {
   authorUrn: string; // e.g. "urn:li:person:xxxxxxxx"
 };
 
+const CONTENT_TYPES: Record<string, string> = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+};
+
+/**
+ * Maps an image file extension to its MIME type for the LinkedIn upload
+ * binary PUT. Falls back to image/jpeg for unrecognized extensions.
+ */
+export function contentTypeFor(filePath: string): string {
+  const ext = filePath.slice(filePath.lastIndexOf(".")).toLowerCase();
+  return CONTENT_TYPES[ext] ?? "image/jpeg";
+}
+
 function authHeaders(config: LinkedInConfig, extra?: Record<string, string>) {
   return {
     Authorization: `Bearer ${config.accessToken}`,

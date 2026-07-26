@@ -15,6 +15,7 @@ import fs from "fs";
 import path from "path";
 import Parser from "rss-parser";
 import Anthropic from "@anthropic-ai/sdk";
+import { slugify } from "../lib/slugify";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 
@@ -54,16 +55,6 @@ async function collectFeedItems(feedUrls: string[]): Promise<FeedItem[]> {
   }
 
   return items.sort((a, b) => (a.isoDate < b.isoDate ? 1 : -1));
-}
-
-function slugify(title: string): string {
-  return title
-    .toLowerCase()
-    .normalize("NFKD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 60);
 }
 
 async function draftPost(item: FeedItem): Promise<string> {

@@ -8,15 +8,21 @@
  *   SITE_URL                 e.g. https://twojastrona.pl
  *   LINKEDIN_ACCESS_TOKEN
  *   LINKEDIN_AUTHOR_URN       e.g. urn:li:person:xxxxxxxx
+ *
+ * For push-triggered runs (detects newly added post folders automatically):
  *   GITHUB_BASE_SHA           SHA before the push (previous main)
  *   GITHUB_HEAD_SHA           SHA after the push (current main)
+ *
+ * For a manual retry of one specific post (e.g. via workflow_dispatch after
+ * a failed run), set POST_SLUG instead — GITHUB_BASE_SHA/GITHUB_HEAD_SHA are
+ * not needed in that case.
  */
 
 import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 import matter from "gray-matter";
-import { createPost, uploadImage, type LinkedInConfig } from "../lib/linkedin";
+import { createPost, uploadImage, contentTypeFor, type LinkedInConfig } from "../lib/linkedin";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
@@ -57,13 +63,6 @@ function findImages(slug: string): string[] {
     .map((name) => path.join(dir, name));
 }
 
-function contentTypeFor(file: string): string {
-  const ext = path.extname(file).toLowerCase();
-  if (ext === ".png") return "image/png";
-  if (ext === ".webp") return "image/webp";
-  return "image/jpeg";
-}
-
 async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConfig) {
   const filePath = path.join(POSTS_DIR, slug, "index.md");
   const { data } = matter(fs.readFileSync(filePath, "utf8"));
@@ -96,14 +95,16 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
 
 async function main() {
   const siteUrl = requireEnv("SITE_URL");
-  const baseSha = requireEnv("GITHUB_BASE_SHA");
-  const headSha = requireEnv("GITHUB_HEAD_SHA");
   const linkedin: LinkedInConfig = {
     accessToken: requireEnv("LINKEDIN_ACCESS_TOKEN"),
     authorUrn: requireEnv("LINKEDIN_AUTHOR_URN"),
   };
 
-  const slugs = getAddedPostSlugs(baseSha, headSha);
+  const manualSlug = process.env.POST_SLUG?.trim();
+  const slugs = manualSlug
+    ? [manualSlug]
+    : getAddedPostSlugs(requireEnv("GITHUB_BASE_SHA"), requireEnv("GITHUB_HEAD_SHA"));
+
   if (slugs.length === 0) {
     console.log("No new posts in this push. Nothing to publish.");
     return;

@@ -9,7 +9,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "generate-draft": "tsx scripts/generate-draft.ts",
-    "publish-linkedin": "tsx scripts/publish-to-linkedin.ts"
+    "publish-linkedin": "tsx scripts/publish-to-linkedin.ts",
+    "test": "vitest run"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
@@ -30,6 +31,7 @@
     "rss-parser": "^3.13.0",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   }
 }

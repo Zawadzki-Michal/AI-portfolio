@@ -5,6 +5,16 @@ on:
     branches: [main]
     paths:
       - "posts/**"
+  workflow_dispatch:
+    inputs:
+      post_slug:
+        description: "Post folder name to (re)publish manually, e.g. 2026-07-26-my-post. Leave empty for a normal run."
+        required: false
+        type: string
+
+concurrency:
+  group: publish-to-linkedin-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions:
   contents: read
@@ -34,4 +44,5 @@ jobs:
           LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
           GITHUB_BASE_SHA: ${{ github.event.before }}
           GITHUB_HEAD_SHA: ${{ github.event.after }}
+          POST_SLUG: ${{ github.event.inputs.post_slug }}
         run: npm run publish-linkedin

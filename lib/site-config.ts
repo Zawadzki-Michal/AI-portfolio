@@ -7,5 +7,6 @@ export const siteConfig = {
   social: {
     linkedin: "",
     github: "https://github.com/Zawadzki-Michal",
+    telegram: "",
   },
 };

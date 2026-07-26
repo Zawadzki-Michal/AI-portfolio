@@ -1,4 +1,5 @@
 import { ContactForm } from "@/components/ContactForm";
+import { ContactChannels } from "@/components/ContactChannels";
 import { StatusDot } from "@/components/StatusDot";
 
 export const metadata = {
@@ -57,6 +58,9 @@ export default function CollaboratePage() {
             AI/DevOps workflow you want automated. I reply within a couple of
             business days.
           </p>
+          <div className="mt-6">
+            <ContactChannels />
+          </div>
         </div>
         <ContactForm />
       </div>
