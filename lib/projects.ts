@@ -99,6 +99,31 @@ const projectsData: ProjectData[] = [
       },
     },
   },
+  {
+    slug: "lifeos",
+    category: "ai",
+    tags: ["ai", "llm", "self-hosted", "automation"],
+    content: {
+      en: {
+        title: "LifeOS — a self-hosted AI assistant",
+        summary:
+          "A personal AI assistant I'm building for myself: a FastAPI backend behind a Telegram bot and a small React web app, routing between a local Ollama model and OpenRouter depending on the task.",
+        details: [
+          "Handles goals, calendar, and budget tracking through conversation, with voice input/output and Google Calendar integration.",
+          "Self-hosted on a small k3s cluster with Grafana/Prometheus dashboards tracking LLM latency and API spend — half the project has been learning to run infrastructure for something I actually use daily.",
+        ],
+      },
+      pl: {
+        title: "LifeOS — samodzielnie hostowany asystent AI",
+        summary:
+          "Osobisty asystent AI, który buduję dla siebie: backend w FastAPI za botem na Telegramie i małą aplikacją webową w React, przełączający się między lokalnym modelem Ollama a OpenRouter w zależności od zadania.",
+        details: [
+          "Obsługuje cele, kalendarz i budżet przez rozmowę, z wejściem/wyjściem głosowym i integracją z Google Calendar.",
+          "Samodzielnie hostowany na małym klastrze k3s z dashboardami Grafana/Prometheus śledzącymi opóźnienia LLM i wydatki na API — połowa tego projektu to nauka utrzymywania infrastruktury dla czegoś, czego faktycznie używam codziennie.",
+        ],
+      },
+    },
+  },
 ];
 
 export function getProjects(locale: Locale): Project[] {
