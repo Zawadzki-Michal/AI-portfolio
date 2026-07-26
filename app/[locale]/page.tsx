@@ -5,6 +5,7 @@ import { Hero } from "@/components/Hero";
 import { ServiceTiles } from "@/components/ServiceTiles";
 import { PostList } from "@/components/PostList";
 import { ProjectCard } from "@/components/ProjectCard";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { getAllPosts } from "@/lib/posts";
 import { getProjects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site-config";
@@ -29,60 +30,70 @@ export default async function HomePage({
     <>
       <Hero />
 
+      {/* Log leads right after the hero — this is a blog first, portfolio second */}
       <section className="mx-auto max-w-5xl px-6 py-16">
-        <div className="panel-card flex flex-col gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="label-mono">{t("aboutLabel")}</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold">{siteConfig.name}</h2>
-            <p className="mt-2 max-w-xl text-paper/70">{siteConfig.headline}</p>
+        <ScrollReveal>
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="font-display text-2xl font-semibold">{t("latestLog")}</h2>
+            <Link href="/posts" className="label-mono hover:text-paper">
+              {t("viewAll")}
+            </Link>
           </div>
-          <Link
-            href="/about"
-            className="shrink-0 rounded-md border border-line px-5 py-3 font-mono text-sm text-paper/80 transition hover:border-teal hover:text-teal"
-          >
-            {t("fullProfile")}
-          </Link>
-        </div>
+          <PostList posts={posts} />
+        </ScrollReveal>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-6 py-16">
+        <ScrollReveal>
+          <div className="panel-card flex flex-col gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="label-mono">{t("aboutLabel")}</p>
+              <h2 className="mt-2 font-display text-2xl font-semibold">{siteConfig.name}</h2>
+              <p className="mt-2 max-w-xl text-paper/70">{siteConfig.headline}</p>
+            </div>
+            <Link
+              href="/about"
+              className="shrink-0 rounded-md border border-line px-5 py-3 font-mono text-sm text-paper/80 transition hover:border-teal hover:text-teal"
+            >
+              {t("fullProfile")}
+            </Link>
+          </div>
+        </ScrollReveal>
       </section>
 
       <ServiceTiles />
 
       <section className="mx-auto max-w-5xl px-6 py-16">
-        <div className="mb-8 flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">{t("selectedWork")}</h2>
-          <Link href="/projects" className="label-mono hover:text-paper">
-            {t("viewAll")}
-          </Link>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {featuredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
+        <ScrollReveal>
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="font-display text-2xl font-semibold">{t("selectedWork")}</h2>
+            <Link href="/projects" className="label-mono hover:text-paper">
+              {t("viewAll")}
+            </Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {featuredProjects.map((project, i) => (
+              <ProjectCard key={project.slug} project={project} index={i} />
+            ))}
+          </div>
+        </ScrollReveal>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <div className="mb-8 flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">{t("latestLog")}</h2>
-          <Link href="/posts" className="label-mono hover:text-paper">
-            {t("viewAll")}
-          </Link>
-        </div>
-        <PostList posts={posts} />
-      </section>
       <section id="collaborate-teaser" className="mx-auto max-w-5xl px-6 pb-24">
-        <div className="panel-card flex flex-col items-start gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-2xl font-semibold">{t("letsTalk")}</h2>
-            <p className="mt-2 max-w-md text-paper/70">{t("letsTalkBody")}</p>
+        <ScrollReveal>
+          <div className="panel-card flex flex-col items-start gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="font-display text-2xl font-semibold">{t("letsTalk")}</h2>
+              <p className="mt-2 max-w-md text-paper/70">{t("letsTalkBody")}</p>
+            </div>
+            <Link
+              href="/collaborate"
+              className="shrink-0 rounded-md bg-amber px-5 py-3 font-mono text-sm font-medium text-ink transition hover:bg-amber/90"
+            >
+              {t("collaborateCta")}
+            </Link>
           </div>
-          <Link
-            href="/collaborate"
-            className="shrink-0 rounded-md bg-amber px-5 py-3 font-mono text-sm font-medium text-ink transition hover:bg-amber/90"
-          >
-            {t("collaborateCta")}
-          </Link>
-        </div>
+        </ScrollReveal>
       </section>
     </>
   );

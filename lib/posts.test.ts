@@ -5,9 +5,9 @@ import {
   getAllPostSlugs,
   getPostBySlug,
   getPostSummary,
-  postUrl,
   type PostSummary,
 } from "./posts";
+import { postUrl } from "./post-url";
 
 describe("posts", () => {
   it("lists all post slugs from the posts/ directory", () => {
