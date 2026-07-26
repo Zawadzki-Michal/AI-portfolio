@@ -90,6 +90,7 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
   const id = await createPost(linkedin, {
     commentary,
     linkUrl: articleUrl,
+    title: data.title,
     imageUrns,
   });
 

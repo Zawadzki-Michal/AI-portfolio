@@ -88,6 +88,8 @@ export async function uploadImage(
 export type CreatePostOptions = {
   commentary: string;
   linkUrl: string;
+  /** Required by LinkedIn's `article` content block (link preview, used when there are no images). */
+  title: string;
   imageUrns?: string[];
   visibility?: "PUBLIC" | "CONNECTIONS";
 };
@@ -112,7 +114,7 @@ export async function createPost(config: LinkedInConfig, options: CreatePostOpti
       },
     };
   } else {
-    content = { article: { source: options.linkUrl } };
+    content = { article: { source: options.linkUrl, title: options.title } };
   }
 
   const res = await fetch(`${LINKEDIN_API_BASE}/rest/posts`, {
