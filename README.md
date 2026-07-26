@@ -101,11 +101,21 @@ by hand before merge.
 ## Project structure
 
 ```
-app/                 Next.js routes (home, /posts, /posts/[slug], /collaborate, /api/contact)
+app/                 Next.js routes (home, /about, /projects, /posts, /posts/[slug], /collaborate, /api/contact)
 components/          Design system components
 lib/posts.ts         Front-matter parsing / post listing
+lib/projects.ts       Static project/case-study data shown on / and /projects
+lib/site-config.ts    Name, role, headline, social links — edit this for your own bio
 lib/linkedin.ts       LinkedIn REST API client (images + posts)
 posts/                Content — one folder per post
 scripts/              CLI scripts run by GitHub Actions
 .github/workflows/    publish-to-linkedin.yml, generate-draft.yml
 ```
+
+## Pages
+
+- `/` — hero, about teaser, expertise tiles, selected work, latest log entries, collaborate CTA
+- `/about` — bio, stack/skills grid
+- `/projects` — case studies proving the Azure/AI/DevOps expertise claimed on `/about`
+- `/posts`, `/posts/[slug]` — the blog/log
+- `/collaborate` — concrete offer + contact form

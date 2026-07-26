@@ -9,11 +9,17 @@ export function SiteFooter() {
           © {new Date().getFullYear()} · uptime since 2026
         </div>
         <div className="flex items-center gap-6">
-          <Link href="/collaborate" className="hover:text-paper">
-            collaborate
+          <Link href="/about" className="hover:text-paper">
+            about
+          </Link>
+          <Link href="/projects" className="hover:text-paper">
+            projects
           </Link>
           <Link href="/posts" className="hover:text-paper">
             log
+          </Link>
+          <Link href="/collaborate" className="hover:text-paper">
+            collaborate
           </Link>
           <StatusDot label="operational" />
         </div>

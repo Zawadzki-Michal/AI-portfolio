@@ -2,7 +2,8 @@ import Link from "next/link";
 import { StatusDot } from "./StatusDot";
 
 const links = [
-  { href: "/#services", label: "services" },
+  { href: "/about", label: "about" },
+  { href: "/projects", label: "projects" },
   { href: "/posts", label: "log" },
   { href: "/collaborate", label: "collaborate" },
 ];
