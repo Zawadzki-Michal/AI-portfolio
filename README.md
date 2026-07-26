@@ -6,7 +6,8 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 ## Stack
 
 - **Frontend:** Next.js 15 (App Router) + TypeScript + Tailwind CSS
-- **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.md` (front-matter, no database)
+- **i18n:** [next-intl](https://next-intl.dev/), English + Polish (`/en/...`, `/pl/...`), language switcher in the nav
+- **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` + `index.pl.md` (front-matter, no database)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
@@ -36,14 +37,15 @@ vars are only read by the automation scripts, not by the site itself.
 
 ## Adding a post
 
-Create `posts/YYYY-MM-DD-your-slug/index.md`:
+Create `posts/YYYY-MM-DD-your-slug/index.en.md` (and, ideally, `index.pl.md`
+alongside it — see [Bilingual posts](#bilingual-posts) below):
 
 ```yaml
 ---
 title: "..."
 date: 2026-07-26
 tags: [azure, ai, devops]
-cta_text: "Chcesz wdrożyć coś podobnego u siebie? Napisz do mnie"
+cta_text: "Been through something similar? I'd like to hear about it"
 cta_link: "/collaborate"
 # optional — only set on posts drafted from the RSS pipeline; used to skip
 # re-drafting the same source article on later runs
@@ -53,18 +55,30 @@ source_url: "https://example.com/the-article-this-post-reacts-to"
 Article body in Markdown.
 ```
 
-Drop any images in the same folder — they're served at `/posts/your-slug/<filename>`.
-Reference them from the Markdown with that absolute path, e.g.
-`![alt](/posts/your-slug/photo.png)` (relative paths won't resolve correctly
-since the page URL has no trailing slash).
+Drop any images in the same folder — they're served at `/posts/your-slug/<filename>`
+(no locale prefix; images aren't localized). Reference them from the Markdown
+with that absolute path, e.g. `![alt](/posts/your-slug/photo.png)` (relative
+paths won't resolve correctly since the page URL has no trailing slash).
 
 Open a PR, merge to `main`. The post goes live on the next Vercel deploy; the
 `publish-to-linkedin` workflow then publishes it to LinkedIn automatically
 (only for **newly added** post folders, so editing an existing post never
-re-publishes it).
+re-publishes it). LinkedIn always gets the **English** version — see
+`LINKEDIN_LOCALE` in `scripts/publish-to-linkedin.ts` if you want to change
+that.
 
-The URL used everywhere (site link + LinkedIn link) is `/posts/<folder-name>`,
-i.e. the full `YYYY-MM-DD-slug` folder name.
+The URL used on-site is `/<locale>/posts/<folder-name>` (e.g.
+`/en/posts/2026-07-26-my-post` or `/pl/posts/2026-07-26-my-post`) — the
+folder name itself has no locale in it, only the URL prefix does.
+
+### Bilingual posts
+
+`lib/posts.ts` resolves `index.<locale>.md` for the requested locale and
+falls back to `index.en.md` if a translation doesn't exist yet (so it's
+fine to publish English-only and add the Polish version later — the post
+just won't have Polish-specific content until you do). A bare `index.md`
+from before i18n was added is also still supported as a last-resort
+fallback.
 
 ## Required configuration
 
@@ -118,11 +132,13 @@ etc.) — without it, submissions are just logged server-side.
    redraft the same article just because it's still the newest one in a
    feed.
 3. Sends the first un-drafted item to OpenRouter (`OPENROUTER_MODEL`,
-   defaults to a Claude model) with the system prompt loaded straight from
+   defaults to a Claude model) **twice** — once for English, once for
+   Polish — with the system prompt loaded straight from
    `automation/draft-instructions.md` — edit that file to change voice,
    formatting rules, or the tag taxonomy without touching any code.
-4. Writes the result to `posts/YYYY-MM-DD-slug/index.md` (front-matter
-   includes `source_url`) and opens a PR.
+4. Writes both results to `posts/YYYY-MM-DD-slug/index.en.md` and
+   `index.pl.md` (the slug is derived from the English title; front-matter
+   includes `source_url` in both) and opens a single PR with both files.
 
 Nothing is ever published without merging that PR first — images and edits
 are added by hand before merge.
@@ -130,14 +146,21 @@ are added by hand before merge.
 ## Project structure
 
 ```
-app/                        Next.js routes (home, /about, /projects, /posts, /posts/[slug], /collaborate, /api/contact)
+app/[locale]/               Localized routes (home, /about, /projects, /posts, /posts/[slug], /collaborate)
+app/posts/[slug]/[...file]  Image-serving route — outside [locale], images aren't localized
+app/api/contact/            Contact form API route — outside [locale]
+i18n/routing.ts             Locale list + default locale + prefix strategy
+i18n/navigation.ts          Locale-aware Link/usePathname/useRouter (re-exported from next-intl)
+i18n/request.ts             Loads messages/<locale>.json per request
+messages/en.json, pl.json   All static UI copy, keyed by page/component
+middleware.ts               next-intl locale detection/routing
 components/                 Design system components
-lib/posts.ts                Front-matter parsing / post listing / source_url dedup
-lib/projects.ts             Static project/case-study data shown on / and /projects
+lib/posts.ts                Front-matter parsing / locale resolution (with en fallback) / source_url dedup
+lib/projects.ts             Project data — content is per-locale, see getProjects(locale)
 lib/site-config.ts          Name, role, headline, social links — edit this for your own bio
 lib/linkedin.ts             LinkedIn REST API client (images + posts)
 lib/slugify.ts, lib/markdown.ts   Small pure helpers shared by the scripts and covered by tests
-posts/                       Content — one folder per post
+posts/                       Content — one folder per post, index.en.md + index.pl.md inside
 automation/draft-instructions.md  System prompt for the draft-generation model
 scripts/                     CLI scripts run by GitHub Actions
 .github/workflows/          publish-to-linkedin.yml, generate-draft.yml, ci.yml
@@ -145,11 +168,18 @@ scripts/                     CLI scripts run by GitHub Actions
 
 ## Pages
 
+All routes are locale-prefixed (`/en/...`, `/pl/...`); `/` redirects to the
+default locale (`en`).
+
 - `/` — hero, about teaser, expertise tiles, selected work, latest log entries, collaborate CTA
-- `/about` — bio, stack/skills grid
-- `/projects` — case studies proving the Azure/AI/DevOps expertise claimed on `/about`
+- `/about` — bio, stack/skills grid ("what I'm working with," not a mastery claim)
+- `/projects` — things actually worked on, most still with a lot left to learn
 - `/posts`, `/posts/[slug]` — the blog/log
-- `/collaborate` — concrete offer, contact form, and direct channels (email, LinkedIn, Telegram, GitHub)
+- `/collaborate` — genuine peer/networking invitation, contact form, and direct channels (email, LinkedIn, Telegram, GitHub)
+
+To add UI copy in a new spot: add the key to **both** `messages/en.json` and
+`messages/pl.json` (same nesting), then read it with `useTranslations()` /
+`getTranslations()`. Nothing renders if a key is missing from either file.
 
 ## Contact channels
 

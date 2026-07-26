@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { siteConfig } from "@/lib/site-config";
 
 type Channel = {
@@ -6,7 +7,7 @@ type Channel = {
   value: string;
 };
 
-function buildChannels(): Channel[] {
+function buildChannels(pendingSetup: string, messageMe: string, followCommits: string): Channel[] {
   const { email, social } = siteConfig;
 
   return [
@@ -14,23 +15,24 @@ function buildChannels(): Channel[] {
     {
       label: "linkedin",
       href: social.linkedin || null,
-      value: social.linkedin ? "message me" : "pending setup",
+      value: social.linkedin ? messageMe : pendingSetup,
     },
     {
       label: "telegram",
       href: social.telegram ? `https://t.me/${social.telegram.replace(/^@/, "")}` : null,
-      value: social.telegram ? social.telegram : "pending setup",
+      value: social.telegram ? social.telegram : pendingSetup,
     },
-    { label: "github", href: social.github || null, value: social.github ? "follow the commits" : "pending setup" },
+    { label: "github", href: social.github || null, value: social.github ? followCommits : pendingSetup },
   ];
 }
 
 export function ContactChannels() {
-  const channels = buildChannels();
+  const t = useTranslations("contactChannels");
+  const channels = buildChannels(t("pendingSetup"), t("messageMe"), t("followCommits"));
 
   return (
     <div className="panel-card flex flex-col gap-4 p-6">
-      <p className="label-mono">direct channels</p>
+      <p className="label-mono">{t("directChannels")}</p>
       <ul className="flex flex-col gap-3">
         {channels.map((channel) => (
           <li key={channel.label} className="flex items-center justify-between gap-3">

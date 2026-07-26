@@ -2,10 +2,10 @@
  * Scheduled job: pulls recent items from configured RSS feeds, skips any
  * item already covered by an existing post (matched by front-matter
  * `source_url`), asks a model via OpenRouter to draft a post in the site's
- * voice (instructions in automation/draft-instructions.md), and writes it
- * to posts/YYYY-MM-DD-slug/index.md. The GitHub Action step that runs this
- * script then opens a PR for human review — nothing here publishes
- * automatically.
+ * voice (instructions in automation/draft-instructions.md) in both English
+ * and Polish, and writes them to posts/YYYY-MM-DD-slug/index.en.md and
+ * index.pl.md. The GitHub Action step that runs this script then opens a
+ * PR for human review — nothing here publishes automatically.
  *
  * Required env vars:
  *   OPENROUTER_API_KEY
@@ -17,9 +17,13 @@
 import fs from "fs";
 import path from "path";
 import Parser from "rss-parser";
+import matter from "gray-matter";
 import { slugify } from "../lib/slugify";
 import { getAllSourceUrls } from "../lib/posts";
 import { stripCodeFence } from "../lib/markdown";
+import type { Locale } from "../i18n/routing";
+
+const LANGUAGE_NAMES: Record<Locale, string> = { en: "English", pl: "Polish" };
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const INSTRUCTIONS_PATH = path.join(process.cwd(), "automation", "draft-instructions.md");
@@ -75,7 +79,7 @@ async function collectFeedItems(feedUrls: string[]): Promise<FeedItem[]> {
   return items.sort((a, b) => (a.isoDate < b.isoDate ? 1 : -1));
 }
 
-async function draftPost(item: FeedItem): Promise<string> {
+async function draftPost(item: FeedItem, locale: Locale): Promise<string> {
   const apiKey = requireEnv("OPENROUTER_API_KEY");
   const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
   const today = new Date().toISOString().slice(0, 10);
@@ -88,7 +92,12 @@ Link: ${item.link}
 Summary: ${item.summary}
 
 Today's date (use as front-matter "date"): ${today}
-Source link (use as front-matter "source_url"): ${item.link}`;
+Source link (use as front-matter "source_url"): ${item.link}
+
+Write the entire article body in ${LANGUAGE_NAMES[locale]}. The "title" in
+front-matter should also be in ${LANGUAGE_NAMES[locale]}. Keep front-matter
+keys themselves in English (title, date, tags, cta_text, cta_link,
+source_url) — only their values change language.`;
 
   const res = await fetch(OPENROUTER_URL, {
     method: "POST",
@@ -144,15 +153,19 @@ async function main() {
 
   console.log(`Drafting post from: "${candidate.title}" (${candidate.source})`);
 
-  const markdown = await draftPost(candidate);
+  const englishMarkdown = await draftPost(candidate, "en");
+  const { data: englishFrontMatter } = matter(englishMarkdown);
+
   const today = new Date().toISOString().slice(0, 10);
-  const slug = `${today}-${slugify(candidate.title)}`;
+  const slug = `${today}-${slugify(englishFrontMatter.title ?? candidate.title)}`;
   const dir = path.join(POSTS_DIR, slug);
-
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "index.md"), markdown + "\n");
+  fs.writeFileSync(path.join(dir, "index.en.md"), englishMarkdown + "\n");
+  console.log(`Draft written to posts/${slug}/index.en.md`);
 
-  console.log(`Draft written to posts/${slug}/index.md`);
+  const polishMarkdown = await draftPost(candidate, "pl");
+  fs.writeFileSync(path.join(dir, "index.pl.md"), polishMarkdown + "\n");
+  console.log(`Draft written to posts/${slug}/index.pl.md`);
 }
 
 // Force-exit on completion: open keep-alive sockets from fetch()/rss-parser

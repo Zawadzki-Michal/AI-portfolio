@@ -40,11 +40,15 @@ before or after it, and do not wrap the whole thing in a code fence.
 The file must start with YAML front-matter using exactly these keys, then a
 blank line, then the article body (300-500 words):
 
-- title: a specific, non-clickbait title in double quotes
+- title: a specific, non-clickbait title in double quotes, in the language
+  requested for this draft
 - date: the date supplied in the prompt, as YYYY-MM-DD
 - tags: 2-4 lowercase tags from this list only — azure, ai, devops,
   terraform, disaster-recovery, automation, linkedin, networking
-- cta_text: always exactly "Chcesz wdrożyć coś podobnego u siebie? Napisz do mnie"
+- cta_text: a short, low-key invitation to talk, in the same language as
+  the article body — not a sales pitch. English example: "Been through
+  something similar? I'd like to hear about it." Polish example: "Masz
+  podobne doświadczenia? Chętnie posłucham."
 - cta_link: always exactly "/collaborate"
 - source_url: the exact source link supplied in the prompt, in double quotes
 
