@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-ink text-paper font-body;
+  }
+}
+
+@layer components {
+  .status-dot {
+    @apply relative inline-block h-2 w-2 rounded-full bg-teal;
+  }
+  .status-dot::after {
+    content: "";
+    @apply absolute inset-0 rounded-full bg-teal animate-pulse-dot;
+  }
+
+  .panel-card {
+    @apply rounded-lg border border-line bg-panel;
+  }
+
+  .label-mono {
+    @apply font-mono text-xs uppercase tracking-widest text-paper/50;
+  }
+}

@@ -1,0 +1,45 @@
+name: Generate LinkedIn draft post
+
+on:
+  schedule:
+    - cron: "0 7 * * 1" # every Monday 07:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate draft post
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RSS_FEEDS: ${{ vars.RSS_FEEDS }}
+        run: npm run generate-draft
+
+      - name: Open pull request with draft
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "content: add AI-drafted post"
+          branch: draft/auto-post-${{ github.run_id }}
+          title: "Draft: new AI-generated post for review"
+          body: |
+            Auto-generated draft from the scheduled RSS + Claude pipeline.
+
+            Review, edit as needed, add images, and merge to publish
+            (deploy + LinkedIn publish will trigger automatically on merge).
+          add-paths: posts/**
