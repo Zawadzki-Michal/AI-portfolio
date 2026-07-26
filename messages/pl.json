@@ -1,7 +1,7 @@
 {
   "site": {
     "title": "System Status — Azure / AI / DevOps",
-    "description": "Dziennik junior System Engineera: nauka infrastruktury Azure, eksperymenty z AI i praktyka DevOps, pisane jako monitorowane statusy."
+    "description": "Dziennik System Engineera: nauka infrastruktury Azure, eksperymenty z AI i praktyka DevOps, pisane jako monitorowane statusy."
   },
   "nav": {
     "about": "o mnie",
@@ -26,7 +26,7 @@
     "subtitle": "Dziennik nauki infrastruktury Azure, eksperymentów z AI i ogarniania DevOps w praktyce — pisany tak, jak naprawdę pracuję: w commitach, PR-ach i statusach.",
     "terminalLabel": "status.sh",
     "whoamiCmd": "whoami",
-    "whoamiOut": "junior system engineer, 2 lata doświadczenia — wciąż uczę się azure",
+    "whoamiOut": "system engineer, 2 lata doświadczenia — wciąż uczę się azure",
     "focusCmd": "cat focus.log",
     "focusOut": "azure, ai, devops — zapisuję na bieżąco, czego się uczę",
     "statusCmd": "status --all",
@@ -39,7 +39,7 @@
     "azureDesc": "To, czego faktycznie dotykam na co dzień: whitelisting IP, projektowanie sieci, Terraform, ćwiczenia disaster recovery — wciąż uczę się niuansów tego wszystkiego.",
     "azureMetric": "2 lata doświadczenia",
     "aiTitle": "AI",
-    "aiDesc": "Eksperymentuję z Claude i narzędziami LLM. Pipeline publikujący posty na tej stronie to na razie moje największe wdrożenie.",
+    "aiDesc": "Eksperymentuję z Claude i narzędziami LLM do automatyzacji, skryptów i małych wewnętrznych narzędzi.",
     "aiMetric": "modele: claude",
     "devopsTitle": "DevOps",
     "devopsDesc": "CI/CD, GitHub Actions, infrastructure-as-code — staram się, żeby wdrażanie było mniej stresujące, pipeline po pipeline.",
@@ -59,8 +59,8 @@
     "metaTitle": "O mnie — System Status",
     "onlineStatus": "online",
     "p1": "Od dwóch lat pracuję jako System Engineer, na co dzień zajmując się infrastrukturą Azure — projektowaniem sieci, whitelistingiem IP, środowiskami zarządzanymi przez Terraform, disaster recovery. Nie piszę tego jako ktoś, kto ma to wszystko ogarnięte. Większość tygodni wciąż coś sprawdzam, najpierw psuję rzeczy w środowisku testowym i uczę się od ludzi w zespole, którzy robią to dużo dłużej niż ja.",
-    "p2": "Poza pracą interesuję się praktycznym zastosowaniem AI — nie jako modnym hasłem, tylko czymś, co chcę realnie zbudować. Ta strona jest tego efektem: chciałem sprawdzić, czy da się wpiąć AI bezpośrednio w to, jak powstaje i publikuje się osobisty blog, więc posty są szkicowane przez Claude, przechodzą normalny PR i trafiają na LinkedIn dzięki GitHub Action, gdy tylko są live. Zobacz <projects>/projects</projects>, żeby zobaczyć, jak to działa.",
-    "p3": "Piszę o tym, w czym akurat utknąłem albo co mnie ekscytuje, na <log>logu</log>. Jeśli jesteś na podobnej ścieżce — junior, zmiana branży na tech albo po prostu ciekawią cię te same tematy — chętnie się odezwij, zobacz <collaborate>/collaborate</collaborate>.",
+    "p2": "Poza pracą interesuję się praktycznym zastosowaniem AI i automatyzacji — nie jako modnym hasłem, tylko czymś, co chcę realnie zbudować. Ta strona jest tego przykładem: nowe posty wdrażają się i same trafiają na LinkedIn, bez ręcznego kopiowania i wklejania. Zobacz <projects>/projects</projects>, żeby zobaczyć, jak to działa.",
+    "p3": "Piszę o tym, w czym akurat utknąłem albo co mnie ekscytuje, na <log>logu</log>. Jeśli jesteś na podobnej ścieżce — zmiana branży na tech, początek w roli System Engineer, albo po prostu ciekawią cię te same tematy — chętnie się odezwij, zobacz <collaborate>/collaborate</collaborate>.",
     "stackHeading": "Czym się teraz zajmuję",
     "stackSubtitle": "Nie mistrzostwo — po prostu to, czemu faktycznie poświęcam czas."
   },
@@ -85,7 +85,7 @@
     "metaTitle": "Kontakt — System Status",
     "statusLabel": "otwarty na rozmowę",
     "title": "Pogadajmy, jeśli to brzmi znajomo.",
-    "intro": "Nie sprzedaję tu usług konsultingowych — jestem dwa lata w roli juniora System Engineer i wciąż większość z tego się uczę. Jeśli mierzysz się z podobnymi problemami Azure/AI/DevOps, zmieniłeś/aś branżę podobnie jak ja, albo po prostu chcesz porównać notatki — chętnie się odezwij.",
+    "intro": "Nie sprzedaję tu usług konsultingowych — jestem dwa lata w roli System Engineer i wciąż sporo z tego się uczę. Jeśli mierzysz się z podobnymi problemami Azure/AI/DevOps, zmieniłeś/aś branżę podobnie jak ja, albo po prostu chcesz porównać notatki — chętnie się odezwij.",
     "offer1Title": "Utknąłeś przy czymś podobnym?",
     "offer1Desc": "Walczysz z problemem w Azure albo Terraformie i chcesz porównać notatki? Lubię gadać o tym na głos — chętnie popairuję albo po prostu wymienimy się tym, co każde z nas znalazło.",
     "offer2Title": "Eksperymentujesz z AI w swoim workflow?",

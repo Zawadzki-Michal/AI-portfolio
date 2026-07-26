@@ -9,8 +9,8 @@ cta_link: "/collaborate"
 Większość porad o "budowaniu marki osobistej" traktuje publikowanie jako
 ręczny obowiązek: napisz coś, otwórz LinkedIna, wklej, sformatuj, opublikuj,
 powtórz. Nie mam zbyt dużo cierpliwości do powtarzalnych, ręcznych kroków —
-pewnie dlatego, że jestem najnowszą osobą w zespole i sporo czasu spędzam
-nad rzeczami, które wydają się, że powinny dać się zautomatyzować.
+pewnie dlatego, że sporo czasu spędzam wśród infrastruktury, która domyślnie
+jest zautomatyzowana, więc wszystko ręczne mnie irytuje.
 Spróbowałem więc sprawić, żeby ten blog działał bardziej jak infrastruktura,
 której uczę się w pracy: coś, co zmieniasz przez PR, a nie formularz
 wypełniany ręcznie.

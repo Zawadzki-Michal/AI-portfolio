@@ -9,8 +9,8 @@ cta_link: "/collaborate"
 Most "build a personal brand" advice treats posting as a manual chore:
 write something, open LinkedIn, paste it in, format it, publish, repeat.
 I don't have much patience for repetitive manual steps — probably from
-being the newest person on my team and spending a lot of time on things
-that feel like they should be automatable. So I tried making this blog
+spending a lot of time around infrastructure that's automated by default,
+so anything manual bugs me. So I tried making this blog
 work more like the infrastructure I'm learning at work: something you
 change through a PR, not a form you fill in by hand.
 
