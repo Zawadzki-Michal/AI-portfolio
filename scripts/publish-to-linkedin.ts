@@ -44,7 +44,7 @@ function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
 async function waitForUrl(url: string, { attempts = 20, delayMs = 15_000 } = {}) {
   for (let i = 0; i < attempts; i++) {
     try {
-      const res = await fetch(url, { method: "GET" });
+      const res = await fetch(url, { method: "GET", signal: AbortSignal.timeout(15_000) });
       if (res.ok) return;
       console.log(`[wait] ${url} -> ${res.status}, retrying (${i + 1}/${attempts})`);
     } catch (err) {
@@ -122,7 +122,11 @@ function requireEnv(name: string): string {
   return value;
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Force-exit on completion: open keep-alive sockets from fetch() can
+// otherwise leave the event loop alive and hang the CI job indefinitely.
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });

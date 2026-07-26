@@ -46,6 +46,7 @@ async function collectFeedItems(feedUrls: string[]): Promise<FeedItem[]> {
   // Some feed hosts reject requests with no/generic User-Agent (403s seen
   // in testing against devblogs.microsoft.com, github.blog, simonwillison.net).
   const parser = new Parser({
+    timeout: 15_000,
     headers: {
       "User-Agent":
         "Mozilla/5.0 (compatible; PersonalBrandBot/1.0; +https://github.com/Zawadzki-Michal/ai-portfolio)",
@@ -105,6 +106,7 @@ Source link (use as front-matter "source_url"): ${item.link}`;
         { role: "user", content: userPrompt },
       ],
     }),
+    signal: AbortSignal.timeout(120_000),
   });
 
   if (!res.ok) {
@@ -153,7 +155,11 @@ async function main() {
   console.log(`Draft written to posts/${slug}/index.md`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Force-exit on completion: open keep-alive sockets from fetch()/rss-parser
+// can otherwise leave the event loop alive and hang the CI job indefinitely.
+main()
+  .then(() => process.exit(0))
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });

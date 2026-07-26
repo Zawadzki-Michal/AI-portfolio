@@ -9,6 +9,7 @@
 
 const LINKEDIN_API_BASE = "https://api.linkedin.com";
 const LINKEDIN_VERSION = "202405";
+const REQUEST_TIMEOUT_MS = 30_000;
 
 export type LinkedInConfig = {
   accessToken: string;
@@ -54,6 +55,7 @@ export async function uploadImage(
     body: JSON.stringify({
       initializeUploadRequest: { owner: config.authorUrn },
     }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!initRes.ok) {
@@ -71,6 +73,7 @@ export async function uploadImage(
       "Content-Type": contentType,
     },
     body: new Uint8Array(imageBuffer),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!uploadRes.ok) {
@@ -126,6 +129,7 @@ export async function createPost(config: LinkedInConfig, options: CreatePostOpti
       lifecycleState: "PUBLISHED",
       isReshareDisabledByAuthor: false,
     }),
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
   });
 
   if (!res.ok) {
