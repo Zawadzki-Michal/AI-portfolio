@@ -79,7 +79,13 @@
     "intro": "Nie lista umiejętności — rzeczy, przy których faktycznie pracowałem, w większości wciąż z dużym polem do nauki."
   },
   "projectCard": {
-    "readLog": "zobacz wpis →"
+    "readLog": "zobacz wpis →",
+    "viewProject": "zobacz projekt →"
+  },
+  "projectPage": {
+    "back": "← wróć do projektów",
+    "readLog": "zobacz wpis →",
+    "cta": "Pracujesz nad czymś podobnym? Chętnie posłucham"
   },
   "collaborate": {
     "metaTitle": "Kontakt — System Status",

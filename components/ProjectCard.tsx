@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import type { Project } from "@/lib/projects";
 import { postUrl } from "@/lib/post-url";
+import { Link as LocaleLink } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { StatusDot } from "./StatusDot";
 import { AnimatedCard } from "./AnimatedCard";
@@ -16,7 +17,11 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
         <span className="label-mono">{project.category}</span>
         <StatusDot />
       </div>
-      <h3 className="font-display text-lg font-semibold">{project.title}</h3>
+      <h3 className="font-display text-lg font-semibold">
+        <LocaleLink href={`/projects/${project.slug}`} className="hover:text-teal">
+          {project.title}
+        </LocaleLink>
+      </h3>
       <p className="text-sm text-paper/70">{project.summary}</p>
       <ul className="flex flex-col gap-2">
         {project.details.map((detail) => (
@@ -34,14 +39,22 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
             </span>
           ))}
         </div>
-        {project.relatedPostSlug && (
-          <Link
-            href={postUrl(project.relatedPostSlug, locale)}
+        <div className="flex items-center gap-4">
+          <LocaleLink
+            href={`/projects/${project.slug}`}
             className="label-mono text-teal hover:underline"
           >
-            {t("readLog")}
-          </Link>
-        )}
+            {t("viewProject")}
+          </LocaleLink>
+          {project.relatedPostSlug && (
+            <Link
+              href={postUrl(project.relatedPostSlug, locale)}
+              className="label-mono text-teal hover:underline"
+            >
+              {t("readLog")}
+            </Link>
+          )}
+        </div>
       </div>
     </AnimatedCard>
   );
