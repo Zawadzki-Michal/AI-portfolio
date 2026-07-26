@@ -1,28 +1,34 @@
 ---
-title: "Building a personal brand pipeline: commit to LinkedIn in one merge"
+title: "I wired this blog to post itself to LinkedIn, mostly to see if I could"
 date: 2026-07-26
 tags: [devops, ai, automation]
 cta_text: "Chcesz wdrożyć coś podobnego u siebie? Napisz do mnie"
 cta_link: "/collaborate"
 ---
 
-Most "personal brand" advice treats content as a manual chore: write a post,
-open LinkedIn, paste, format, publish, repeat. I wanted it to work like the
-infrastructure I already run — declarative, versioned, and automated.
+Most "build a personal brand" advice treats posting as a manual chore:
+write something, open LinkedIn, paste it in, format it, publish, repeat.
+I don't have much patience for repetitive manual steps — probably from
+being the newest person on my team and spending a lot of time on things
+that feel like they should be automatable. So I tried making this blog
+work more like the infrastructure I'm learning at work: something you
+change through a PR, not a form you fill in by hand.
 
-## The flow
+Here's roughly how it works now:
 
-1. Open a PR with a new folder under `posts/YYYY-MM-DD-slug/`.
-2. Merge to `main`.
-3. Vercel deploys the site.
-4. A GitHub Action waits for the deploy to go live, uploads any images to
-   LinkedIn, and publishes a post linking back to the article.
+1. I open a PR with a new folder under `posts/YYYY-MM-DD-slug/`.
+2. Once it's merged to `main`, the site deploys.
+3. A GitHub Action waits until the new page is actually live, uploads any
+   images to LinkedIn, and publishes a post linking back to it.
 
-No dashboards, no copy-pasting — the same review process I use for
-infrastructure changes now drives what shows up on LinkedIn.
+I'm not going to pretend I got this right on the first try — I did, in
+fact, ship a version that could hang a CI job forever if a request never
+came back, and only found out when a run sat "in progress" for eight
+minutes doing nothing. Small thing, but it's the kind of mistake that
+taught me more about how Node actually handles open connections than any
+tutorial did.
 
-## Why this matters
-
-Content becomes an artifact of the repo, not a side project. Every post is
-reviewable, diffable, and reproducible — and the publishing step is exactly
-as reliable as the rest of the pipeline.
+What I like about the result is that a post is now just a file in a repo,
+reviewed the same way I'd review anything else. Whether that's actually a
+better system than just posting manually, I'm honestly not sure yet — but
+it's been a fun thing to build and debug.

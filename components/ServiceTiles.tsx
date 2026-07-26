@@ -5,22 +5,22 @@ const tiles = [
     id: "azure",
     title: "Azure",
     description:
-      "IP whitelisting, network design, Terraform-managed infrastructure, and disaster recovery playbooks running in production.",
-    metric: "uptime 99.98%",
+      "The stuff I actually touch day to day: IP whitelisting, network design, Terraform, disaster recovery drills — still learning the edges of all of it.",
+    metric: "2 years in",
   },
   {
     id: "ai",
     title: "AI",
     description:
-      "Applied LLM tooling — from Claude-powered automation to draft generation pipelines that turn signal into shipped content.",
+      "Experimenting with Claude and LLM tooling. This site's own posting pipeline is the biggest thing I've built with it so far.",
     metric: "models: claude",
   },
   {
     id: "devops",
     title: "DevOps",
     description:
-      "CI/CD, GitHub Actions, and infrastructure-as-code practices that make shipping boring — in the best way.",
-    metric: "pipelines: green",
+      "CI/CD, GitHub Actions, infrastructure-as-code — trying to make shipping less scary, one pipeline at a time.",
+    metric: "learning by doing",
   },
 ];
 
@@ -29,7 +29,7 @@ export function ServiceTiles() {
     <section id="services" className="mx-auto max-w-5xl px-6 py-16">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="font-display text-2xl font-semibold">Monitoring tiles</h2>
-        <span className="label-mono">3/3 operational</span>
+        <span className="label-mono">3/3 in progress</span>
       </div>
       <div className="grid gap-4 sm:grid-cols-3">
         {tiles.map((tile) => (

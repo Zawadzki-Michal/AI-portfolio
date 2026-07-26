@@ -10,29 +10,29 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "azure-disaster-recovery",
-    title: "Terraform-managed Azure disaster recovery",
+    slug: "ip-whitelisting-terraform",
+    title: "Moving IP whitelisting to Terraform",
     category: "azure",
     summary:
-      "DR runbooks and failover procedures for production Azure workloads, provisioned as code and tested against real failure scenarios.",
+      "Part of a small team moving our Azure firewall rules from manual portal changes to something reviewable in Terraform.",
     details: [
-      "Region failover automated through Terraform, including IP whitelisting rules mirrored ahead of time to the DR region.",
-      "Runbooks written and executed as drills, not left as documentation nobody has run.",
+      "Learned Terraform mostly by pairing on real allow-list changes with code review, instead of a tutorial.",
+      "Still the newest person on most of these changes — a lot of it is asking questions and reading other people's PRs.",
     ],
-    tags: ["azure", "terraform", "disaster-recovery"],
-    relatedPostSlug: "2026-07-12-terraform-disaster-recovery",
+    tags: ["azure", "terraform", "learning"],
   },
   {
-    slug: "ip-whitelisting-automation",
-    title: "IP whitelisting at scale",
+    slug: "disaster-recovery-drills",
+    title: "Disaster recovery drills",
     category: "azure",
     summary:
-      "Replaced manual firewall rule management with a Terraform-driven pipeline covering dozens of Azure services and environments.",
+      "Taking part in failover drills for Azure workloads — the kind of thing that reads simple in a doc and is very different to actually run.",
     details: [
-      "Single source of truth for allow-lists, reviewed via PR instead of portal changes.",
-      "Drift detection to catch manual changes before they become incidents.",
+      "Shadowed drills first, then helped run later ones, seeing where the documentation and reality didn't quite match.",
+      "Learning that DR is as much about process and communication as it is about Terraform.",
     ],
-    tags: ["azure", "terraform", "networking"],
+    tags: ["azure", "disaster-recovery", "learning"],
+    relatedPostSlug: "2026-07-12-terraform-disaster-recovery",
   },
   {
     slug: "personal-brand-pipeline",

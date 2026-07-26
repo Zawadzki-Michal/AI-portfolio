@@ -1,15 +1,15 @@
 const groups = [
   {
     category: "Azure",
-    skills: ["Network design & IP whitelisting", "Terraform / IaC", "Disaster recovery & failover", "Cost & governance"],
+    skills: ["IP whitelisting & network rules", "Terraform basics", "Disaster recovery drills", "Day-to-day troubleshooting"],
   },
   {
     category: "AI",
-    skills: ["Claude / LLM tooling", "Prompt & agent design", "Automation pipelines", "Content generation systems"],
+    skills: ["Claude / LLM tooling", "Prompt experiments", "Small automation scripts", "Learning by building"],
   },
   {
     category: "DevOps",
-    skills: ["GitHub Actions / CI-CD", "Infrastructure as code", "Release engineering", "Observability & monitoring"],
+    skills: ["GitHub Actions", "Reading other people's Terraform", "CI/CD basics", "Figuring out monitoring"],
   },
 ];
 
