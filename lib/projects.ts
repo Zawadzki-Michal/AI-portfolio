@@ -103,6 +103,7 @@ const projectsData: ProjectData[] = [
     slug: "lifeos",
     category: "ai",
     tags: ["ai", "llm", "self-hosted", "automation"],
+    relatedPostSlug: "2026-07-26-lifeos-self-hosted-assistant",
     content: {
       en: {
         title: "LifeOS — a self-hosted AI assistant",
@@ -120,6 +121,32 @@ const projectsData: ProjectData[] = [
         details: [
           "Obsługuje cele, kalendarz i budżet przez rozmowę, z wejściem/wyjściem głosowym i integracją z Google Calendar.",
           "Samodzielnie hostowany na małym klastrze k3s z dashboardami Grafana/Prometheus śledzącymi opóźnienia LLM i wydatki na API — połowa tego projektu to nauka utrzymywania infrastruktury dla czegoś, czego faktycznie używam codziennie.",
+        ],
+      },
+    },
+  },
+  {
+    slug: "small-business-booking-assistant",
+    category: "ai",
+    tags: ["ai", "automation", "self-hosted"],
+    relatedPostSlug: "2026-07-26-small-business-sms-gateway",
+    content: {
+      en: {
+        title: "AI-assisted booking system for a small service business",
+        summary:
+          "A client management and scheduling tool I built for someone close to me who runs a one-person, appointment-based business — natural-language input instead of forms, on top of a self-hosted stack.",
+        details: [
+          "Two-way SMS reminders through a self-hosted gateway running on an actual Android phone's SIM card, instead of a paid per-message API.",
+          "An AI chat assistant running on a local model, so client names and notes never leave the machine — the harder part was getting tool-calling reliable enough to trust with real bookings.",
+        ],
+      },
+      pl: {
+        title: "System rezerwacji z AI dla małej firmy usługowej",
+        summary:
+          "Narzędzie do zarządzania klientami i kalendarzem, które zbudowałem dla kogoś bliskiego, kto prowadzi jednoosobową firmę usługową — wprowadzanie danych językiem naturalnym zamiast formularzy, na bazie samodzielnie hostowanego stacku.",
+        details: [
+          "Dwukierunkowe SMS-y z przypomnieniami przez samodzielnie hostowaną bramkę działającą na karcie SIM w prawdziwym telefonie Android, a nie płatne API rozliczane za wiadomość.",
+          "Asystent AI oparty na lokalnym modelu, żeby dane klientów nigdy nie wychodziły poza maszynę — trudniejsze niż oczekiwałem było uzyskanie tool-callingu wystarczająco pewnego, by ufać mu przy prawdziwych rezerwacjach.",
         ],
       },
     },
