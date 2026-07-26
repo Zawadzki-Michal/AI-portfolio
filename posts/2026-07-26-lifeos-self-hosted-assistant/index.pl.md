@@ -14,13 +14,28 @@ FastAPI, który przełącza się między lokalnym modelem Ollama a OpenRouter, w
 zależności od tego, czego faktycznie wymaga dane zadanie.
 
 Strona infrastrukturalna okazała się co najmniej połową projektu, może
-więcej. Działa na małym, samodzielnie hostowanym klastrze k3s na starym
-komputerze w domu, z Grafaną i Prometheusem śledzącymi opóźnienia modelu i
-wydatki na API. Kiedy zaczynałem, to wcale nie było celem — chciałem tylko
-bota, który doda wydarzenie w kalendarzu bez otwierania pięciu aplikacji —
-ale ciągnąłem za kolejne nitki (wejście głosowe, potem wyjście, potem
-"a czemu nie wdrożyć tego właściwie"), aż skończyłem z czymś bliższym
-prawdziwemu stackowi produkcyjnemu, niż planowałem budować dla samego siebie.
+więcej. Zaczęło się od klastra k3s działającego w WSL2 na moim własnym
+komputerze, z Grafaną i Prometheusem śledzącymi opóźnienia modelu i wydatki
+na API — a po kilku miesiącach przeniosłem produkcję na faktyczną maszynę
+w Oracle Cloud, przygotowaną w Terraformie, z CI/CD wdrażającym przy każdym
+pushu do main. Oryginalny setup na WSL2 wciąż działa, jako cold-standby,
+którego nie miałem jeszcze odwagi wyłączyć. Kiedy zaczynałem, to wcale nie
+było celem — chciałem tylko bota, który doda wydarzenie w kalendarzu bez
+otwierania pięciu aplikacji — ale ciągnąłem za kolejne nitki (wejście
+głosowe, potem wyjście, potem "a czemu nie wdrożyć tego właściwie", potem
+"a czemu nie wdrożyć tego gdzieś, gdzie nie jest to mój komputer do
+grania"), aż skończyłem z czymś bliższym prawdziwemu stackowi
+produkcyjnemu, niż planowałem budować dla samego siebie.
+
+Przeniesienie tego do chmury miało swój własny mały objazd: klaster wciąż
+musi się dostać do modelu Ollama działającego z powrotem na moim domowym
+komputerze, a Tailscale łączy te dwie maszyny bez problemu z normalnego
+shella — ale pody na klastrze w ogóle nie mogły rozwiązać jego nazw
+hostów, coś związanego z tym, że DNS klastra działa w innej sieciowej
+przestrzeni nazw niż ta, w którą wpina się Tailscale. Nigdy do końca nie
+doszedłem, dlaczego. Skończyłem na wpisaniu na sztywno adresu IP z
+Tailscale zamiast nazwy hosta — działa, ale to nie jest odpowiedź, której
+chciałem.
 
 To, co faktycznie zmieniło sposób, w jaki z tego korzystam, nie było jednak
 żadną funkcją. Było to zauważenie, że model przynajmniej raz powiedział mi,

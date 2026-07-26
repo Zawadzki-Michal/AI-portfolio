@@ -39,6 +39,9 @@ None of this is groundbreaking engineering. It's a FastAPI backend, a
 Postgres database, a React frontend that installs like an app on a phone,
 and a lot of small integration decisions that only mattered because
 someone real is using this daily to run their income. That last part
-changed how carefully I test things — a bug in a personal project is
-annoying, a bug that double-books someone's afternoon is a real problem
-for someone else's day.
+changed how carefully I test things — enough that I finally set up a real
+GitHub Actions pipeline running the test suite against a throwaway Postgres
+database on every push, instead of just running pytest locally and hoping
+I remembered to before pushing. A bug in a personal project is annoying, a
+bug that double-books someone's afternoon is a real problem for someone
+else's day.

@@ -14,13 +14,26 @@ between a local Ollama model and OpenRouter depending on how much a given
 task actually needs.
 
 The infrastructure side ended up being at least half the project, maybe
-more. It runs on a small self-hosted k3s cluster on an old machine at home,
+more. It started on a k3s cluster running inside WSL2 on my own machine,
 with Grafana and Prometheus watching things like model latency and API
-spend. None of that was really the point when I started — I just wanted a
-bot that could add a calendar event without me opening five apps — but I
-kept pulling on threads (voice input, then output, then "why not deploy
-this properly") until I ended up with something closer to a real production
-stack than I expected to build for myself.
+spend — and a few months in I moved production onto an actual Oracle Cloud
+VM, Terraform-provisioned, with CI/CD that deploys on every push to main.
+The original WSL2 setup is still running too, as a cold-standby I haven't
+had the nerve to tear down yet. None of that was really the point when I
+started — I just wanted a bot that could add a calendar event without me
+opening five apps — but I kept pulling on threads (voice input, then
+output, then "why not deploy this properly," then "why not deploy this
+somewhere that isn't my gaming PC") until I ended up with something closer
+to a real production stack than I expected to build for myself.
+
+Moving it to the cloud came with its own small detour: the cluster still
+needs to reach an Ollama model running back on my home machine, and
+Tailscale connects the two fine from a normal shell — but pods on the
+cluster couldn't resolve its hostnames at all, something about the
+cluster's DNS running in a different network namespace than the one
+Tailscale patches into. I never fully got to the bottom of why. I ended up
+just hardcoding the Tailscale IP instead of the hostname, which works but
+isn't the answer I actually wanted.
 
 The thing that actually changed how I use it, though, wasn't a feature. It
 was noticing that the model had, at least once, told me it saved something

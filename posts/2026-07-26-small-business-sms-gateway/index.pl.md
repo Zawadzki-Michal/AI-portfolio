@@ -39,6 +39,9 @@ Nic z tego nie jest przełomową inżynierią. To backend w FastAPI, baza
 Postgres, frontend w React instalowalny jak aplikacja na telefonie i sporo
 drobnych decyzji integracyjnych, które miały znaczenie tylko dlatego, że
 prawdziwa osoba korzysta z tego codziennie, żeby prowadzić swój dochód. Ta
-ostatnia część zmieniła to, jak ostrożnie testuję rzeczy — bug w osobistym
-projekcie jest irytujący, bug, który podwójnie zarezerwuje komuś popołudnie,
-to prawdziwy problem w czyimś dniu.
+ostatnia część zmieniła to, jak ostrożnie testuję rzeczy — na tyle, że
+w końcu ustawiłem prawdziwy pipeline w GitHub Actions, który odpala zestaw
+testów na jednorazowej bazie Postgres przy każdym pushu, a nie tylko
+pytest lokalnie, w które ufam, że pamiętałem odpalić przed pushem. Bug w
+osobistym projekcie jest irytujący, bug, który podwójnie zarezerwuje komuś
+popołudnie, to prawdziwy problem w czyimś dniu.
