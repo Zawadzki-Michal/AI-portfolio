@@ -93,10 +93,6 @@ export async function getPostBySlug(slug: string, locale: Locale): Promise<Post>
   };
 }
 
-export function postUrl(slug: string, locale: Locale): string {
-  return `/${locale}/posts/${slug}`;
-}
-
 export function collectSourceUrls(posts: PostSummary[]): Set<string> {
   return new Set(posts.map((post) => post.source_url).filter((url): url is string => Boolean(url)));
 }

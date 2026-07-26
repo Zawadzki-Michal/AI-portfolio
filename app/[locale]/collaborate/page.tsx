@@ -3,6 +3,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { ContactForm } from "@/components/ContactForm";
 import { ContactChannels } from "@/components/ContactChannels";
 import { StatusDot } from "@/components/StatusDot";
+import { ScrollReveal } from "@/components/ScrollReveal";
+import { AnimatedCard } from "@/components/AnimatedCard";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -35,32 +37,36 @@ export default async function CollaboratePage({
 
   return (
     <section className="mx-auto max-w-5xl px-6 py-16">
-      <StatusDot label={t("statusLabel")} />
-      <h1 className="mt-6 font-display text-3xl font-semibold sm:text-4xl">{t("title")}</h1>
-      <p className="mt-4 max-w-2xl text-paper/70">{t("intro")}</p>
+      <ScrollReveal>
+        <StatusDot label={t("statusLabel")} />
+        <h1 className="mt-6 font-display text-3xl font-semibold sm:text-4xl">{t("title")}</h1>
+        <p className="mt-4 max-w-2xl text-paper/70">{t("intro")}</p>
+      </ScrollReveal>
 
       <div className="mt-12 grid gap-4 sm:grid-cols-3">
-        {offers.map((offer) => (
-          <div key={offer.title} className="panel-card flex flex-col gap-3 p-6">
+        {offers.map((offer, i) => (
+          <AnimatedCard key={offer.title} index={i}>
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-semibold">{offer.title}</h2>
               <StatusDot />
             </div>
             <p className="text-sm text-paper/70">{offer.description}</p>
-          </div>
+          </AnimatedCard>
         ))}
       </div>
 
-      <div className="mt-16 grid gap-8 sm:grid-cols-2">
-        <div>
-          <h2 className="font-display text-2xl font-semibold">{t("getInTouch")}</h2>
-          <p className="mt-3 max-w-md text-paper/70">{t("getInTouchBody")}</p>
-          <div className="mt-6">
-            <ContactChannels />
+      <ScrollReveal delay={0.1}>
+        <div className="mt-16 grid gap-8 sm:grid-cols-2">
+          <div>
+            <h2 className="font-display text-2xl font-semibold">{t("getInTouch")}</h2>
+            <p className="mt-3 max-w-md text-paper/70">{t("getInTouchBody")}</p>
+            <div className="mt-6">
+              <ContactChannels />
+            </div>
           </div>
+          <ContactForm />
         </div>
-        <ContactForm />
-      </div>
+      </ScrollReveal>
     </section>
   );
 }

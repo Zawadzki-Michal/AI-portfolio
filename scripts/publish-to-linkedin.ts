@@ -23,7 +23,7 @@ import path from "path";
 import { execSync } from "child_process";
 import matter from "gray-matter";
 import { createPost, uploadImage, contentTypeFor, type LinkedInConfig } from "../lib/linkedin";
-import { postUrl } from "../lib/posts";
+import { postUrl } from "../lib/post-url";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
