@@ -66,6 +66,7 @@ describe("createPost", () => {
     await createPost(config, {
       commentary: "hello",
       linkUrl: "https://example.com/posts/foo",
+      title: "Foo",
       imageUrns: ["urn:li:image:1"],
     });
 
@@ -80,6 +81,7 @@ describe("createPost", () => {
     await createPost(config, {
       commentary: "hello",
       linkUrl: "https://example.com/posts/foo",
+      title: "Foo",
       imageUrns: ["urn:li:image:1", "urn:li:image:2"],
     });
 
@@ -96,17 +98,20 @@ describe("createPost", () => {
     await createPost(config, {
       commentary: "hello",
       linkUrl: "https://example.com/posts/foo",
+      title: "Foo",
     });
 
     const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
-    expect(body.content).toEqual({ article: { source: "https://example.com/posts/foo" } });
+    expect(body.content).toEqual({
+      article: { source: "https://example.com/posts/foo", title: "Foo" },
+    });
   });
 
   it("throws on a non-ok response", async () => {
     mockFetchOnce(500);
 
     await expect(
-      createPost(config, { commentary: "hi", linkUrl: "https://example.com" }),
+      createPost(config, { commentary: "hi", linkUrl: "https://example.com", title: "Hi" }),
     ).rejects.toThrow(/createPost failed/);
   });
 });
