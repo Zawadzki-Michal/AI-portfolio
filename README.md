@@ -10,10 +10,10 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
-  - `generate-draft.yml` — scheduled job that pulls RSS feeds, asks Claude to draft a post, and opens a PR for review
+  - `generate-draft.yml` — scheduled job that pulls RSS feeds, asks a model to draft a post, and opens a PR for review
   - `ci.yml` — typecheck, unit tests, and build on every push/PR to `main`
-- **AI drafting:** Anthropic API (Claude)
-- **Testing:** Vitest, unit tests for the content layer and the LinkedIn API client
+- **AI drafting:** [OpenRouter](https://openrouter.ai/) (routed to a Claude model by default — see `automation/draft-instructions.md`)
+- **Testing:** Vitest, unit tests for the content layer, the LinkedIn API client, and the draft pipeline's pure helpers
 
 ## Local development
 
@@ -26,12 +26,12 @@ Open http://localhost:3000.
 
 ```bash
 npm run typecheck   # tsc --noEmit
-npm test            # vitest — lib/posts, lib/slugify, lib/linkedin
+npm test            # vitest — lib/posts, lib/slugify, lib/linkedin, lib/markdown
 npm run build       # production build
 ```
 
 `.github/workflows/ci.yml` runs typecheck + tests + build on every push/PR to
-`main`. None of this requires any secrets — the LinkedIn and Anthropic env
+`main`. None of this requires any secrets — the LinkedIn and OpenRouter env
 vars are only read by the automation scripts, not by the site itself.
 
 ## Adding a post
@@ -45,6 +45,9 @@ date: 2026-07-26
 tags: [azure, ai, devops]
 cta_text: "Chcesz wdrożyć coś podobnego u siebie? Napisz do mnie"
 cta_link: "/collaborate"
+# optional — only set on posts drafted from the RSS pipeline; used to skip
+# re-drafting the same source article on later runs
+source_url: "https://example.com/the-article-this-post-reacts-to"
 ---
 
 Article body in Markdown.
@@ -71,14 +74,15 @@ i.e. the full `YYYY-MM-DD-slug` folder name.
 | --- | --- | --- |
 | `LINKEDIN_ACCESS_TOKEN` | publish-to-linkedin | `w_member_social` scope, 60-day token (see below) |
 | `LINKEDIN_AUTHOR_URN` | publish-to-linkedin | e.g. `urn:li:person:xxxxxxxx` |
-| `ANTHROPIC_API_KEY` | generate-draft | Claude API key |
+| `OPENROUTER_API_KEY` | generate-draft | From [openrouter.ai/keys](https://openrouter.ai/keys) |
 
 ### GitHub Actions repository variables
 
 | Variable | Used by | Notes |
 | --- | --- | --- |
-| `SITE_URL` | publish-to-linkedin | e.g. `https://your-portfolio.vercel.app` |
+| `SITE_URL` | publish-to-linkedin, generate-draft | e.g. `https://your-portfolio.vercel.app` |
 | `RSS_FEEDS` | generate-draft | Comma-separated feed URLs (optional, has defaults) |
+| `OPENROUTER_MODEL` | generate-draft | Defaults to `anthropic/claude-opus-4.5` — any [OpenRouter model slug](https://openrouter.ai/models) works |
 
 ### Vercel
 
@@ -104,24 +108,39 @@ etc.) — without it, submissions are just logged server-side.
 
 ## Draft generation
 
-`generate-draft.yml` runs weekly (and via manual dispatch), pulls the most
-recent RSS item across the configured feeds, asks Claude to draft a post in
-the site's voice/format, and opens a PR with the new `posts/` folder. Nothing
-is ever published without merging that PR first — images and edits are added
-by hand before merge.
+`generate-draft.yml` runs weekly (and via manual dispatch):
+
+1. Pulls items from the configured RSS feeds (default: Azure Updates, Azure
+   DevOps Blog, HashiCorp Blog, GitHub Changelog, Simon Willison's blog —
+   override with the `RSS_FEEDS` repo variable).
+2. Skips any item whose link already appears as `source_url` on an existing
+   post (`lib/posts.ts#getAllSourceUrls`) — so re-running the job doesn't
+   redraft the same article just because it's still the newest one in a
+   feed.
+3. Sends the first un-drafted item to OpenRouter (`OPENROUTER_MODEL`,
+   defaults to a Claude model) with the system prompt loaded straight from
+   `automation/draft-instructions.md` — edit that file to change voice,
+   formatting rules, or the tag taxonomy without touching any code.
+4. Writes the result to `posts/YYYY-MM-DD-slug/index.md` (front-matter
+   includes `source_url`) and opens a PR.
+
+Nothing is ever published without merging that PR first — images and edits
+are added by hand before merge.
 
 ## Project structure
 
 ```
-app/                 Next.js routes (home, /about, /projects, /posts, /posts/[slug], /collaborate, /api/contact)
-components/          Design system components
-lib/posts.ts         Front-matter parsing / post listing
-lib/projects.ts       Static project/case-study data shown on / and /projects
-lib/site-config.ts    Name, role, headline, social links — edit this for your own bio
-lib/linkedin.ts       LinkedIn REST API client (images + posts)
-posts/                Content — one folder per post
-scripts/              CLI scripts run by GitHub Actions
-.github/workflows/    publish-to-linkedin.yml, generate-draft.yml
+app/                        Next.js routes (home, /about, /projects, /posts, /posts/[slug], /collaborate, /api/contact)
+components/                 Design system components
+lib/posts.ts                Front-matter parsing / post listing / source_url dedup
+lib/projects.ts             Static project/case-study data shown on / and /projects
+lib/site-config.ts          Name, role, headline, social links — edit this for your own bio
+lib/linkedin.ts             LinkedIn REST API client (images + posts)
+lib/slugify.ts, lib/markdown.ts   Small pure helpers shared by the scripts and covered by tests
+posts/                       Content — one folder per post
+automation/draft-instructions.md  System prompt for the draft-generation model
+scripts/                     CLI scripts run by GitHub Actions
+.github/workflows/          publish-to-linkedin.yml, generate-draft.yml, ci.yml
 ```
 
 ## Pages

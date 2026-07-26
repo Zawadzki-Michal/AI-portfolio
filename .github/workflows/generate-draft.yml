@@ -31,8 +31,10 @@ jobs:
 
       - name: Generate draft post
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           RSS_FEEDS: ${{ vars.RSS_FEEDS }}
+          SITE_URL: ${{ vars.SITE_URL }}
         run: npm run generate-draft
 
       - name: Open pull request with draft
@@ -42,7 +44,7 @@ jobs:
           branch: draft/auto-post-${{ github.run_id }}
           title: "Draft: new AI-generated post for review"
           body: |
-            Auto-generated draft from the scheduled RSS + Claude pipeline.
+            Auto-generated draft from the scheduled RSS + OpenRouter pipeline.
 
             Review, edit as needed, add images, and merge to publish
             (deploy + LinkedIn publish will trigger automatically on merge).

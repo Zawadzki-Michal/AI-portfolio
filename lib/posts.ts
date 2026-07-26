@@ -12,6 +12,8 @@ export type PostFrontMatter = {
   tags: string[];
   cta_text?: string;
   cta_link?: string;
+  /** Source article URL, set on posts drafted from the RSS + LLM pipeline. Used to avoid re-drafting the same item. */
+  source_url?: string;
 };
 
 export type PostSummary = PostFrontMatter & {
@@ -45,6 +47,7 @@ export function getPostSummary(slug: string): PostSummary {
     tags: data.tags ?? [],
     cta_text: data.cta_text,
     cta_link: data.cta_link,
+    source_url: data.source_url,
   };
 }
 
@@ -67,10 +70,20 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     tags: data.tags ?? [],
     cta_text: data.cta_text,
     cta_link: data.cta_link,
+    source_url: data.source_url,
     contentHtml: processed.toString(),
   };
 }
 
 export function postUrl(slug: string): string {
   return `/posts/${slug}`;
+}
+
+export function collectSourceUrls(posts: PostSummary[]): Set<string> {
+  return new Set(posts.map((post) => post.source_url).filter((url): url is string => Boolean(url)));
+}
+
+/** Source URLs already covered by an existing post, for RSS dedup. */
+export function getAllSourceUrls(): Set<string> {
+  return collectSourceUrls(getAllPosts());
 }
