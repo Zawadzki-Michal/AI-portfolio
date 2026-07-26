@@ -79,7 +79,13 @@
     "intro": "Not a skills list — things I've actually worked on, most of them still with a lot left to learn."
   },
   "projectCard": {
-    "readLog": "read the log →"
+    "readLog": "read the log →",
+    "viewProject": "view project →"
+  },
+  "projectPage": {
+    "back": "← back to projects",
+    "readLog": "read the log →",
+    "cta": "Working on something similar? I'd like to hear about it"
   },
   "collaborate": {
     "metaTitle": "Collaborate — System Status",
