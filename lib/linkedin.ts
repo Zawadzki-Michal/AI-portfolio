@@ -8,7 +8,9 @@
  */
 
 const LINKEDIN_API_BASE = "https://api.linkedin.com";
-const LINKEDIN_VERSION = "202405";
+// LinkedIn supports each version for a minimum of 1 year, then sunsets it —
+// bump this periodically (see https://learn.microsoft.com/en-us/linkedin/marketing/versioning).
+const LINKEDIN_VERSION = "202607";
 const REQUEST_TIMEOUT_MS = 30_000;
 
 export type LinkedInConfig = {
