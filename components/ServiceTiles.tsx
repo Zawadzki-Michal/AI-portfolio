@@ -7,9 +7,9 @@ export function ServiceTiles() {
   const t = useTranslations("serviceTiles");
 
   const tiles = [
+    { id: "devops", title: t("devopsTitle"), description: t("devopsDesc"), metric: t("devopsMetric") },
     { id: "azure", title: t("azureTitle"), description: t("azureDesc"), metric: t("azureMetric") },
     { id: "ai", title: t("aiTitle"), description: t("aiDesc"), metric: t("aiMetric") },
-    { id: "devops", title: t("devopsTitle"), description: t("devopsDesc"), metric: t("devopsMetric") },
   ];
 
   return (
