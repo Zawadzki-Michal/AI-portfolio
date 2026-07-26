@@ -8,7 +8,9 @@
  */
 
 const LINKEDIN_API_BASE = "https://api.linkedin.com";
-const LINKEDIN_VERSION = "202405";
+// LinkedIn supports each version for a minimum of 1 year, then sunsets it —
+// bump this periodically (see https://learn.microsoft.com/en-us/linkedin/marketing/versioning).
+const LINKEDIN_VERSION = "202607";
 const REQUEST_TIMEOUT_MS = 30_000;
 
 export type LinkedInConfig = {
@@ -86,6 +88,8 @@ export async function uploadImage(
 export type CreatePostOptions = {
   commentary: string;
   linkUrl: string;
+  /** Required by LinkedIn's `article` content block (link preview, used when there are no images). */
+  title: string;
   imageUrns?: string[];
   visibility?: "PUBLIC" | "CONNECTIONS";
 };
@@ -110,7 +114,7 @@ export async function createPost(config: LinkedInConfig, options: CreatePostOpti
       },
     };
   } else {
-    content = { article: { source: options.linkUrl } };
+    content = { article: { source: options.linkUrl, title: options.title } };
   }
 
   const res = await fetch(`${LINKEDIN_API_BASE}/rest/posts`, {
