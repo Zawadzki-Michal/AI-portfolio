@@ -9,22 +9,21 @@ export function LanguageSwitcher() {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center gap-1 font-mono text-xs uppercase tracking-widest">
-      {routing.locales.map((locale, i) => (
-        <span key={locale} className="flex items-center gap-1">
-          {i > 0 && <span className="text-paper/30">/</span>}
-          <Link
-            href={pathname}
-            locale={locale}
-            className={
-              locale === activeLocale
-                ? "text-amber"
-                : "text-paper/50 transition hover:text-paper"
-            }
-          >
-            {locale}
-          </Link>
-        </span>
+    <div className="flex items-center overflow-hidden rounded-md border border-line font-mono text-xs uppercase tracking-widest">
+      {routing.locales.map((locale) => (
+        <Link
+          key={locale}
+          href={pathname}
+          locale={locale}
+          aria-current={locale === activeLocale ? "true" : undefined}
+          className={
+            locale === activeLocale
+              ? "bg-amber px-2 py-1 font-semibold text-ink"
+              : "px-2 py-1 text-paper/50 transition hover:bg-line/40 hover:text-paper"
+          }
+        >
+          {locale}
+        </Link>
       ))}
     </div>
   );
