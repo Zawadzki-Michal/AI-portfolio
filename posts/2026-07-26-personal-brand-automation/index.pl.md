@@ -33,3 +33,13 @@ To, co podoba mi się w efekcie, to że post jest teraz po prostu plikiem w
 repo, recenzowanym tak samo jak wszystko inne. Czy to faktycznie lepszy
 system niż zwykłe ręczne publikowanie — szczerze, jeszcze nie wiem — ale
 fajnie się to budowało i debugowało.
+
+Jedną lukę zauważyłem dopiero później: krok 3 sprawdzał, czy nowa strona
+zwraca 200, ale nie to, czy faktycznie serwuje nową treść. Nieodświeżony
+cache zwracający 200 z wczorajszym buildem przeszedłby przez tę kontrolę
+bez problemu i tak trafiłby na LinkedIn. Dodałem drugi sprawdzian — po
+200 sprawdza też, czy tytuł posta faktycznie pojawia się w treści strony,
+zanim publikacja ruszy dalej — i napisałem do tego testy jednostkowe, żeby
+kolejna zmiana w tej logice nie mogła po cichu tego zepsuć. Drobna
+poprawka, ale zamyka jedyny realny scenariusz błędu: opublikowanie linku
+do czegoś, co jeszcze naprawdę nie jest live.

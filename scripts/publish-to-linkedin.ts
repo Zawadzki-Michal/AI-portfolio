@@ -24,6 +24,7 @@ import { execSync } from "child_process";
 import matter from "gray-matter";
 import { createPost, uploadImage, contentTypeFor, type LinkedInConfig } from "../lib/linkedin";
 import { postUrl } from "../lib/post-url";
+import { waitForUrl } from "../lib/wait-for-url";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
@@ -44,20 +45,6 @@ function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
   return [...slugs];
 }
 
-async function waitForUrl(url: string, { attempts = 20, delayMs = 15_000 } = {}) {
-  for (let i = 0; i < attempts; i++) {
-    try {
-      const res = await fetch(url, { method: "GET", signal: AbortSignal.timeout(15_000) });
-      if (res.ok) return;
-      console.log(`[wait] ${url} -> ${res.status}, retrying (${i + 1}/${attempts})`);
-    } catch (err) {
-      console.log(`[wait] ${url} unreachable, retrying (${i + 1}/${attempts})`, err);
-    }
-    await new Promise((resolve) => setTimeout(resolve, delayMs));
-  }
-  throw new Error(`Timed out waiting for ${url} to become available`);
-}
-
 function findImages(slug: string): string[] {
   const dir = path.join(POSTS_DIR, slug);
   return fs
@@ -72,7 +59,7 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
 
   const articleUrl = new URL(postUrl(slug, LINKEDIN_LOCALE), siteUrl).toString();
   console.log(`[publish] waiting for deploy: ${articleUrl}`);
-  await waitForUrl(articleUrl);
+  await waitForUrl(articleUrl, { expectedContent: data.title });
 
   const imagePaths = findImages(slug);
   console.log(`[publish] found ${imagePaths.length} image(s) for ${slug}`);
