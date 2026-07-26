@@ -1,15 +1,29 @@
-import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
+import { routing, type Locale } from "@/i18n/routing";
 import { Hero } from "@/components/Hero";
 import { ServiceTiles } from "@/components/ServiceTiles";
 import { PostList } from "@/components/PostList";
 import { ProjectCard } from "@/components/ProjectCard";
 import { getAllPosts } from "@/lib/posts";
-import { projects } from "@/lib/projects";
+import { getProjects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site-config";
 
-export default function HomePage() {
-  const posts = getAllPosts().slice(0, 5);
-  const featuredProjects = projects.slice(0, 2);
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale as Locale);
+  const t = await getTranslations("home");
+
+  const posts = getAllPosts(locale as Locale).slice(0, 5);
+  const featuredProjects = getProjects(locale as Locale).slice(0, 2);
 
   return (
     <>
@@ -18,7 +32,7 @@ export default function HomePage() {
       <section className="mx-auto max-w-5xl px-6 py-16">
         <div className="panel-card flex flex-col gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="label-mono">about</p>
+            <p className="label-mono">{t("aboutLabel")}</p>
             <h2 className="mt-2 font-display text-2xl font-semibold">{siteConfig.name}</h2>
             <p className="mt-2 max-w-xl text-paper/70">{siteConfig.headline}</p>
           </div>
@@ -26,7 +40,7 @@ export default function HomePage() {
             href="/about"
             className="shrink-0 rounded-md border border-line px-5 py-3 font-mono text-sm text-paper/80 transition hover:border-teal hover:text-teal"
           >
-            full profile →
+            {t("fullProfile")}
           </Link>
         </div>
       </section>
@@ -35,9 +49,9 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-5xl px-6 py-16">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">Selected work</h2>
+          <h2 className="font-display text-2xl font-semibold">{t("selectedWork")}</h2>
           <Link href="/projects" className="label-mono hover:text-paper">
-            view all →
+            {t("viewAll")}
           </Link>
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -49,9 +63,9 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-5xl px-6 py-16">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="font-display text-2xl font-semibold">Latest log entries</h2>
+          <h2 className="font-display text-2xl font-semibold">{t("latestLog")}</h2>
           <Link href="/posts" className="label-mono hover:text-paper">
-            view all →
+            {t("viewAll")}
           </Link>
         </div>
         <PostList posts={posts} />
@@ -59,17 +73,14 @@ export default function HomePage() {
       <section id="collaborate-teaser" className="mx-auto max-w-5xl px-6 pb-24">
         <div className="panel-card flex flex-col items-start gap-4 p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h2 className="font-display text-2xl font-semibold">Let&apos;s talk</h2>
-            <p className="mt-2 max-w-md text-paper/70">
-              Working through similar Azure/AI/DevOps problems, or made a
-              similar career change? I&apos;d genuinely like to hear from you.
-            </p>
+            <h2 className="font-display text-2xl font-semibold">{t("letsTalk")}</h2>
+            <p className="mt-2 max-w-md text-paper/70">{t("letsTalkBody")}</p>
           </div>
           <Link
             href="/collaborate"
             className="shrink-0 rounded-md bg-amber px-5 py-3 font-mono text-sm font-medium text-ink transition hover:bg-amber/90"
           >
-            collaborate →
+            {t("collaborateCta")}
           </Link>
         </div>
       </section>

@@ -1,9 +1,14 @@
 import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
 import type { Project } from "@/lib/projects";
 import { postUrl } from "@/lib/posts";
+import type { Locale } from "@/i18n/routing";
 import { StatusDot } from "./StatusDot";
 
 export function ProjectCard({ project }: { project: Project }) {
+  const locale = useLocale() as Locale;
+  const t = useTranslations("projectCard");
+
   return (
     <div className="panel-card flex flex-col gap-4 p-6">
       <div className="flex items-center justify-between">
@@ -29,8 +34,11 @@ export function ProjectCard({ project }: { project: Project }) {
           ))}
         </div>
         {project.relatedPostSlug && (
-          <Link href={postUrl(project.relatedPostSlug)} className="label-mono text-teal hover:underline">
-            read the log →
+          <Link
+            href={postUrl(project.relatedPostSlug, locale)}
+            className="label-mono text-teal hover:underline"
+          >
+            {t("readLog")}
           </Link>
         )}
       </div>

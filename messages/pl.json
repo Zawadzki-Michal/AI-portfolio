@@ -1,0 +1,119 @@
+{
+  "site": {
+    "title": "System Status — Azure / AI / DevOps",
+    "description": "Dziennik junior System Engineera: nauka infrastruktury Azure, eksperymenty z AI i praktyka DevOps, pisane jako monitorowane statusy."
+  },
+  "nav": {
+    "about": "o mnie",
+    "projects": "projekty",
+    "log": "log",
+    "collaborate": "kontakt",
+    "status": "wszystko działa"
+  },
+  "footer": {
+    "uptimeSince": "uptime od 2026",
+    "about": "o mnie",
+    "projects": "projekty",
+    "log": "log",
+    "collaborate": "kontakt",
+    "operational": "działa"
+  },
+  "hero": {
+    "buildPassing": "build zaliczony",
+    "titleLine1": "Infrastruktura pod kontrolą.",
+    "titleLine2": "Wiedza,",
+    "titleEmph": "wysyłana.",
+    "subtitle": "Dziennik nauki infrastruktury Azure, eksperymentów z AI i ogarniania DevOps w praktyce — pisany tak, jak naprawdę pracuję: w commitach, PR-ach i statusach.",
+    "terminalLabel": "status.sh",
+    "whoamiCmd": "whoami",
+    "whoamiOut": "junior system engineer, 2 lata doświadczenia — wciąż uczę się azure",
+    "focusCmd": "cat focus.log",
+    "focusOut": "azure, ai, devops — zapisuję na bieżąco, czego się uczę",
+    "statusCmd": "status --all",
+    "statusOut": "azure: online · ai: odkrywam · devops: w trakcie"
+  },
+  "serviceTiles": {
+    "heading": "Kafelki monitoringu",
+    "statusLabel": "3/3 w trakcie",
+    "azureTitle": "Azure",
+    "azureDesc": "To, czego faktycznie dotykam na co dzień: whitelisting IP, projektowanie sieci, Terraform, ćwiczenia disaster recovery — wciąż uczę się niuansów tego wszystkiego.",
+    "azureMetric": "2 lata doświadczenia",
+    "aiTitle": "AI",
+    "aiDesc": "Eksperymentuję z Claude i narzędziami LLM. Pipeline publikujący posty na tej stronie to na razie moje największe wdrożenie.",
+    "aiMetric": "modele: claude",
+    "devopsTitle": "DevOps",
+    "devopsDesc": "CI/CD, GitHub Actions, infrastructure-as-code — staram się, żeby wdrażanie było mniej stresujące, pipeline po pipeline.",
+    "devopsMetric": "uczę się w praktyce"
+  },
+  "home": {
+    "aboutLabel": "o mnie",
+    "fullProfile": "pełny profil →",
+    "selectedWork": "Wybrane projekty",
+    "viewAll": "zobacz wszystkie →",
+    "latestLog": "Najnowsze wpisy",
+    "letsTalk": "Pogadajmy",
+    "letsTalkBody": "Mierzysz się z podobnymi problemami Azure/AI/DevOps albo też zmieniłeś/aś branżę? Chętnie to przegadam.",
+    "collaborateCta": "kontakt →"
+  },
+  "about": {
+    "metaTitle": "O mnie — System Status",
+    "onlineStatus": "online",
+    "p1": "Od dwóch lat pracuję jako System Engineer, na co dzień zajmując się infrastrukturą Azure — projektowaniem sieci, whitelistingiem IP, środowiskami zarządzanymi przez Terraform, disaster recovery. Nie piszę tego jako ktoś, kto ma to wszystko ogarnięte. Większość tygodni wciąż coś sprawdzam, najpierw psuję rzeczy w środowisku testowym i uczę się od ludzi w zespole, którzy robią to dużo dłużej niż ja.",
+    "p2": "Poza pracą interesuję się praktycznym zastosowaniem AI — nie jako modnym hasłem, tylko czymś, co chcę realnie zbudować. Ta strona jest tego efektem: chciałem sprawdzić, czy da się wpiąć AI bezpośrednio w to, jak powstaje i publikuje się osobisty blog, więc posty są szkicowane przez Claude, przechodzą normalny PR i trafiają na LinkedIn dzięki GitHub Action, gdy tylko są live. Zobacz <projects>/projects</projects>, żeby zobaczyć, jak to działa.",
+    "p3": "Piszę o tym, w czym akurat utknąłem albo co mnie ekscytuje, na <log>logu</log>. Jeśli jesteś na podobnej ścieżce — junior, zmiana branży na tech albo po prostu ciekawią cię te same tematy — chętnie się odezwij, zobacz <collaborate>/collaborate</collaborate>.",
+    "stackHeading": "Czym się teraz zajmuję",
+    "stackSubtitle": "Nie mistrzostwo — po prostu to, czemu faktycznie poświęcam czas."
+  },
+  "skills": {
+    "azureCategory": "Azure",
+    "azureSkills": ["Whitelisting IP i reguły sieciowe", "Podstawy Terraform", "Ćwiczenia disaster recovery", "Codzienne rozwiązywanie problemów"],
+    "aiCategory": "AI",
+    "aiSkills": ["Claude / narzędzia LLM", "Eksperymenty z promptami", "Małe skrypty automatyzujące", "Nauka przez budowanie"],
+    "devopsCategory": "DevOps",
+    "devopsSkills": ["GitHub Actions", "Czytanie cudzego Terraforma", "Podstawy CI/CD", "Ogarnianie monitoringu"]
+  },
+  "projectsPage": {
+    "metaTitle": "Projekty — System Status",
+    "title": "Projekty",
+    "statusLabel": "{count} w trakcie",
+    "intro": "Nie lista umiejętności — rzeczy, przy których faktycznie pracowałem, w większości wciąż z dużym polem do nauki."
+  },
+  "projectCard": {
+    "readLog": "zobacz wpis →"
+  },
+  "collaborate": {
+    "metaTitle": "Kontakt — System Status",
+    "statusLabel": "otwarty na rozmowę",
+    "title": "Pogadajmy, jeśli to brzmi znajomo.",
+    "intro": "Nie sprzedaję tu usług konsultingowych — jestem dwa lata w roli juniora System Engineer i wciąż większość z tego się uczę. Jeśli mierzysz się z podobnymi problemami Azure/AI/DevOps, zmieniłeś/aś branżę podobnie jak ja, albo po prostu chcesz porównać notatki — chętnie się odezwij.",
+    "offer1Title": "Utknąłeś przy czymś podobnym?",
+    "offer1Desc": "Walczysz z problemem w Azure albo Terraformie i chcesz porównać notatki? Lubię gadać o tym na głos — chętnie popairuję albo po prostu wymienimy się tym, co każde z nas znalazło.",
+    "offer2Title": "Eksperymentujesz z AI w swoim workflow?",
+    "offer2Desc": "Ja robię to samo tutaj — dowodem jest pipeline publikujący posty na tej stronie. Ciekawi mnie, co inni próbują i co faktycznie zadziałało.",
+    "offer3Title": "Zmieniłeś/aś branżę na tech albo o tym myślisz?",
+    "offer3Desc": "Ja zrobiłem to kilka lat temu. Chętnie pogadam, jak to naprawdę wyglądało, bez sprzedawania niczego.",
+    "getInTouch": "Napisz do mnie",
+    "getInTouchBody": "Napisz, nad czym pracujesz albo przy czym utknąłeś. Odpisuję, kiedy mogę — zwykle w ciągu kilku dni."
+  },
+  "contactForm": {
+    "nameLabel": "imię",
+    "emailLabel": "email",
+    "messageLabel": "wiadomość",
+    "sendButton": "wyślij wiadomość →",
+    "sending": "wysyłanie…",
+    "successMsg": "> wiadomość dotarła. Odezwę się wkrótce.",
+    "errorMsg": "> coś poszło nie tak. Napisz do mnie bezpośrednio na maila."
+  },
+  "contactChannels": {
+    "directChannels": "bezpośredni kontakt",
+    "pendingSetup": "wkrótce",
+    "messageMe": "napisz do mnie",
+    "followCommits": "śledź commity"
+  },
+  "postsIndex": {
+    "metaTitle": "Log — System Status",
+    "title": "Log",
+    "entriesLabel": "{count} wpisów",
+    "emptyMsg": "Jeszcze brak wpisów. Pierwszy post w drodze."
+  }
+}

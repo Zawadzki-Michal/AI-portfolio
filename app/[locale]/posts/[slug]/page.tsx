@@ -1,20 +1,23 @@
 import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { routing, type Locale } from "@/i18n/routing";
 import { getAllPostSlugs, getPostBySlug } from "@/lib/posts";
 import { CtaBlock } from "@/components/CtaBlock";
 import { StatusDot } from "@/components/StatusDot";
 
 export function generateStaticParams() {
-  return getAllPostSlugs().map((slug) => ({ slug }));
+  const slugs = getAllPostSlugs();
+  return routing.locales.flatMap((locale) => slugs.map((slug) => ({ locale, slug })));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   try {
-    const post = await getPostBySlug(slug);
+    const post = await getPostBySlug(slug, locale as Locale);
     return { title: `${post.title} — System Status` };
   } catch {
     return { title: "Post not found" };
@@ -24,13 +27,14 @@ export async function generateMetadata({
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
+  setRequestLocale(locale as Locale);
 
   let post;
   try {
-    post = await getPostBySlug(slug);
+    post = await getPostBySlug(slug, locale as Locale);
   } catch {
     notFound();
   }
