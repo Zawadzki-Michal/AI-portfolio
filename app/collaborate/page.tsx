@@ -8,34 +8,35 @@ export const metadata = {
 
 const offers = [
   {
-    title: "Azure infrastructure review",
+    title: "Stuck on something similar?",
     description:
-      "Audit of network design, IP whitelisting rules, and Terraform-managed resources — with a prioritized remediation plan.",
+      "Working through an Azure or Terraform problem and want to compare notes? I like talking things through out loud — happy to pair or just trade what we've each found.",
   },
   {
-    title: "Disaster recovery planning",
+    title: "Experimenting with AI in your workflow?",
     description:
-      "DR runbooks and failover procedures for Azure workloads, built and tested against real failure scenarios — not just documented.",
+      "I'm doing the same here — this site's own posting pipeline is the proof. Curious what others are trying and what's actually worked.",
   },
   {
-    title: "AI-assisted DevOps automation",
+    title: "Career-changed into tech, or thinking about it?",
     description:
-      "CI/CD pipelines and internal tooling augmented with Claude — from draft generation to automated publishing, like the one running this site.",
+      "I did that a couple of years ago. Happy to talk about what that was actually like, no sales pitch attached.",
   },
 ];
 
 export default function CollaboratePage() {
   return (
     <section className="mx-auto max-w-5xl px-6 py-16">
-      <StatusDot label="accepting new engagements" />
+      <StatusDot label="open to a conversation" />
       <h1 className="mt-6 font-display text-3xl font-semibold sm:text-4xl">
-        Let&apos;s build something that stays up.
+        Let&apos;s talk, if any of this sounds familiar.
       </h1>
       <p className="mt-4 max-w-2xl text-paper/70">
-        I work with teams shipping on Azure who want infrastructure that
-        survives contact with reality, and with teams who want to put AI
-        tooling into their actual delivery pipeline — not just a chatbot on
-        the side.
+        I&apos;m not pitching consulting services here — I&apos;m two years
+        into a junior System Engineer role, still learning most of this. If
+        you&apos;re working through similar Azure/AI/DevOps problems, made a
+        similar career change, or just want to compare notes, I&apos;d
+        genuinely like to hear from you.
       </p>
 
       <div className="mt-12 grid gap-4 sm:grid-cols-3">
@@ -54,9 +55,8 @@ export default function CollaboratePage() {
         <div>
           <h2 className="font-display text-2xl font-semibold">Get in touch</h2>
           <p className="mt-3 max-w-md text-paper/70">
-            Tell me what you&apos;re running into — infrastructure, DR, or an
-            AI/DevOps workflow you want automated. I reply within a couple of
-            business days.
+            Tell me what you&apos;re working on or stuck on. I reply when I
+            can — usually within a few days.
           </p>
           <div className="mt-6">
             <ContactChannels />

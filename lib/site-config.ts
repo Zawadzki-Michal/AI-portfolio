@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: "Michał Zawadzki",
-  role: "System Engineer — Azure / AI / DevOps",
+  role: "Junior System Engineer — learning Azure, AI & DevOps in public",
   headline:
-    "I run production Azure infrastructure and spend the rest of my time turning AI tooling into things that actually ship.",
+    "Two years into a System Engineer role on Azure. Still figuring a lot of this out — this is where I write it down as I go.",
   email: "m.z.zawadzkimichal@gmail.com",
   social: {
     linkedin: "",

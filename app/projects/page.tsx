@@ -11,11 +11,11 @@ export default function ProjectsPage() {
     <section className="mx-auto max-w-5xl px-6 py-16">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="font-display text-3xl font-semibold">Projects</h1>
-        <StatusDot label={`${projects.length} deployed`} />
+        <StatusDot label={`${projects.length} in progress`} />
       </div>
       <p className="max-w-2xl text-paper/70">
-        Concrete work, not a skills list — infrastructure and automation
-        running in production.
+        Not a skills list — things I&apos;ve actually worked on, most of them
+        still with a lot left to learn.
       </p>
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {projects.map((project) => (

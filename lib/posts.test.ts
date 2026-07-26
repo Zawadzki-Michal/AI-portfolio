@@ -25,15 +25,15 @@ describe("posts", () => {
 
   it("parses front-matter fields on a summary", () => {
     const summary = getPostSummary("2026-07-26-personal-brand-automation");
-    expect(summary.title).toContain("personal brand pipeline");
+    expect(summary.title).toContain("post itself to LinkedIn");
     expect(summary.tags).toContain("automation");
     expect(summary.cta_link).toBe("/collaborate");
   });
 
   it("renders markdown content to HTML", async () => {
     const post = await getPostBySlug("2026-07-26-personal-brand-automation");
-    expect(post.contentHtml).toContain("<h2>");
-    expect(post.contentHtml).toContain("The flow");
+    expect(post.contentHtml).toContain("<ol>");
+    expect(post.contentHtml).toContain("GitHub Action");
   });
 
   it("builds a post URL from its slug", () => {

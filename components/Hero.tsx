@@ -2,11 +2,11 @@ import { StatusDot } from "./StatusDot";
 
 const terminalLines = [
   { prompt: "$", text: "whoami" },
-  { prompt: ">", text: "system engineer — azure / terraform / disaster recovery" },
+  { prompt: ">", text: "junior system engineer, 2 years in — still learning azure" },
   { prompt: "$", text: "cat focus.log" },
-  { prompt: ">", text: "shipping AI-assisted infra tooling, one status update at a time" },
+  { prompt: ">", text: "azure, ai, devops — writing it down as I figure it out" },
   { prompt: "$", text: "status --all" },
-  { prompt: ">", text: "azure: operational · ai: operational · devops: operational" },
+  { prompt: ">", text: "azure: online · ai: exploring · devops: in progress" },
 ];
 
 export function Hero() {
@@ -21,9 +21,9 @@ export function Hero() {
             Knowledge, <span className="text-amber">shipped.</span>
           </h1>
           <p className="mt-6 max-w-md text-paper/70">
-            A running log of Azure infrastructure, AI experimentation, and DevOps
-            practice — written the way I work: in commits, PRs, and status
-            updates.
+            A running log of learning Azure infrastructure, experimenting
+            with AI, and figuring out DevOps as I go — written the way I
+            actually work: in commits, PRs, and status updates.
           </p>
         </div>
         <div className="panel-card overflow-hidden font-mono text-sm shadow-2xl shadow-black/40">
