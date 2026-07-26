@@ -1,0 +1,20 @@
+Starting to Code: The Warm Welcome of Tech’s Mentorship Culture
+Hi there! It’s Michał, sharing another chapter from my adventure of transitioning from truck driving to the world of web development. Today’s post is a bit of a special one, as I reflect on the incredible people and experiences that have shaped my journey into tech.
+
+Let’s start with the School of Code, a place that has been instrumental in my journey. This bootcamp is unique in so many ways, particularly because it's completely free. It opens doors to the tech world for people from various backgrounds, emphasizing the importance of diversity in the sector. Their approach to teaching isn’t just about coding; it's about creating a community of learners who support and grow together. The School of Code has not just taught me how to code, but it has also given me the confidence and foundation I needed to embark on this new career path. Their unwavering support and dedication to their students is something I will always be grateful for.
+
+In this journey, I’ve been fortunate to meet some incredible people, and one of them is Susanna, whom I connected with on LinkedIn. From the outset, Susanna has been a pillar of support. Her constant guidance, encouragement, and motivation have been a tremendous source of strength for me. She's one of those rare individuals who genuinely cares and invests time in helping others. I'm planning a dedicated post just for her to share more about how her support has been a key part of my journey.
+
+Now, let me tell you about an experience that truly opened my eyes to the supportive nature of the tech community. Just before my demo day at the School of Code, I realized that once the bootcamp ended, I would miss the structured learning environment and the daily support from coaches and peers. That’s when I decided to reach out on LinkedIn, seeking a mentor. To my surprise, a senior developer responded, offering to help guide me through the next stages of my journey.
+
+Our first meeting wasn't just a casual chat. He thoroughly assessed my skills, reviewed my CV, and understood my career aspirations. But it didn’t end there. He scheduled subsequent meetings, dedicating his time to ensure I continued on the right path. He even helped me navigate the job market, offering invaluable advice on how to approach job applications and interviews. This level of mentorship was something I hadn’t anticipated and it has been a cornerstone in my transition into tech.
+
+Another heartening experience was when I messaged a tech leader about a project for junior developers. Though I couldn’t directly participate, this individual checked back on me weeks later, inquiring about my job search and providing guidance on skills improvement. This kind of personalized follow-up and interest in my progress was both inspiring and reassuring.
+
+These experiences have taught me that the tech community is about much more than just technology; it’s about mentorship, support, and a shared commitment to helping each other grow. The help I’ve received from my mentor, the encouragement from Susanna, and the foundational learning at the School of Code have all played a pivotal role in my journey.
+
+To everyone in the tech community who takes the time to mentor, guide, and support newcomers, thank you. You’re not just shaping careers; you’re building a community that values growth and learning. Your kindness and willingness to share your knowledge make this journey exciting and fulfilling.
+
+I’m eager to share more about my experiences, the people who’ve been instrumental in my journey, and my learnings in future posts. Stay
+
+tuned for more stories, including a special one about Susanna and her incredible impact. Until then, keep coding, keep supporting each other, and let’s continue on this amazing journey together.

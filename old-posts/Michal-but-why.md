@@ -1,0 +1,22 @@
+Michal, But Why?
+Hi there! It’s Michał again. Tonight, I want to share some thoughts about a big decision I’ve made. It’s a choice that might not seem easy to understand at first.
+
+We all felt the impact of 2023 – it was a challenging year for the tech sector. There were many job layoffs and financial struggles. For someone like me, who didn’t study computer science, breaking into tech seemed really tough, almost impossible. And in the UK, where the cost of living is high, leaving a steady job to learn coding doesn’t look like the wisest decision, does it? After all, I have my wife and two kids, Martynka and Kuba, who depend on me.
+
+So, why am I taking this step? There’s no certainty that I’ll become a web developer. Even after surviving a coding bootcamp, there are no guarantees. When you think about it, it’s quite a gamble. But sometimes, you need to embrace those risks.
+
+I remember this quote – and please keep in mind, I don’t want my blog to be filled with motivational fluff – from Paulo Coelho that really resonates with me: “There is only one thing that makes a dream impossible to achieve: the fear of failure.” This quote holds special meaning for me. It takes me back to when I decided to get my lorry driver’s license. There was no assurance I would pass or immediately get a driving job. Today, new drivers might wait months for their first job due to a lack of experience. It’s interesting to note the contrast – in transport, you might be trusted with a 40-ton vehicle loaded with valuable goods after just one phone call, but in tech, getting a laptop and GitHub details can require passing through several rounds of interviews.
+
+I’ve been applying to my dream bootcamp, the School of Code, since 2019. Back then, I was so close, reaching the final stage, meeting the CEO, Chris. It felt like I was almost there. But it wasn’t to be. However, I never gave up. Each rejection hurt, but it also fueled my desire to try again.
+
+This year, things took a different turn. I applied as usual, not expecting much, but then things changed. I made it through several stages and qualified for a 4-week pre-course. And during the summer, I received that very special email – I was in. After four years of persistence, my efforts finally paid off. I couldn’t believe it.
+
+But this journey isn’t just about me, even though I’ve wanted this for so many years. It’s also about my family. Leaving my job and going unemployed for the next 4-6 months impacts all of us. It’s a journey we’re taking together. My wife and I have always been each other’s support. We believe in personal growth for a brighter future. So we decided to embark on this path together, ensuring our family’s happiness and safety.
+
+I didn’t take long to decide. After everything was settled with my wife, I spoke with my employer. His reaction was incredibly supportive. He understood my pursuit of a dream and offered to assign me weekend night runs whenever possible to help with our family budget. It was hard leaving a boss who was more of a leader than a boss.
+
+Despite the logical arguments against it, the current challenging situation, and the risks involved, I chose to take the leap. I stepped out of my comfort zone, embracing the unknown, and challenging myself every day for the next four months. It’s one of the most significant decisions I’ve made in my adult life, and it turned everything upside down. But I’ll share more about that in the future.
+
+You might wonder, why would I apply again after being refused? Why expect a different result applying just 6 months later for the same place in the same bootcamp? Logically, there’s no straightforward answer, but I’ve learned something important through this process. There is no plan B for dreams. You either achieve them, or you don’t. That belief, along with my strong conviction that the School of Code is a unique place, kept me going.
+
+Thank you for joining me on this journey.
