@@ -3,6 +3,8 @@ import path from "path";
 import matter from "gray-matter";
 import { remark } from "remark";
 import remarkHtml from "remark-html";
+import type { Locale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 
@@ -36,8 +38,24 @@ export function getAllPostSlugs(): string[] {
   return readPostDirs();
 }
 
-export function getPostSummary(slug: string): PostSummary {
-  const filePath = path.join(POSTS_DIR, slug, "index.md");
+/**
+ * Resolves the content file for a post in the requested locale, falling
+ * back to the default locale (English) when a translation doesn't exist
+ * yet. Older posts written before i18n also fall back to a bare
+ * `index.md` for backward compatibility.
+ */
+function resolvePostFilePath(slug: string, locale: Locale): string {
+  const localized = path.join(POSTS_DIR, slug, `index.${locale}.md`);
+  if (fs.existsSync(localized)) return localized;
+
+  const defaultLocalized = path.join(POSTS_DIR, slug, `index.${routing.defaultLocale}.md`);
+  if (fs.existsSync(defaultLocalized)) return defaultLocalized;
+
+  return path.join(POSTS_DIR, slug, "index.md");
+}
+
+export function getPostSummary(slug: string, locale: Locale): PostSummary {
+  const filePath = resolvePostFilePath(slug, locale);
   const raw = fs.readFileSync(filePath, "utf8");
   const { data } = matter(raw);
   return {
@@ -51,14 +69,14 @@ export function getPostSummary(slug: string): PostSummary {
   };
 }
 
-export function getAllPosts(): PostSummary[] {
+export function getAllPosts(locale: Locale): PostSummary[] {
   return readPostDirs()
-    .map(getPostSummary)
+    .map((slug) => getPostSummary(slug, locale))
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export async function getPostBySlug(slug: string): Promise<Post> {
-  const filePath = path.join(POSTS_DIR, slug, "index.md");
+export async function getPostBySlug(slug: string, locale: Locale): Promise<Post> {
+  const filePath = resolvePostFilePath(slug, locale);
   const raw = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(raw);
   const processed = await remark().use(remarkHtml).process(content);
@@ -75,15 +93,11 @@ export async function getPostBySlug(slug: string): Promise<Post> {
   };
 }
 
-export function postUrl(slug: string): string {
-  return `/posts/${slug}`;
-}
-
 export function collectSourceUrls(posts: PostSummary[]): Set<string> {
   return new Set(posts.map((post) => post.source_url).filter((url): url is string => Boolean(url)));
 }
 
-/** Source URLs already covered by an existing post, for RSS dedup. */
+/** Source URLs already covered by an existing post, for RSS dedup. Checked against the default locale, which every drafted post always has. */
 export function getAllSourceUrls(): Set<string> {
-  return collectSourceUrls(getAllPosts());
+  return collectSourceUrls(getAllPosts(routing.defaultLocale));
 }

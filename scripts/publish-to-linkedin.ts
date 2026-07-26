@@ -23,9 +23,12 @@ import path from "path";
 import { execSync } from "child_process";
 import matter from "gray-matter";
 import { createPost, uploadImage, contentTypeFor, type LinkedInConfig } from "../lib/linkedin";
+import { postUrl } from "../lib/post-url";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
+// LinkedIn gets one post per article; English is the language published there.
+const LINKEDIN_LOCALE = "en";
 
 function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
   const diffOutput = execSync(
@@ -35,7 +38,7 @@ function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
 
   const slugs = new Set<string>();
   for (const line of diffOutput.split("\n")) {
-    const match = line.match(/^posts\/([^/]+)\/index\.md$/);
+    const match = line.match(/^posts\/([^/]+)\/index\.(en|pl)\.md$/);
     if (match) slugs.add(match[1]);
   }
   return [...slugs];
@@ -64,12 +67,12 @@ function findImages(slug: string): string[] {
 }
 
 async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConfig) {
-  const filePath = path.join(POSTS_DIR, slug, "index.md");
+  const filePath = path.join(POSTS_DIR, slug, `index.${LINKEDIN_LOCALE}.md`);
   const { data } = matter(fs.readFileSync(filePath, "utf8"));
 
-  const postUrl = new URL(`/posts/${slug}`, siteUrl).toString();
-  console.log(`[publish] waiting for deploy: ${postUrl}`);
-  await waitForUrl(postUrl);
+  const articleUrl = new URL(postUrl(slug, LINKEDIN_LOCALE), siteUrl).toString();
+  console.log(`[publish] waiting for deploy: ${articleUrl}`);
+  await waitForUrl(articleUrl);
 
   const imagePaths = findImages(slug);
   console.log(`[publish] found ${imagePaths.length} image(s) for ${slug}`);
@@ -86,7 +89,7 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
 
   const id = await createPost(linkedin, {
     commentary,
-    linkUrl: postUrl,
+    linkUrl: articleUrl,
     imageUrns,
   });
 

@@ -1,0 +1,119 @@
+{
+  "site": {
+    "title": "System Status — Azure / AI / DevOps",
+    "description": "A DevOps-leaning System Engineer's running log: career-changed into tech, learning Azure infrastructure, building automation, and experimenting with AI — written as monitored status updates."
+  },
+  "nav": {
+    "about": "about",
+    "projects": "projects",
+    "log": "log",
+    "collaborate": "collaborate",
+    "status": "all systems operational"
+  },
+  "footer": {
+    "uptimeSince": "uptime since 2026",
+    "about": "about",
+    "projects": "projects",
+    "log": "log",
+    "collaborate": "collaborate",
+    "operational": "operational"
+  },
+  "hero": {
+    "buildPassing": "build passing",
+    "titleLine1": "Infrastructure, monitored.",
+    "titleLine2": "Knowledge,",
+    "titleEmph": "shipped.",
+    "subtitle": "A running log of a career change into tech, now working toward DevOps and platform engineering — Azure, automation, and the AI tools I use to get there — written the way I actually work: in commits, PRs, and status updates.",
+    "terminalLabel": "status.sh",
+    "whoamiCmd": "whoami",
+    "whoamiOut": "system engineer, 2 years in — leaning into devops",
+    "focusCmd": "cat focus.log",
+    "focusOut": "devops, azure, ai — writing it down as I figure it out",
+    "statusCmd": "status --all",
+    "statusOut": "devops: in progress · azure: online · ai: exploring"
+  },
+  "serviceTiles": {
+    "heading": "Monitoring tiles",
+    "statusLabel": "3/3 in progress",
+    "azureTitle": "Azure",
+    "azureDesc": "The stuff I actually touch day to day: IP whitelisting, network design, Terraform, disaster recovery drills — still learning the edges of all of it.",
+    "azureMetric": "2 years in",
+    "aiTitle": "AI",
+    "aiDesc": "Experimenting with Claude and LLM tooling for automation, scripting, and small internal tools.",
+    "aiMetric": "models: claude",
+    "devopsTitle": "DevOps",
+    "devopsDesc": "CI/CD, GitHub Actions, infrastructure-as-code — trying to make shipping less scary, one pipeline at a time.",
+    "devopsMetric": "learning by doing"
+  },
+  "home": {
+    "aboutLabel": "about",
+    "fullProfile": "full profile →",
+    "selectedWork": "Selected work",
+    "viewAll": "view all →",
+    "latestLog": "Latest log entries",
+    "letsTalk": "Let's talk",
+    "letsTalkBody": "Working through similar Azure/AI/DevOps problems, or made a similar career change? I'd genuinely like to hear from you.",
+    "collaborateCta": "collaborate →"
+  },
+  "about": {
+    "metaTitle": "About — System Status",
+    "onlineStatus": "online",
+    "p1": "I changed careers into tech, and I'm two years into a System Engineer role now, working day to day with Azure infrastructure — network design, IP whitelisting, Terraform-managed environments, disaster recovery. I don't write this as someone who's got it all figured out. Most weeks I'm still looking things up, breaking things in a test environment first, and learning from people on my team who've been doing this a lot longer than I have. What got me here wasn't a head start — it was sticking with it long enough to stop feeling like an impostor most days.",
+    "p2": "Lately I've been pulled toward the DevOps and platform side of the job — automation, CI/CD, pipelines that remove the manual steps I used to do by hand. Outside work I've been curious about applied AI too, not as a buzzword but as something to actually build with. This site is one example: new posts deploy and publish themselves to LinkedIn automatically, no manual copy-paste. See <projects>/projects</projects> for how it actually works.",
+    "p3": "I write about whatever I'm currently stuck on or excited about on the <log>log</log> — mostly DevOps, automation, and applied AI, with Azure as the ground I'm standing on. If you're on a similar path — career-changed into tech, moving toward platform/DevOps work, or just curious about the same things — I'd genuinely like to hear from you, see <collaborate>/collaborate</collaborate>.",
+    "stackHeading": "What I'm working with",
+    "stackSubtitle": "Not mastery — just where most of my time actually goes."
+  },
+  "skills": {
+    "azureCategory": "Azure",
+    "azureSkills": ["IP whitelisting & network rules", "Terraform basics", "Disaster recovery drills", "Day-to-day troubleshooting"],
+    "aiCategory": "AI",
+    "aiSkills": ["Claude / LLM tooling", "Prompt experiments", "Small automation scripts", "Learning by building"],
+    "devopsCategory": "DevOps",
+    "devopsSkills": ["GitHub Actions", "Reading other people's Terraform", "CI/CD basics", "Figuring out monitoring"]
+  },
+  "projectsPage": {
+    "metaTitle": "Projects — System Status",
+    "title": "Projects",
+    "statusLabel": "{count} in progress",
+    "intro": "Not a skills list — things I've actually worked on, most of them still with a lot left to learn."
+  },
+  "projectCard": {
+    "readLog": "read the log →"
+  },
+  "collaborate": {
+    "metaTitle": "Collaborate — System Status",
+    "statusLabel": "open to a conversation",
+    "title": "Let's talk, if any of this sounds familiar.",
+    "intro": "I'm not pitching consulting services here — I'm two years into a System Engineer role, leaning more into DevOps and platform work these days, still learning plenty of it. If you're working through similar Azure/DevOps/AI problems, made a similar career change, or just want to compare notes, I'd genuinely like to hear from you.",
+    "offer1Title": "Stuck on something similar?",
+    "offer1Desc": "Working through an Azure or Terraform problem and want to compare notes? I like talking things through out loud — happy to pair or just trade what we've each found.",
+    "offer2Title": "Experimenting with AI in your workflow?",
+    "offer2Desc": "I'm doing the same here — this site's own posting pipeline is the proof. Curious what others are trying and what's actually worked.",
+    "offer3Title": "Career-changed into tech, or thinking about it?",
+    "offer3Desc": "I did that a couple of years ago. Happy to talk about what that was actually like, no sales pitch attached.",
+    "getInTouch": "Get in touch",
+    "getInTouchBody": "Tell me what you're working on or stuck on. I reply when I can — usually within a few days."
+  },
+  "contactForm": {
+    "nameLabel": "name",
+    "emailLabel": "email",
+    "messageLabel": "message",
+    "sendButton": "send message →",
+    "sending": "sending…",
+    "successMsg": "> message received. I'll get back to you shortly.",
+    "errorMsg": "> something went wrong. Email me directly instead."
+  },
+  "contactChannels": {
+    "directChannels": "direct channels",
+    "pendingSetup": "pending setup",
+    "messageMe": "message me",
+    "followCommits": "follow the commits"
+  },
+  "postsIndex": {
+    "metaTitle": "Log — System Status",
+    "title": "Log",
+    "entriesLabel": "{count} entries",
+    "emptyMsg": "No entries logged yet. First post incoming."
+  }
+}

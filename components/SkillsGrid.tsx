@@ -1,19 +1,14 @@
-const groups = [
-  {
-    category: "Azure",
-    skills: ["Network design & IP whitelisting", "Terraform / IaC", "Disaster recovery & failover", "Cost & governance"],
-  },
-  {
-    category: "AI",
-    skills: ["Claude / LLM tooling", "Prompt & agent design", "Automation pipelines", "Content generation systems"],
-  },
-  {
-    category: "DevOps",
-    skills: ["GitHub Actions / CI-CD", "Infrastructure as code", "Release engineering", "Observability & monitoring"],
-  },
-];
+import { useTranslations } from "next-intl";
 
 export function SkillsGrid() {
+  const t = useTranslations("skills");
+
+  const groups = [
+    { category: t("azureCategory"), skills: t.raw("azureSkills") as string[] },
+    { category: t("aiCategory"), skills: t.raw("aiSkills") as string[] },
+    { category: t("devopsCategory"), skills: t.raw("devopsSkills") as string[] },
+  ];
+
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       {groups.map((group) => (

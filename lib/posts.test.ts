@@ -5,9 +5,9 @@ import {
   getAllPostSlugs,
   getPostBySlug,
   getPostSummary,
-  postUrl,
   type PostSummary,
 } from "./posts";
+import { postUrl } from "./post-url";
 
 describe("posts", () => {
   it("lists all post slugs from the posts/ directory", () => {
@@ -17,28 +17,38 @@ describe("posts", () => {
   });
 
   it("sorts posts by date, newest first", () => {
-    const posts = getAllPosts();
+    const posts = getAllPosts("en");
     const dates = posts.map((p) => p.date);
     const sorted = [...dates].sort().reverse();
     expect(dates).toEqual(sorted);
   });
 
   it("parses front-matter fields on a summary", () => {
-    const summary = getPostSummary("2026-07-26-personal-brand-automation");
-    expect(summary.title).toContain("personal brand pipeline");
+    const summary = getPostSummary("2026-07-26-personal-brand-automation", "en");
+    expect(summary.title).toContain("post itself to LinkedIn");
     expect(summary.tags).toContain("automation");
     expect(summary.cta_link).toBe("/collaborate");
   });
 
-  it("renders markdown content to HTML", async () => {
-    const post = await getPostBySlug("2026-07-26-personal-brand-automation");
-    expect(post.contentHtml).toContain("<h2>");
-    expect(post.contentHtml).toContain("The flow");
+  it("resolves the requested locale's content", () => {
+    const enSummary = getPostSummary("2026-07-26-personal-brand-automation", "en");
+    const plSummary = getPostSummary("2026-07-26-personal-brand-automation", "pl");
+    expect(enSummary.title).not.toBe(plSummary.title);
+    expect(plSummary.title).toContain("LinkedIn");
   });
 
-  it("builds a post URL from its slug", () => {
-    expect(postUrl("2026-07-26-personal-brand-automation")).toBe(
-      "/posts/2026-07-26-personal-brand-automation",
+  it("renders markdown content to HTML", async () => {
+    const post = await getPostBySlug("2026-07-26-personal-brand-automation", "en");
+    expect(post.contentHtml).toContain("<ol>");
+    expect(post.contentHtml).toContain("GitHub Action");
+  });
+
+  it("builds a locale-prefixed post URL from its slug", () => {
+    expect(postUrl("2026-07-26-personal-brand-automation", "en")).toBe(
+      "/en/posts/2026-07-26-personal-brand-automation",
+    );
+    expect(postUrl("2026-07-26-personal-brand-automation", "pl")).toBe(
+      "/pl/posts/2026-07-26-personal-brand-automation",
     );
   });
 });

@@ -14,13 +14,15 @@ const CONTENT_TYPES: Record<string, string> = {
   ".svg": "image/svg+xml",
 };
 
+const CONTENT_FILE_PATTERN = /^index(\.[a-z]{2})?\.md$/;
+
 export function generateStaticParams() {
   return getAllPostSlugs().flatMap((slug) => {
     const dir = path.join(POSTS_DIR, slug);
     if (!fs.existsSync(dir)) return [];
     return fs
       .readdirSync(dir)
-      .filter((name) => name !== "index.md")
+      .filter((name) => !CONTENT_FILE_PATTERN.test(name))
       .map((name) => ({ slug, file: [name] }));
   });
 }
@@ -35,7 +37,7 @@ export async function GET(
   const dir = path.resolve(POSTS_DIR, slug);
   const filePath = path.resolve(dir, relPath);
 
-  if (!filePath.startsWith(dir + path.sep) || relPath === "index.md") {
+  if (!filePath.startsWith(dir + path.sep) || CONTENT_FILE_PATTERN.test(relPath)) {
     return new NextResponse("Not found", { status: 404 });
   }
   if (!fs.existsSync(filePath)) {

@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
+  const t = useTranslations("contactForm");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -31,9 +33,7 @@ export function ContactForm() {
   if (status === "success") {
     return (
       <div className="panel-card p-6">
-        <p className="font-mono text-sm text-teal">
-          {"> message received. I'll get back to you shortly."}
-        </p>
+        <p className="font-mono text-sm text-teal">{t("successMsg")}</p>
       </div>
     );
   }
@@ -42,7 +42,7 @@ export function ContactForm() {
     <form onSubmit={handleSubmit} className="panel-card flex flex-col gap-4 p-6">
       <div className="flex flex-col gap-2">
         <label htmlFor="name" className="label-mono">
-          name
+          {t("nameLabel")}
         </label>
         <input
           id="name"
@@ -53,7 +53,7 @@ export function ContactForm() {
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="email" className="label-mono">
-          email
+          {t("emailLabel")}
         </label>
         <input
           id="email"
@@ -65,7 +65,7 @@ export function ContactForm() {
       </div>
       <div className="flex flex-col gap-2">
         <label htmlFor="message" className="label-mono">
-          message
+          {t("messageLabel")}
         </label>
         <textarea
           id="message"
@@ -80,13 +80,9 @@ export function ContactForm() {
         disabled={status === "submitting"}
         className="mt-2 rounded-md bg-amber px-4 py-2 font-mono text-sm font-medium text-ink transition hover:bg-amber/90 disabled:opacity-60"
       >
-        {status === "submitting" ? "sending…" : "send message →"}
+        {status === "submitting" ? t("sending") : t("sendButton")}
       </button>
-      {status === "error" && (
-        <p className="font-mono text-sm text-red-400">
-          {"> something went wrong. Email me directly instead."}
-        </p>
-      )}
+      {status === "error" && <p className="font-mono text-sm text-red-400">{t("errorMsg")}</p>}
     </form>
   );
 }

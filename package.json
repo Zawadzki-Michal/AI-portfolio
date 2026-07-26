@@ -13,8 +13,10 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "framer-motion": "^12.42.2",
     "gray-matter": "^4.0.3",
     "next": "^15.1.0",
+    "next-intl": "^4.13.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "remark": "^15.0.1",
