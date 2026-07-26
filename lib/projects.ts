@@ -76,6 +76,34 @@ const projectsData: ProjectData[] = [
       },
     },
   },
+  {
+    slug: "automated-publish-pipeline",
+    category: "devops",
+    tags: ["devops", "automation", "ci-cd", "linkedin"],
+    relatedPostSlug: "2026-07-26-personal-brand-automation",
+    content: {
+      en: {
+        title: "This site's own publish pipeline",
+        summary:
+          "Merge a Markdown post to main and it deploys, then publishes itself to LinkedIn with a link back — no manual copy-paste step.",
+        details: [
+          "GitHub Actions handles the full flow: build, deploy, wait for the live URL, then publish to LinkedIn via the official REST API.",
+          "The deploy check used to just poll for a 200 — which would pass even against a stale cached page. It now also confirms the actual post title is present in the response body before publishing goes ahead, with unit tests covering that logic so it can't silently regress.",
+          "Everything is versioned and reviewed through a normal pull request, same as any other change to the site — CI runs typecheck, the full unit test suite, and a production build on every push.",
+        ],
+      },
+      pl: {
+        title: "Własny pipeline publikacji tej strony",
+        summary:
+          "Merge posta w Markdown do main uruchamia deploy, a strona sama publikuje się na LinkedIn z linkiem zwrotnym — bez ręcznego kopiowania i wklejania.",
+        details: [
+          "GitHub Actions ogarnia cały flow: build, deploy, czekanie na żywy URL, a potem publikację na LinkedIn przez oficjalne REST API.",
+          "Sprawdzanie deployu wcześniej tylko odpytywało o status 200 — co przechodziłoby nawet dla nieodświeżonego cache'a. Teraz dodatkowo potwierdza, że tytuł posta faktycznie pojawia się w treści odpowiedzi, zanim publikacja ruszy dalej, z testami jednostkowymi pilnującymi tej logiki.",
+          "Wszystko jest wersjonowane i przechodzi normalny pull request, tak jak każda inna zmiana na tej stronie — CI odpala typecheck, pełny zestaw testów jednostkowych i produkcyjny build przy każdym pushu.",
+        ],
+      },
+    },
+  },
 ];
 
 export function getProjects(locale: Locale): Project[] {

@@ -2,7 +2,7 @@
 title: "I wired this blog to post itself to LinkedIn, mostly to see if I could"
 date: 2026-07-26
 tags: [devops, ai, automation]
-cta_text: "Chcesz wdrożyć coś podobnego u siebie? Napisz do mnie"
+cta_text: "Building something similar? I'd like to hear about it"
 cta_link: "/collaborate"
 ---
 
@@ -32,3 +32,13 @@ What I like about the result is that a post is now just a file in a repo,
 reviewed the same way I'd review anything else. Whether that's actually a
 better system than just posting manually, I'm honestly not sure yet — but
 it's been a fun thing to build and debug.
+
+One gap I only noticed later: step 3 checked that the new page returned a
+200, but not that it actually served the new content. A stale cache
+returning 200 with yesterday's build would have sailed straight through
+and gotten announced on LinkedIn anyway. I added a second check — after
+the 200, it also confirms the post's own title shows up in the page body
+before publishing goes ahead — and wrote unit tests against it so the
+next change to this logic can't silently regress it. Small fix, but it
+closes the one failure mode that actually mattered: publishing a link to
+something that isn't really live yet.
