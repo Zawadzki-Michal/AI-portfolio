@@ -24,13 +24,16 @@
     "titleLine2": "Knowledge,",
     "titleEmph": "shipped.",
     "subtitle": "A running log of a career change into tech, now working toward DevOps and platform engineering — Azure, automation, and the AI tools I use to get there — written the way I actually work: in commits, PRs, and status updates.",
-    "terminalLabel": "status.sh",
-    "whoamiCmd": "whoami",
-    "whoamiOut": "system engineer, 2 years in — leaning into devops",
-    "focusCmd": "cat focus.log",
-    "focusOut": "devops, azure, ai — writing it down as I figure it out",
-    "statusCmd": "status --all",
-    "statusOut": "devops: in progress · azure: online · ai: exploring"
+    "pillAzure": "Azure · Terraform",
+    "pillCicd": "CI/CD automation",
+    "pillPublic": "Written in public",
+    "browserUrl": "aiportfolio.dev — automations",
+    "taskTerraform": "Terraform DR rehearsal · ap-southeast-2",
+    "taskTerraformMeta": "4m 12s",
+    "taskLinkedin": "LinkedIn draft → publish",
+    "taskLinkedinMeta": "queued",
+    "taskSms": "SMS gateway healthcheck",
+    "taskSmsMeta": "running…"
   },
   "serviceTiles": {
     "heading": "Monitoring tiles",

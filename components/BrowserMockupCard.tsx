@@ -2,15 +2,9 @@
 
 import { motion } from "framer-motion";
 
-type TaskRow = { label: string; meta: string; state: "done" | "running" };
+export type TaskRow = { label: string; meta: string; state: "done" | "running" };
 
-const rows: TaskRow[] = [
-  { label: "Terraform DR rehearsal · ap-southeast-2", meta: "4m 12s", state: "done" },
-  { label: "LinkedIn draft → publish", meta: "queued", state: "done" },
-  { label: "SMS gateway healthcheck", meta: "running…", state: "running" },
-];
-
-export function BrowserMockupCard({ url = "aiportfolio.dev — automations" }: { url?: string }) {
+export function BrowserMockupCard({ url, rows }: { url: string; rows: TaskRow[] }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16, scale: 0.98 }}
