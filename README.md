@@ -6,8 +6,8 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 ## Stack
 
 - **Frontend:** Next.js 15 (App Router) + TypeScript + Tailwind CSS
-- **i18n:** [next-intl](https://next-intl.dev/), English + Polish (`/en/...`, `/pl/...`), language switcher in the nav
-- **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` + `index.pl.md` (front-matter, no database)
+- **i18n:** [next-intl](https://next-intl.dev/), English + Polish site UI (`/en/...`, `/pl/...`), language switcher in the nav — blog post content is English-only, see [Bilingual posts](#bilingual-posts)
+- **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` (front-matter, no database)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
@@ -37,8 +37,10 @@ vars are only read by the automation scripts, not by the site itself.
 
 ## Adding a post
 
-Create `posts/YYYY-MM-DD-your-slug/index.en.md` (and, ideally, `index.pl.md`
-alongside it — see [Bilingual posts](#bilingual-posts) below):
+Create `posts/YYYY-MM-DD-your-slug/index.en.md`. Blog content is
+English-only (see [Bilingual posts](#bilingual-posts) below) — the site UI
+itself still supports Polish, so a Polish reader gets Polish nav/chrome
+around an English post:
 
 ```yaml
 ---
@@ -73,12 +75,19 @@ folder name itself has no locale in it, only the URL prefix does.
 
 ### Bilingual posts
 
-`lib/posts.ts` resolves `index.<locale>.md` for the requested locale and
-falls back to `index.en.md` if a translation doesn't exist yet (so it's
-fine to publish English-only and add the Polish version later — the post
-just won't have Polish-specific content until you do). A bare `index.md`
-from before i18n was added is also still supported as a last-resort
-fallback.
+The blog is English-only by decision — machine-translating posts into
+Polish added no real value, so `generate-draft.yml` only ever writes
+`index.en.md`. `lib/posts.ts` resolves `index.<locale>.md` for the
+requested locale and falls back to `index.en.md` if a translation doesn't
+exist, so Polish-locale readers just see the English post content under
+the `/pl/...` URL — the rest of the site (nav, chrome, other pages) is
+still fully bilingual. A handful of older posts have a hand-written
+`index.pl.md` from before this decision; those are left as-is, but new
+posts don't get one. A bare `index.md` from before i18n was added is also
+still supported as a last-resort fallback.
+
+If you want a specific post translated anyway, add `index.pl.md` to its
+folder by hand — the resolver picks it up automatically.
 
 ## Required configuration
 
@@ -132,13 +141,15 @@ etc.) — without it, submissions are just logged server-side.
    redraft the same article just because it's still the newest one in a
    feed.
 3. Sends the first un-drafted item to OpenRouter (`OPENROUTER_MODEL`,
-   defaults to a Claude model) **twice** — once for English, once for
-   Polish — with the system prompt loaded straight from
+   defaults to a Claude model) with the system prompt loaded straight from
    `automation/draft-instructions.md` — edit that file to change voice,
    formatting rules, or the tag taxonomy without touching any code.
-4. Writes both results to `posts/YYYY-MM-DD-slug/index.en.md` and
-   `index.pl.md` (the slug is derived from the English title; front-matter
-   includes `source_url` in both) and opens a single PR with both files.
+4. Sends the draft back to the model for a self-critique/revise pass
+   against the instructions' "Cut these on sight" checklist before
+   finalizing it.
+5. Writes the result to `posts/YYYY-MM-DD-slug/index.en.md` (the slug is
+   derived from the title) and opens a PR with that one file. English
+   only — see [Bilingual posts](#bilingual-posts).
 
 Nothing is ever published without merging that PR first — images and edits
 are added by hand before merge.
@@ -160,7 +171,7 @@ lib/projects.ts             Project data — content is per-locale, see getProje
 lib/site-config.ts          Name, role, headline, social links — edit this for your own bio
 lib/linkedin.ts             LinkedIn REST API client (images + posts)
 lib/slugify.ts, lib/markdown.ts   Small pure helpers shared by the scripts and covered by tests
-posts/                       Content — one folder per post, index.en.md + index.pl.md inside
+posts/                       Content — one folder per post, index.en.md (English-only; a few older posts also have index.pl.md)
 automation/draft-instructions.md  System prompt for the draft-generation model
 scripts/                     CLI scripts run by GitHub Actions
 .github/workflows/          publish-to-linkedin.yml, generate-draft.yml, ci.yml
