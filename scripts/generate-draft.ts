@@ -2,10 +2,13 @@
  * Scheduled job: pulls recent items from configured RSS feeds, skips any
  * item already covered by an existing post (matched by front-matter
  * `source_url`), asks a model via OpenRouter to draft a post in the site's
- * voice (instructions in automation/draft-instructions.md) in both English
- * and Polish, and writes them to posts/YYYY-MM-DD-slug/index.en.md and
- * index.pl.md. The GitHub Action step that runs this script then opens a
- * PR for human review — nothing here publishes automatically.
+ * voice (instructions in automation/draft-instructions.md), then sends
+ * that draft back for a self-critique/revise pass against the
+ * instructions' "Cut these on sight" checklist before writing the final
+ * version. Runs both passes for English and Polish and writes them to
+ * posts/YYYY-MM-DD-slug/index.en.md and index.pl.md. The GitHub Action
+ * step that runs this script then opens a PR for human review — nothing
+ * here publishes automatically.
  *
  * Required env vars:
  *   OPENROUTER_API_KEY
@@ -79,25 +82,9 @@ async function collectFeedItems(feedUrls: string[]): Promise<FeedItem[]> {
   return items.sort((a, b) => (a.isoDate < b.isoDate ? 1 : -1));
 }
 
-async function draftPost(item: FeedItem, locale: Locale): Promise<string> {
+async function callModel(systemPrompt: string, userPrompt: string): Promise<string> {
   const apiKey = requireEnv("OPENROUTER_API_KEY");
   const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
-  const today = new Date().toISOString().slice(0, 10);
-  const systemPrompt = fs.readFileSync(INSTRUCTIONS_PATH, "utf8");
-
-  const userPrompt = `Source item:
-Title: ${item.title}
-Source: ${item.source}
-Link: ${item.link}
-Summary: ${item.summary}
-
-Today's date (use as front-matter "date"): ${today}
-Source link (use as front-matter "source_url"): ${item.link}
-
-Write the entire article body in ${LANGUAGE_NAMES[locale]}. The "title" in
-front-matter should also be in ${LANGUAGE_NAMES[locale]}. Keep front-matter
-keys themselves in English (title, date, tags, cta_text, cta_link,
-source_url) — only their values change language.`;
 
   const res = await fetch(OPENROUTER_URL, {
     method: "POST",
@@ -131,6 +118,50 @@ source_url) — only their values change language.`;
   return stripCodeFence(text);
 }
 
+async function draftPost(item: FeedItem, locale: Locale): Promise<string> {
+  const today = new Date().toISOString().slice(0, 10);
+  const systemPrompt = fs.readFileSync(INSTRUCTIONS_PATH, "utf8");
+
+  const userPrompt = `Source item:
+Title: ${item.title}
+Source: ${item.source}
+Link: ${item.link}
+Summary: ${item.summary}
+
+Today's date (use as front-matter "date"): ${today}
+Source link (use as front-matter "source_url"): ${item.link}
+
+Write the entire article body in ${LANGUAGE_NAMES[locale]}. The "title" in
+front-matter should also be in ${LANGUAGE_NAMES[locale]}. Keep front-matter
+keys themselves in English (title, date, tags, cta_text, cta_link,
+source_url) — only their values change language.`;
+
+  return callModel(systemPrompt, userPrompt);
+}
+
+async function revisePost(draftMarkdown: string, locale: Locale): Promise<string> {
+  const systemPrompt = fs.readFileSync(INSTRUCTIONS_PATH, "utf8");
+
+  const userPrompt = `Here is a draft post you just wrote, in ${LANGUAGE_NAMES[locale]}:
+
+---
+${draftMarkdown}
+---
+
+Reread it against the "Cut these on sight" section above, sentence by
+sentence. Find every match — contrastive "not X, but Y" pairs in any
+phrasing (including split across two sentences, or short punchy contrast
+pairs used as closers), hedge-as-question endings, announcing-the-
+conclusion closers, more than one hedge stacked in a paragraph, uniform
+paragraph rhythm, or no concrete time/moment anchor anywhere in the post —
+and rewrite just those sentences. Keep everything else, including the
+front-matter, exactly as it is unless it also violates the list. Output
+the full revised file in the same format (front-matter then body), and
+nothing else — no commentary about what you changed.`;
+
+  return callModel(systemPrompt, userPrompt);
+}
+
 function requireEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Missing required env var: ${name}`);
@@ -153,7 +184,9 @@ async function main() {
 
   console.log(`Drafting post from: "${candidate.title}" (${candidate.source})`);
 
-  const englishMarkdown = await draftPost(candidate, "en");
+  const englishDraft = await draftPost(candidate, "en");
+  console.log("Revising English draft against the anti-pattern checklist...");
+  const englishMarkdown = await revisePost(englishDraft, "en");
   const { data: englishFrontMatter } = matter(englishMarkdown);
 
   const today = new Date().toISOString().slice(0, 10);
@@ -163,7 +196,9 @@ async function main() {
   fs.writeFileSync(path.join(dir, "index.en.md"), englishMarkdown + "\n");
   console.log(`Draft written to posts/${slug}/index.en.md`);
 
-  const polishMarkdown = await draftPost(candidate, "pl");
+  const polishDraft = await draftPost(candidate, "pl");
+  console.log("Revising Polish draft against the anti-pattern checklist...");
+  const polishMarkdown = await revisePost(polishDraft, "pl");
   fs.writeFileSync(path.join(dir, "index.pl.md"), polishMarkdown + "\n");
   console.log(`Draft written to posts/${slug}/index.pl.md`);
 }

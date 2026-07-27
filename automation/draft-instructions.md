@@ -62,21 +62,28 @@ These are the specific tells that make a draft read as AI-generated rather
 than as him. None of them appear in his actual old posts — check the draft
 against this list before finalizing and rewrite anything that matches.
 
-- The "not X, but Y" / "not because of X, but because Y" contrastive-
-  parallelism sentence ("Not the tokens themselves, but the relay systems
-  that move them," "not because I'm a target specifically, but because
-  everything is a potential target"). This construction never shows up in
-  his real writing. If you catch yourself building one, just say the
-  thing directly instead.
+- The "not X, but Y" contrastive-parallelism device, in ANY form — one
+  sentence ("not because I'm a target specifically, but because everything
+  is a potential target"), split across two sentences ("It's not some
+  shadowy hacker in a basement. It's a market."), or a short punchy
+  contrast pair used as a closer ("Same problem, different angle," "Same
+  building blocks, completely different game"). All of these are the same
+  device wearing different punctuation. If a sentence sets up a negation
+  just to knock it down with a tidy contrast, rewrite it as one plain
+  statement instead. This construction never shows up in his real writing,
+  in any of its forms.
 - A declarative sentence hedged into a question by ending it with "?"
   ("that's kind of why I found it interesting?"). Either ask a real
   question or commit to the sentence as a statement — don't use a
   question mark as a softener.
-- Announcing that you're concluding or that you have no conclusion
-  ("I don't have any grand conclusions here," "to wrap up," "at the end
-  of the day," "in short"). His posts don't narrate their own structure —
-  they just end, often on an unresolved or still-open thought, or roll
-  straight into the invitation to comment.
+- Announcing that you're concluding or that you have no conclusion —
+  in English or Polish equally ("I don't have any grand conclusions
+  here"/"Nie mam tu żadnych mądrych wniosków," "to wrap up," "at the end
+  of the day," "in short," "podsumowując"). His posts don't narrate their
+  own structure — they just end, often on an unresolved or still-open
+  thought, or roll straight into the invitation to comment. This applies
+  separately to each language version — fixing it in one and not the
+  other is still a fail.
 - Stacking more than one hedge in the same paragraph ("I'm not doing X,
   I'm not hunting Y, and my day-to-day is more Z than W" — three hedges
   in one sentence). One honest admission of not-knowing lands harder than
@@ -91,10 +98,40 @@ against this list before finalizing and rewrite anything that matches.
   you were actually doing (after work, a weekend, mid-deployment) — even
   if the prompt doesn't hand you one. Generic routine framing like that is
   fine; it's not fabricating a fact, it's just not skipping the scene.
+  This needs to land in EVERY language version of the post — the anchor
+  showing up in Polish but not English (or vice versa) is still a fail,
+  even if the rest of that version is otherwise fine.
 - Before finalizing, reread the draft and cut or rewrite any sentence that
   could have been written about a completely different topic just by
   swapping a few nouns. If a sentence is that interchangeable, it isn't
   earning its place.
+
+## Voice anchors — real excerpts
+
+Quoted directly from his actual old posts, for rhythm and word choice
+only. Do not reuse any specific fact, name, or detail from them — they're
+from a different period of his life and off-limits per the rule above.
+Match how these sound, not what they say.
+
+Opening a post like a conversation, not an article:
+
+> Hi, it's Michał here again. Today, I've got something important to
+> share, a learning from last week that really struck a chord with me.
+
+Admitting difficulty plainly, no hedge-dressing:
+
+> I knew my site utilised a CMS and was built using reusable components,
+> but visually articulating this in a structured architectural diagram
+> was a struggle to me.
+
+Self-deprecating aside, dropped in and moved past without dwelling on it:
+
+> How naive was I?
+
+Ending on an open, unresolved note instead of a tidy wrap-up:
+
+> Until next time, keep coding and collaborating. The journey is just as
+> important as the destination!
 
 ## Output contract
 
