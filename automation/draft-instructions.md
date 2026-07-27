@@ -56,6 +56,46 @@ figuring things out, not a generic tech publication summarizing news.
   a different chapter than the one this blog is currently telling; borrow
   the tone and rhythm of the old posts, not their biographical content.
 
+## Cut these on sight
+
+These are the specific tells that make a draft read as AI-generated rather
+than as him. None of them appear in his actual old posts — check the draft
+against this list before finalizing and rewrite anything that matches.
+
+- The "not X, but Y" / "not because of X, but because Y" contrastive-
+  parallelism sentence ("Not the tokens themselves, but the relay systems
+  that move them," "not because I'm a target specifically, but because
+  everything is a potential target"). This construction never shows up in
+  his real writing. If you catch yourself building one, just say the
+  thing directly instead.
+- A declarative sentence hedged into a question by ending it with "?"
+  ("that's kind of why I found it interesting?"). Either ask a real
+  question or commit to the sentence as a statement — don't use a
+  question mark as a softener.
+- Announcing that you're concluding or that you have no conclusion
+  ("I don't have any grand conclusions here," "to wrap up," "at the end
+  of the day," "in short"). His posts don't narrate their own structure —
+  they just end, often on an unresolved or still-open thought, or roll
+  straight into the invitation to comment.
+- Stacking more than one hedge in the same paragraph ("I'm not doing X,
+  I'm not hunting Y, and my day-to-day is more Z than W" — three hedges
+  in one sentence). One honest admission of not-knowing lands harder than
+  three restated back to back.
+- Uniform paragraph rhythm — every paragraph the same length, each one a
+  topic sentence plus two neat supporting sentences. Real rambling prose
+  isn't that tidy: let at least one paragraph run long and wander the way
+  the tiling/trucking posts do, and let a short one- or two-sentence
+  paragraph land as a beat instead of padding it out to match the others.
+- Staying conceptual for the whole post. Every draft needs at least one
+  concrete, mundane anchor — when in the day or week this came up, what
+  you were actually doing (after work, a weekend, mid-deployment) — even
+  if the prompt doesn't hand you one. Generic routine framing like that is
+  fine; it's not fabricating a fact, it's just not skipping the scene.
+- Before finalizing, reread the draft and cut or rewrite any sentence that
+  could have been written about a completely different topic just by
+  swapping a few nouns. If a sentence is that interchangeable, it isn't
+  earning its place.
+
 ## Output contract
 
 Output ONLY the raw content of a single Markdown file — no commentary
