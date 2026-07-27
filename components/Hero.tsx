@@ -3,18 +3,22 @@
 import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { StatusDot } from "./StatusDot";
-import { AnimatedTerminal } from "./AnimatedTerminal";
+import { FeaturePillRow } from "./FeaturePillRow";
+import { BrowserMockupCard } from "./BrowserMockupCard";
 
 export function Hero() {
   const t = useTranslations("hero");
 
-  const terminalLines = [
-    { prompt: "$", text: t("whoamiCmd") },
-    { prompt: ">", text: t("whoamiOut") },
-    { prompt: "$", text: t("focusCmd") },
-    { prompt: ">", text: t("focusOut") },
-    { prompt: "$", text: t("statusCmd") },
-    { prompt: ">", text: t("statusOut") },
+  const pills = [
+    { label: t("pillAzure"), accent: "teal" as const },
+    { label: t("pillCicd"), accent: "amber" as const },
+    { label: t("pillPublic"), accent: "teal" as const },
+  ];
+
+  const taskRows = [
+    { label: t("taskTerraform"), meta: t("taskTerraformMeta"), state: "done" as const },
+    { label: t("taskLinkedin"), meta: t("taskLinkedinMeta"), state: "done" as const },
+    { label: t("taskSms"), meta: t("taskSmsMeta"), state: "running" as const },
   ];
 
   return (
@@ -26,6 +30,9 @@ export function Hero() {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <StatusDot label={t("buildPassing")} />
+          <div className="mt-4">
+            <FeaturePillRow pills={pills} />
+          </div>
           <h1 className="mt-6 font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
             {t("titleLine1")}
             <br />
@@ -33,7 +40,7 @@ export function Hero() {
           </h1>
           <p className="mt-6 max-w-md text-paper/70">{t("subtitle")}</p>
         </motion.div>
-        <AnimatedTerminal lines={terminalLines} label={t("terminalLabel")} />
+        <BrowserMockupCard url={t("browserUrl")} rows={taskRows} />
       </div>
     </section>
   );
