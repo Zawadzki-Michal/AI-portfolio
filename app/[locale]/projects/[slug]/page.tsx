@@ -4,9 +4,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { getProject, getProjectSlugs } from "@/lib/projects";
+import { getProjectGallery } from "@/lib/project-gallery";
 import { postUrl } from "@/lib/post-url";
 import { StatusDot } from "@/components/StatusDot";
 import { CtaBlock } from "@/components/CtaBlock";
+import { ProjectGallery } from "@/components/ProjectGallery";
 
 export function generateStaticParams() {
   const slugs = getProjectSlugs();
@@ -34,6 +36,7 @@ export default async function ProjectPage({
 
   const project = getProject(slug, locale as Locale);
   if (!project) notFound();
+  const gallery = getProjectGallery(slug);
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
@@ -64,6 +67,8 @@ export default async function ProjectPage({
           </li>
         ))}
       </ul>
+
+      <ProjectGallery slug={project.slug} desktop={gallery.desktop} mobile={gallery.mobile} />
 
       {project.relatedPostSlug && (
         <NextLink

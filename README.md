@@ -80,6 +80,16 @@ just won't have Polish-specific content until you do). A bare `index.md`
 from before i18n was added is also still supported as a last-resort
 fallback.
 
+## Project screenshots
+
+Drop images in `projects/<slug>/desktop/` and/or `projects/<slug>/mobile/`
+(the `slug` is the project's `slug` field in `lib/projects.ts`, e.g.
+`projects/lifeos/desktop/chat.png`). Any `.png`/`.jpg`/`.jpeg`/`.webp`/`.gif`
+file in either folder shows up automatically on that project's page —
+desktop shots in a browser-chrome frame, mobile shots in a phone frame,
+both click-to-expand into a lightbox. No code change or manifest needed;
+a project with no screenshots yet just doesn't render the gallery section.
+
 ## Required configuration
 
 ### GitHub Actions secrets
@@ -148,6 +158,7 @@ are added by hand before merge.
 ```
 app/[locale]/               Localized routes (home, /about, /projects, /posts, /posts/[slug], /collaborate)
 app/posts/[slug]/[...file]  Image-serving route — outside [locale], images aren't localized
+app/projects/[slug]/[...file]  Screenshot-serving route — outside [locale], mirrors the posts route
 app/api/contact/            Contact form API route — outside [locale]
 i18n/routing.ts             Locale list + default locale + prefix strategy
 i18n/navigation.ts          Locale-aware Link/usePathname/useRouter (re-exported from next-intl)
@@ -157,10 +168,12 @@ middleware.ts               next-intl locale detection/routing
 components/                 Design system components
 lib/posts.ts                Front-matter parsing / locale resolution (with en fallback) / source_url dedup
 lib/projects.ts             Project data — content is per-locale, see getProjects(locale)
+lib/project-gallery.ts      Reads projects/<slug>/desktop|mobile screenshot folders
 lib/site-config.ts          Name, role, headline, social links — edit this for your own bio
 lib/linkedin.ts             LinkedIn REST API client (images + posts)
 lib/slugify.ts, lib/markdown.ts   Small pure helpers shared by the scripts and covered by tests
 posts/                       Content — one folder per post, index.en.md + index.pl.md inside
+projects/                    Screenshots — projects/<slug>/desktop/, projects/<slug>/mobile/
 automation/draft-instructions.md  System prompt for the draft-generation model
 scripts/                     CLI scripts run by GitHub Actions
 .github/workflows/          publish-to-linkedin.yml, generate-draft.yml, ci.yml

@@ -90,6 +90,14 @@
     "readLog": "read the log →",
     "cta": "Working on something similar? I'd like to hear about it"
   },
+  "projectGallery": {
+    "heading": "Screenshots",
+    "desktop": "Desktop",
+    "mobile": "Mobile",
+    "close": "Close",
+    "prev": "Previous screenshot",
+    "next": "Next screenshot"
+  },
   "collaborate": {
     "metaTitle": "Collaborate — System Status",
     "statusLabel": "open to a conversation",

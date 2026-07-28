@@ -90,6 +90,14 @@
     "readLog": "zobacz wpis →",
     "cta": "Pracujesz nad czymś podobnym? Chętnie posłucham"
   },
+  "projectGallery": {
+    "heading": "Zrzuty ekranu",
+    "desktop": "Desktop",
+    "mobile": "Telefon",
+    "close": "Zamknij",
+    "prev": "Poprzedni zrzut ekranu",
+    "next": "Następny zrzut ekranu"
+  },
   "collaborate": {
     "metaTitle": "Kontakt — System Status",
     "statusLabel": "otwarty na rozmowę",
