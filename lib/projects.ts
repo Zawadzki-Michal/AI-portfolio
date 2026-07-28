@@ -37,6 +37,8 @@ const projectsData: ProjectData[] = [
           "Self-hosted on a k3s cluster on Oracle Cloud, Terraform-provisioned with CI/CD deploying on every push to main — started as a WSL2 box at home, now kept running as a cold-standby rollback instead of being torn down.",
           "Routes per-request, not per-conversation: a local Ollama model handles transactional tool-calling (expenses, calendar, health logs), and a purpose-built redaction gateway strips household names before anything genuinely open-ended gets handed off to a cloud model.",
           "90 pytest tests and GitHub Actions CI cover the tool-dispatch table, the finance/calendar/health clients (mocked against real API responses), and the full session API — caught real bugs before they shipped, including a units mismatch that inflated a day's tracked calories by 7x.",
+          "Health data syncs itself: an iPhone automation (Health Auto Export) pushes a JSON payload to a bearer-token-gated endpoint whenever new data lands, parsed into daily metrics and workouts so the model can pull it into a morning/evening brief or answer \"how was my week\" on demand — no manual export step.",
+          "Security is scoped deliberately, not bolted on: Google OAuth behind an email allow-list with a signed session cookie, a constant-time bearer-token check gating the one webhook exposed on the public tunnel (the health sync endpoint above), a redaction gateway with its own test suite, and the DB admin UI (Adminer) bound to localhost only, never routed through the tunnel.",
         ],
       },
       pl: {
@@ -48,6 +50,8 @@ const projectsData: ProjectData[] = [
           "Samodzielnie hostowany na klastrze k3s w Oracle Cloud, przygotowanym w Terraformie, z CI/CD wdrażającym przy każdym pushu do main — zaczęło się jako skrzynka WSL2 w domu, teraz działa jako cold-standby na wypadek rollbacku, zamiast być wyłączona.",
           "Wybiera model per żądanie, nie per rozmowa: lokalny model Ollama obsługuje transakcyjne wywołania narzędzi (wydatki, kalendarz, wpisy zdrowotne), a zbudowana od zera bramka anonimizacji usuwa imiona domowników, zanim cokolwiek naprawdę otwartego trafi do modelu w chmurze.",
           "90 testów pytest i CI w GitHub Actions pokrywają tabelę wywołań narzędzi, klientów finansów/kalendarza/zdrowia (mockowanych na realnych odpowiedziach API) i cały interfejs sesji — złapały prawdziwe błędy zanim trafiły na produkcję, w tym pomyłkę w jednostkach, która zawyżyła dzienny licznik kalorii siedmiokrotnie.",
+          "Dane zdrowotne synchronizują się same: automatyzacja na iPhonie (Health Auto Export) wysyła payload JSON do endpointu zabezpieczonego tokenem bearer za każdym razem, gdy pojawią się nowe dane, sparsowane do dziennych metryk i treningów, żeby model mógł je wykorzystać w porannym/wieczornym podsumowaniu albo odpowiedzieć na pytanie \"jak minął tydzień\" — bez ręcznego eksportu.",
+          "Bezpieczeństwo jest świadomie zawężone, nie doklejone na końcu: Google OAuth za allow-listą e-maili z podpisanym ciasteczkiem sesji, porównanie tokena bearer w czasie stałym zabezpieczające jedyny webhook wystawiony publicznie przez tunel (endpoint synchronizacji zdrowia powyżej), bramka anonimizacji z własnym zestawem testów oraz UI administracyjne bazy (Adminer) związane wyłącznie z localhost, nigdy nie routowane przez tunel.",
         ],
       },
     },
