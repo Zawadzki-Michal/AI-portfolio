@@ -26,7 +26,6 @@ const projectsData: ProjectData[] = [
     slug: "lifeos",
     category: "ai",
     tags: ["ai", "llm", "self-hosted", "automation"],
-    relatedPostSlug: "2026-07-26-lifeos-self-hosted-assistant",
     content: {
       en: {
         title: "LifeOS — a self-hosted AI assistant",
@@ -60,7 +59,6 @@ const projectsData: ProjectData[] = [
     slug: "small-business-booking-assistant",
     category: "ai",
     tags: ["ai", "automation", "self-hosted"],
-    relatedPostSlug: "2026-07-26-small-business-sms-gateway",
     content: {
       en: {
         title: "AI-assisted booking system for a small service business",
@@ -90,7 +88,6 @@ const projectsData: ProjectData[] = [
     slug: "automated-publish-pipeline",
     category: "devops",
     tags: ["devops", "automation", "ci-cd", "linkedin"],
-    relatedPostSlug: "2026-07-26-personal-brand-automation",
     content: {
       en: {
         title: "This site's own publish pipeline",
