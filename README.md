@@ -10,7 +10,7 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` (front-matter, no database)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
-  - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
+  - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, drafts a short teaser via OpenRouter (`automation/linkedin-teaser-instructions.md`), then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
   - `generate-draft.yml` — scheduled job that pulls RSS feeds, asks a model to draft a post, and opens a PR for review
   - `ci.yml` — typecheck, unit tests, and build on every push/PR to `main`
 - **AI drafting:** [OpenRouter](https://openrouter.ai/) (routed to a Claude model by default — see `automation/draft-instructions.md`)
@@ -107,15 +107,15 @@ a project with no screenshots yet just doesn't render the gallery section.
 | --- | --- | --- |
 | `LINKEDIN_ACCESS_TOKEN` | publish-to-linkedin | `w_member_social` scope, 60-day token (see below) |
 | `LINKEDIN_AUTHOR_URN` | publish-to-linkedin | e.g. `urn:li:person:xxxxxxxx` |
-| `OPENROUTER_API_KEY` | generate-draft | From [openrouter.ai/keys](https://openrouter.ai/keys) |
+| `OPENROUTER_API_KEY` | generate-draft, publish-to-linkedin | From [openrouter.ai/keys](https://openrouter.ai/keys) — publish-to-linkedin uses it to draft the LinkedIn teaser text (see below) |
 
 ### GitHub Actions repository variables
 
 | Variable | Used by | Notes |
 | --- | --- | --- |
-| `SITE_URL` | publish-to-linkedin, generate-draft | e.g. `https://your-portfolio.vercel.app` |
+| `SITE_URL` | publish-to-linkedin, generate-draft | The site's real public domain, e.g. `https://michalzawadzki.dev` — **not** the Vercel-generated `*.vercel.app` URL, or LinkedIn posts will link to that instead |
 | `RSS_FEEDS` | generate-draft | Comma-separated feed URLs (optional, has defaults) |
-| `OPENROUTER_MODEL` | generate-draft | Defaults to `anthropic/claude-opus-4.5` — any [OpenRouter model slug](https://openrouter.ai/models) works |
+| `OPENROUTER_MODEL` | generate-draft, publish-to-linkedin | Defaults to `anthropic/claude-opus-4.5` — any [OpenRouter model slug](https://openrouter.ai/models) works |
 
 ### Vercel
 

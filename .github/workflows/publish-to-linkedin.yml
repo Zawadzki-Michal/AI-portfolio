@@ -42,6 +42,8 @@ jobs:
           SITE_URL: ${{ vars.SITE_URL }}
           LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
           LINKEDIN_AUTHOR_URN: ${{ secrets.LINKEDIN_AUTHOR_URN }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
           GITHUB_BASE_SHA: ${{ github.event.before }}
           GITHUB_HEAD_SHA: ${{ github.event.after }}
           POST_SLUG: ${{ github.event.inputs.post_slug }}

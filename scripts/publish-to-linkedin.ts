@@ -8,6 +8,7 @@
  *   SITE_URL                 e.g. https://twojastrona.pl
  *   LINKEDIN_ACCESS_TOKEN
  *   LINKEDIN_AUTHOR_URN       e.g. urn:li:person:xxxxxxxx
+ *   OPENROUTER_API_KEY        used to draft the post's LinkedIn teaser text
  *
  * For push-triggered runs (detects newly added post folders automatically):
  *   GITHUB_BASE_SHA           SHA before the push (previous main)
@@ -25,11 +26,18 @@ import matter from "gray-matter";
 import { createPost, uploadImage, contentTypeFor, type LinkedInConfig } from "../lib/linkedin";
 import { postUrl } from "../lib/post-url";
 import { waitForUrl } from "../lib/wait-for-url";
+import { callModel } from "../lib/openrouter";
+import { requireEnv } from "../lib/env";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
 // LinkedIn gets one post per article; English is the language published there.
 const LINKEDIN_LOCALE = "en";
+const TEASER_INSTRUCTIONS_PATH = path.join(
+  process.cwd(),
+  "automation",
+  "linkedin-teaser-instructions.md",
+);
 
 function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
   const diffOutput = execSync(
@@ -53,9 +61,16 @@ function findImages(slug: string): string[] {
     .map((name) => path.join(dir, name));
 }
 
+/** Drafts the short hook text LinkedIn shows above the link preview, from the post's own title and body. */
+async function generateTeaser(title: string, body: string): Promise<string> {
+  const systemPrompt = fs.readFileSync(TEASER_INSTRUCTIONS_PATH, "utf8");
+  const userPrompt = `Post title: ${title}\n\nFull post body:\n\n${body}`;
+  return callModel(systemPrompt, userPrompt);
+}
+
 async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConfig) {
   const filePath = path.join(POSTS_DIR, slug, `index.${LINKEDIN_LOCALE}.md`);
-  const { data } = matter(fs.readFileSync(filePath, "utf8"));
+  const { data, content } = matter(fs.readFileSync(filePath, "utf8"));
 
   const articleUrl = new URL(postUrl(slug, LINKEDIN_LOCALE), siteUrl).toString();
   console.log(`[publish] waiting for deploy: ${articleUrl}`);
@@ -71,8 +86,11 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
     imageUrns.push(urn);
   }
 
+  console.log(`[publish] drafting LinkedIn teaser for "${data.title}"`);
+  const teaser = await generateTeaser(data.title, content);
+
   const tags = (data.tags ?? []).map((t: string) => `#${t}`).join(" ");
-  const commentary = [data.title, "", tags].filter(Boolean).join("\n");
+  const commentary = [teaser, "", tags].filter(Boolean).join("\n");
 
   const id = await createPost(linkedin, {
     commentary,
@@ -105,12 +123,6 @@ async function main() {
   for (const slug of slugs) {
     await publishPost(slug, siteUrl, linkedin);
   }
-}
-
-function requireEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`Missing required env var: ${name}`);
-  return value;
 }
 
 // Force-exit on completion: open keep-alive sockets from fetch() can

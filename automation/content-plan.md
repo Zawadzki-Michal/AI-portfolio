@@ -13,9 +13,10 @@ see `posts/2026-07-29-where-ive-been/index.en.md`.
 
 **One-post rule:** every post here is written once, for the blog. LinkedIn
 is not a separate draft — `publish-to-linkedin.ts` auto-generates the
-LinkedIn share (title + hashtags from `tags` + link back) from the same
-post on merge to `main`. Don't hand-write a second LinkedIn-specific
-version of a post's body.
+LinkedIn share (a short teaser drafted by OpenRouter per
+`automation/linkedin-teaser-instructions.md`, plus hashtags from `tags`
+and a link back) from the same post on merge to `main`. Don't hand-write
+a second LinkedIn-specific version of a post's body.
 
 ## Status
 
