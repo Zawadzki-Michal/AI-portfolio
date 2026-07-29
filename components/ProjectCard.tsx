@@ -24,7 +24,7 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
       </h3>
       <p className="text-sm text-paper/70">{project.summary}</p>
       <ul className="flex flex-col gap-2">
-        {project.details.map((detail) => (
+        {(project.details ?? []).map((detail) => (
           <li key={detail} className="flex gap-2 text-sm text-paper/60">
             <span className="text-teal">›</span>
             {detail}
