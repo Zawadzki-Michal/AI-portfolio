@@ -69,11 +69,11 @@
   },
   "skills": {
     "azureCategory": "Azure",
-    "azureSkills": ["Whitelisting IP i reguły sieciowe", "Podstawy Terraform", "Ćwiczenia disaster recovery", "Codzienne rozwiązywanie problemów"],
+    "azureSkills": ["WAF / FrontDoor", "Terraform", "Sieci / VPN", "Codzienne rozwiązywanie problemów"],
     "aiCategory": "AI",
-    "aiSkills": ["Claude / narzędzia LLM", "Eksperymenty z promptami", "Małe skrypty automatyzujące", "Nauka przez budowanie"],
+    "aiSkills": ["Claude / narzędzia LLM", "MCP, własne skille (skills)", "Skrypty automatyzujące procesy", "Nauka przez budowanie"],
     "devopsCategory": "DevOps",
-    "devopsSkills": ["GitHub Actions", "Czytanie cudzego Terraforma", "Podstawy CI/CD", "Ogarnianie monitoringu"]
+    "devopsSkills": ["GitHub Actions", "Czytanie cudzego Terraforma", "Podstawy CI/CD", "Monitoring w Grafana / Datadog"]
   },
   "projectsPage": {
     "metaTitle": "Projekty — System Status",
