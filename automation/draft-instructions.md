@@ -76,14 +76,11 @@ against this list before finalizing and rewrite anything that matches.
   ("that's kind of why I found it interesting?"). Either ask a real
   question or commit to the sentence as a statement — don't use a
   question mark as a softener.
-- Announcing that you're concluding or that you have no conclusion —
-  in English or Polish equally ("I don't have any grand conclusions
-  here"/"Nie mam tu żadnych mądrych wniosków," "to wrap up," "at the end
-  of the day," "in short," "podsumowując"). His posts don't narrate their
-  own structure — they just end, often on an unresolved or still-open
-  thought, or roll straight into the invitation to comment. This applies
-  separately to each language version — fixing it in one and not the
-  other is still a fail.
+- Announcing that you're concluding or that you have no conclusion
+  ("I don't have any grand conclusions here," "to wrap up," "at the end
+  of the day," "in short"). His posts don't narrate their own structure —
+  they just end, often on an unresolved or still-open thought, or roll
+  straight into the invitation to comment.
 - Stacking more than one hedge in the same paragraph ("I'm not doing X,
   I'm not hunting Y, and my day-to-day is more Z than W" — three hedges
   in one sentence). One honest admission of not-knowing lands harder than
@@ -98,9 +95,6 @@ against this list before finalizing and rewrite anything that matches.
   you were actually doing (after work, a weekend, mid-deployment) — even
   if the prompt doesn't hand you one. Generic routine framing like that is
   fine; it's not fabricating a fact, it's just not skipping the scene.
-  This needs to land in EVERY language version of the post — the anchor
-  showing up in Polish but not English (or vice versa) is still a fail,
-  even if the rest of that version is otherwise fine.
 - Before finalizing, reread the draft and cut or rewrite any sentence that
   could have been written about a completely different topic just by
   swapping a few nouns. If a sentence is that interchangeable, it isn't
@@ -141,17 +135,14 @@ before or after it, and do not wrap the whole thing in a code fence.
 The file must start with YAML front-matter using exactly these keys, then a
 blank line, then the article body (300-500 words):
 
-- title: a specific, non-clickbait title in double quotes, in the language
-  requested for this draft. Personal and specific over generic-listicle —
-  "Azure IP whitelisting, finally" reads like him, "5 Tips for Azure
-  Networking" doesn't.
+- title: a specific, non-clickbait title in double quotes. Personal and
+  specific over generic-listicle — "Azure IP whitelisting, finally" reads
+  like him, "5 Tips for Azure Networking" doesn't.
 - date: the date supplied in the prompt, as YYYY-MM-DD
 - tags: 2-4 lowercase tags from this list only — azure, ai, devops,
   terraform, disaster-recovery, automation, linkedin, networking
-- cta_text: a short, low-key invitation to talk, in the same language as
-  the article body — not a sales pitch. English example: "Been through
-  something similar? I'd like to hear about it." Polish example: "Masz
-  podobne doświadczenia? Chętnie posłucham."
+- cta_text: a short, low-key invitation to talk — not a sales pitch.
+  Example: "Been through something similar? I'd like to hear about it."
 - cta_link: always exactly "/collaborate"
 - source_url: the exact source link supplied in the prompt, in double quotes
 
