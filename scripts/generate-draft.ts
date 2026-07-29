@@ -5,10 +5,13 @@
  * voice (instructions in automation/draft-instructions.md), then sends
  * that draft back for a self-critique/revise pass against the
  * instructions' "Cut these on sight" checklist before writing the final
- * version. Runs both passes for English and Polish and writes them to
- * posts/YYYY-MM-DD-slug/index.en.md and index.pl.md. The GitHub Action
- * step that runs this script then opens a PR for human review — nothing
- * here publishes automatically.
+ * version to posts/YYYY-MM-DD-slug/index.en.md. The GitHub Action step
+ * that runs this script then opens a PR for human review — nothing here
+ * publishes automatically.
+ *
+ * English only — the blog doesn't get machine-translated into Polish.
+ * `lib/posts.ts` falls back to the English file for any locale that
+ * doesn't have its own translation, so this doesn't break the site.
  *
  * Required env vars:
  *   OPENROUTER_API_KEY
@@ -24,9 +27,6 @@ import matter from "gray-matter";
 import { slugify } from "../lib/slugify";
 import { getAllSourceUrls } from "../lib/posts";
 import { stripCodeFence } from "../lib/markdown";
-import type { Locale } from "../i18n/routing";
-
-const LANGUAGE_NAMES: Record<Locale, string> = { en: "English", pl: "Polish" };
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const INSTRUCTIONS_PATH = path.join(process.cwd(), "automation", "draft-instructions.md");
@@ -118,7 +118,7 @@ async function callModel(systemPrompt: string, userPrompt: string): Promise<stri
   return stripCodeFence(text);
 }
 
-async function draftPost(item: FeedItem, locale: Locale): Promise<string> {
+async function draftPost(item: FeedItem): Promise<string> {
   const today = new Date().toISOString().slice(0, 10);
   const systemPrompt = fs.readFileSync(INSTRUCTIONS_PATH, "utf8");
 
@@ -129,20 +129,15 @@ Link: ${item.link}
 Summary: ${item.summary}
 
 Today's date (use as front-matter "date"): ${today}
-Source link (use as front-matter "source_url"): ${item.link}
-
-Write the entire article body in ${LANGUAGE_NAMES[locale]}. The "title" in
-front-matter should also be in ${LANGUAGE_NAMES[locale]}. Keep front-matter
-keys themselves in English (title, date, tags, cta_text, cta_link,
-source_url) — only their values change language.`;
+Source link (use as front-matter "source_url"): ${item.link}`;
 
   return callModel(systemPrompt, userPrompt);
 }
 
-async function revisePost(draftMarkdown: string, locale: Locale): Promise<string> {
+async function revisePost(draftMarkdown: string): Promise<string> {
   const systemPrompt = fs.readFileSync(INSTRUCTIONS_PATH, "utf8");
 
-  const userPrompt = `Here is a draft post you just wrote, in ${LANGUAGE_NAMES[locale]}:
+  const userPrompt = `Here is a draft post you just wrote:
 
 ---
 ${draftMarkdown}
@@ -184,23 +179,17 @@ async function main() {
 
   console.log(`Drafting post from: "${candidate.title}" (${candidate.source})`);
 
-  const englishDraft = await draftPost(candidate, "en");
-  console.log("Revising English draft against the anti-pattern checklist...");
-  const englishMarkdown = await revisePost(englishDraft, "en");
-  const { data: englishFrontMatter } = matter(englishMarkdown);
+  const draft = await draftPost(candidate);
+  console.log("Revising draft against the anti-pattern checklist...");
+  const markdown = await revisePost(draft);
+  const { data: frontMatter } = matter(markdown);
 
   const today = new Date().toISOString().slice(0, 10);
-  const slug = `${today}-${slugify(englishFrontMatter.title ?? candidate.title)}`;
+  const slug = `${today}-${slugify(frontMatter.title ?? candidate.title)}`;
   const dir = path.join(POSTS_DIR, slug);
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, "index.en.md"), englishMarkdown + "\n");
+  fs.writeFileSync(path.join(dir, "index.en.md"), markdown + "\n");
   console.log(`Draft written to posts/${slug}/index.en.md`);
-
-  const polishDraft = await draftPost(candidate, "pl");
-  console.log("Revising Polish draft against the anti-pattern checklist...");
-  const polishMarkdown = await revisePost(polishDraft, "pl");
-  fs.writeFileSync(path.join(dir, "index.pl.md"), polishMarkdown + "\n");
-  console.log(`Draft written to posts/${slug}/index.pl.md`);
 }
 
 // Force-exit on completion: open keep-alive sockets from fetch()/rss-parser
