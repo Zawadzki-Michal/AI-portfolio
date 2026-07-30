@@ -4,6 +4,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { getAllPostSlugs, getPostBySlug } from "@/lib/posts";
 import { CtaBlock } from "@/components/CtaBlock";
 import { StatusDot } from "@/components/StatusDot";
+import { Comments } from "@/components/Comments";
 
 export function generateStaticParams() {
   const slugs = getAllPostSlugs();
@@ -60,6 +61,7 @@ export default async function PostPage({
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
       <CtaBlock ctaText={post.cta_text} ctaLink={post.cta_link} />
+      <Comments slug={slug} />
     </article>
   );
 }

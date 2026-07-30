@@ -132,5 +132,14 @@
     "title": "Log",
     "entriesLabel": "{count} wpisów",
     "emptyMsg": "Jeszcze brak wpisów. Pierwszy post w drodze."
+  },
+  "comments": {
+    "heading": "Komentarze",
+    "empty": "Brak komentarzy — bądź pierwszy.",
+    "signIn": "Zaloguj się przez LinkedIn, aby skomentować",
+    "placeholder": "Dodaj komentarz…",
+    "submit": "Dodaj komentarz",
+    "submitting": "Publikowanie…",
+    "error": "Coś poszło nie tak. Spróbuj ponownie."
   }
 }

@@ -8,6 +8,7 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Frontend:** Next.js 15 (App Router) + TypeScript + Tailwind CSS
 - **i18n:** [next-intl](https://next-intl.dev/), English + Polish site UI (`/en/...`, `/pl/...`), language switcher in the nav — blog post content is English-only, see [Bilingual posts](#bilingual-posts)
 - **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` (front-matter, no database)
+- **Comments:** LinkedIn sign-in ([Auth.js](https://authjs.dev)) + Postgres ([Neon](https://neon.com)) — see [Post comments](#post-comments)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
@@ -99,6 +100,47 @@ desktop shots in a browser-chrome frame, mobile shots in a phone frame,
 both click-to-expand into a lightbox. No code change or manifest needed;
 a project with no screenshots yet just doesn't render the gallery section.
 
+## Post comments
+
+Comments on post pages (`components/Comments.tsx`, `app/api/comments`) let
+readers sign in with LinkedIn and post directly — comments publish
+immediately, no moderation queue. This is the one part of the site backed by
+a real database rather than flat files:
+
+- **Auth:** [Auth.js](https://authjs.dev) v5 (`auth.ts`) with LinkedIn's
+  "Sign In with LinkedIn using OpenID Connect" provider. Session is
+  JWT-based — no user table needed, the LinkedIn `sub` claim is stored
+  directly on each comment as `author_linkedin_id`.
+- **Storage:** Postgres via [Neon](https://neon.com) (Vercel's native
+  Postgres integration). `lib/comments.ts` reads/writes the `comments`
+  table directly with `@neondatabase/serverless` — no ORM.
+
+Setup (one-time — steps 1–2 need your own LinkedIn/Vercel accounts, not
+something this codebase can do for you):
+
+1. **LinkedIn app:** create one at
+   [developer.linkedin.com](https://www.linkedin.com/developers/apps), add
+   the "Sign In with LinkedIn using OpenID Connect" product, and set the
+   redirect URL to `<your-domain>/api/auth/callback/linkedin` (and
+   `http://localhost:3000/api/auth/callback/linkedin` for local dev). Copy
+   the Client ID/Secret.
+2. **Database:** in Vercel → Storage, create a Postgres database (or use
+   [console.neon.tech](https://console.neon.tech) directly) and copy its
+   connection string.
+3. Set these env vars (`.env.local` locally, and in Vercel):
+
+   ```
+   AUTH_SECRET=            # npx auth secret
+   LINKEDIN_CLIENT_ID=
+   LINKEDIN_CLIENT_SECRET=
+   DATABASE_URL=
+   ```
+
+4. Create the `comments` table once: `npm run db:init`.
+
+Comments are keyed by post slug (`post_slug`), so no per-post setup is
+needed beyond this.
+
 ## Required configuration
 
 ### GitHub Actions secrets
@@ -123,6 +165,11 @@ Connect the repo, deploy on push to `main`, no extra config needed for the
 site itself. Set `CONTACT_WEBHOOK_URL` as a Vercel env var if you want
 `/collaborate` form submissions forwarded somewhere (Slack/Discord webhook
 etc.) — without it, submissions are just logged server-side.
+
+Post comments (see [Post comments](#post-comments)) need `AUTH_SECRET`,
+`LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET`, and `DATABASE_URL` set as
+Vercel env vars — without them, the comments section on post pages just
+doesn't render (no crash, no build-time dependency).
 
 ## LinkedIn API notes
 
