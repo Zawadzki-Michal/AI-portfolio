@@ -46,9 +46,9 @@ export default async function CollaboratePage({
       <div className="mt-12 grid gap-4 sm:grid-cols-3">
         {offers.map((offer, i) => (
           <AnimatedCard key={offer.title} index={i}>
-            <div className="flex items-center justify-between">
-              <h2 className="font-display text-lg font-semibold">{offer.title}</h2>
+            <div className="flex flex-col gap-2">
               <StatusDot />
+              <h2 className="font-display text-lg font-semibold">{offer.title}</h2>
             </div>
             <p className="text-sm text-paper/70">{offer.description}</p>
           </AnimatedCard>
