@@ -9,6 +9,7 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **i18n:** [next-intl](https://next-intl.dev/), English + Polish site UI (`/en/...`, `/pl/...`), language switcher in the nav — blog post content is English-only, see [Bilingual posts](#bilingual-posts)
 - **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` (front-matter, no database)
 - **Comments:** LinkedIn sign-in ([Auth.js](https://authjs.dev)) + Postgres ([Neon](https://neon.com)) — see [Post comments](#post-comments)
+- **Admin panel:** `/admin`, GitHub sign-in restricted to the site owner, full post CRUD + comment moderation, commits straight to `main` via the GitHub API — see [Admin panel](#admin-panel)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
@@ -146,6 +147,58 @@ something this codebase can do for you):
 Comments are keyed by post slug (`post_slug`), so no per-post setup is
 needed beyond this.
 
+## Admin panel
+
+`/admin` is a full CRUD panel for posts (create, edit, delete, image
+uploads) plus comment moderation (delete), restricted to the site owner.
+It's outside `app/[locale]` (own root layout, excluded from the next-intl
+middleware) since it's single-user and doesn't need i18n.
+
+- **Auth:** a separate Auth.js GitHub provider, identity-only — its `signIn`
+  callback rejects any GitHub login except `ADMIN_GITHUB_LOGIN`. This is on
+  top of the existing LinkedIn provider used for comments; the two don't
+  interact.
+- **Writes:** the admin API routes (`app/api/admin/**`) call GitHub's
+  Contents API directly (`lib/github-content.ts`) and commit **straight to
+  `main`** — no PR step, since editing through the panel's own preview is
+  already the review step. This deliberately does *not* use the admin's
+  OAuth session for the writes — a repo-scoped token never needs to reach
+  the browser. Instead it uses `GITHUB_ADMIN_TOKEN`, a separate
+  server-only token.
+- Reads also go through the GitHub API rather than the local filesystem
+  (unlike the public site's `lib/posts.ts`), so the panel always reflects
+  the true state of `main`, not whatever was bundled into the currently
+  running Vercel deployment.
+- Saving still waits on the next Vercel deploy to show up on the live
+  site, same as any other push to `main` — the panel doesn't change that.
+
+Setup (one-time):
+
+1. **GitHub OAuth App** (for login): github.com → Settings → Developer
+   settings → OAuth Apps → New OAuth App.
+   - Homepage URL: `https://<your-domain>`
+   - Authorization callback URL: `https://<your-domain>/api/auth/callback/github`
+     (and `http://localhost:3000/api/auth/callback/github` for local dev —
+     GitHub OAuth Apps only accept one callback URL each, so use two
+     separate OAuth Apps for local vs. prod, or just re-point the one App
+     at localhost while developing).
+   - Copy the Client ID, generate a Client Secret.
+2. **Fine-grained personal access token** (for writes): github.com →
+   Settings → Developer settings → Personal access tokens → Fine-grained
+   tokens → Generate new token. Scope it to **this repository only**, with
+   **Contents: Read and write** permission and nothing else.
+3. Set these env vars (`.env.local` locally, and in Vercel):
+
+   ```
+   GITHUB_CLIENT_ID=
+   GITHUB_CLIENT_SECRET=
+   ADMIN_GITHUB_LOGIN=        # your GitHub username
+   GITHUB_ADMIN_TOKEN=        # the fine-grained PAT from step 2
+   ```
+
+`AUTH_SECRET` is shared with the comments sign-in and only needs setting
+once (see [Post comments](#post-comments)).
+
 ## Required configuration
 
 ### GitHub Actions secrets
@@ -175,6 +228,12 @@ Post comments (see [Post comments](#post-comments)) need `AUTH_SECRET`,
 `LINKEDIN_CLIENT_ID`, `LINKEDIN_CLIENT_SECRET`, and `DATABASE_URL` set as
 Vercel env vars — without them, the comments section on post pages just
 doesn't render (no crash, no build-time dependency).
+
+The admin panel (see [Admin panel](#admin-panel)) needs `GITHUB_CLIENT_ID`,
+`GITHUB_CLIENT_SECRET`, `ADMIN_GITHUB_LOGIN`, and `GITHUB_ADMIN_TOKEN` set
+as Vercel env vars — without them, `/admin` just shows the sign-in gate
+(GitHub login will fail) or, once signed in, the API routes will 500 on any
+write.
 
 ## LinkedIn API notes
 
@@ -247,6 +306,8 @@ that's already live, which has nothing to do with that PR.
 
 ```
 app/[locale]/               Localized routes (home, /about, /projects, /posts, /posts/[slug], /collaborate)
+app/admin/                  Admin panel — own root layout, outside [locale] and next-intl, see Admin panel
+app/api/admin/               Admin API routes (posts CRUD, comment moderation) — all check requireAdmin()
 app/posts/[slug]/[...file]  Image-serving route — outside [locale], images aren't localized
 app/projects/[slug]/[...file]  Screenshot-serving route — outside [locale], mirrors the posts route
 app/api/contact/            Contact form API route — outside [locale]
@@ -254,9 +315,13 @@ i18n/routing.ts             Locale list + default locale + prefix strategy
 i18n/navigation.ts          Locale-aware Link/usePathname/useRouter (re-exported from next-intl)
 i18n/request.ts             Loads messages/<locale>.json per request
 messages/en.json, pl.json   All static UI copy, keyed by page/component
-middleware.ts               next-intl locale detection/routing
+middleware.ts               next-intl locale detection/routing (excludes /admin and /api)
 components/                 Design system components
-lib/posts.ts                Front-matter parsing / locale resolution (with en fallback) / source_url dedup
+components/admin/           Admin panel UI (PostForm, AdminNav, CommentModeration, DeletePostButton)
+lib/posts.ts                Front-matter parsing / locale resolution (with en fallback) / source_url dedup — public site reads (local filesystem)
+lib/admin-posts.ts          Post CRUD against the GitHub API — admin panel reads/writes (always current main, not the deployed bundle)
+lib/github-content.ts       GitHub Contents API client (list/get/put/delete), used by lib/admin-posts.ts
+lib/require-admin.ts        Session check shared by every app/api/admin/** route
 lib/projects.ts             Project data — content is per-locale, see getProjects(locale)
 lib/project-gallery.ts      Reads projects/<slug>/desktop|mobile screenshot folders
 lib/site-config.ts          Name, role, headline, social links — edit this for your own bio

@@ -65,3 +65,21 @@ export async function createComment(params: {
   `;
   return rowToComment(row);
 }
+
+/** Newest first, across every post — for the admin moderation view. */
+export async function getAllComments(): Promise<Comment[]> {
+  const rows = await getSql()`
+    SELECT id, post_slug, author_name, author_image, author_linkedin_id, body, created_at
+    FROM comments
+    ORDER BY created_at DESC
+  `;
+  return rows.map(rowToComment);
+}
+
+/** Returns true if a comment with that id existed and was deleted. */
+export async function deleteComment(id: number): Promise<boolean> {
+  const rows = await getSql()`
+    DELETE FROM comments WHERE id = ${id} RETURNING id
+  `;
+  return rows.length > 0;
+}
