@@ -7,6 +7,7 @@ tags:
   - career
 cta_text: "Been through a quiet stretch of your own and come back to things differently? I'd like to hear about it."
 cta_link: "/collaborate"
+linkedin_description: "I disappeared for two years. A lot changed — city, country, career, everything I work on daily. This is the catch-up I owe you."
 ---
 
 Hi. It's been a while.
