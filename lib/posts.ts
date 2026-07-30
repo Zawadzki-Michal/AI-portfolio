@@ -16,6 +16,8 @@ export type PostFrontMatter = {
   cta_link?: string;
   /** Source article URL, set on posts drafted from the RSS + LLM pipeline. Used to avoid re-drafting the same item. */
   source_url?: string;
+  /** AI-generated LinkedIn teaser, set by scripts/generate-linkedin-description.ts. Not rendered on the site — used by publish-to-linkedin.ts as part of the post commentary. */
+  linkedin_description?: string;
 };
 
 export type PostSummary = PostFrontMatter & {

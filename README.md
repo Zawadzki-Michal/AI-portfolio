@@ -13,6 +13,7 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
   - `generate-draft.yml` — scheduled job that pulls RSS feeds, asks a model to draft a post, and opens a PR for review
+  - `generate-linkedin-description.yml` — on push to any branch other than `main` touching `posts/**` (covers both a manually-pushed post and `generate-draft.yml`'s draft branch), fills in `linkedin_description` on any post that doesn't have one yet and commits it back to that branch — so the LinkedIn teaser is visible in the PR diff before merge, see [LinkedIn description](#linkedin-description). Also runnable manually (`workflow_dispatch`) to backfill an existing branch that predates this workflow, without needing a throwaway `posts/**` edit just to trigger it.
   - `ci.yml` — typecheck, unit tests, and build on every push/PR to `main`
 - **AI drafting:** [OpenRouter](https://openrouter.ai/) (routed to a Claude model by default — see `automation/draft-instructions.md`)
 - **Testing:** Vitest, unit tests for the content layer, the LinkedIn API client, and the draft pipeline's pure helpers
@@ -30,6 +31,7 @@ Open http://localhost:3000.
 npm run typecheck   # tsc --noEmit
 npm test            # vitest — lib/posts, lib/slugify, lib/linkedin, lib/markdown
 npm run build       # production build
+npm run generate-linkedin-description   # fill in linkedin_description on any post missing one
 ```
 
 `.github/workflows/ci.yml` runs typecheck + tests + build on every push/PR to
@@ -53,6 +55,9 @@ cta_link: "/collaborate"
 # optional — only set on posts drafted from the RSS pipeline; used to skip
 # re-drafting the same source article on later runs
 source_url: "https://example.com/the-article-this-post-reacts-to"
+# optional — auto-filled by generate-linkedin-description.yml if left out;
+# see [LinkedIn description](#linkedin-description)
+linkedin_description: "..."
 ---
 
 Article body in Markdown.
@@ -210,6 +215,26 @@ doesn't render (no crash, no build-time dependency).
 
 Nothing is ever published without merging that PR first — images and edits
 are added by hand before merge.
+
+## LinkedIn description
+
+`publish-to-linkedin.yml` builds the post commentary from the front-matter
+`title`, `linkedin_description`, and `tags` — see [LinkedIn API
+notes](#linkedin-api-notes). Writing a good teaser by hand every time is
+easy to skip, so `generate-linkedin-description.yml` fills it in
+automatically: it runs on push to any branch other than `main` that touches
+`posts/**`, and for any post missing `linkedin_description` it sends the
+full post body to OpenRouter with the prompt in
+`automation/linkedin-description-instructions.md`, writes the result back
+into that post's front-matter, and commits it to the same branch. Because
+this runs on the PR branch itself (both a manually-pushed post and
+`generate-draft.yml`'s auto-draft branch trigger it), the generated teaser
+shows up as a diff in the open PR — review it there, edit it by hand if it
+misses the mark, before merging.
+
+To generate one locally instead: `npm run generate-linkedin-description --
+<slug>` (needs `OPENROUTER_API_KEY` in `.env.local`; omit the slug to check
+every post). Posts that already have `linkedin_description` are left alone.
 
 ## Project structure
 
