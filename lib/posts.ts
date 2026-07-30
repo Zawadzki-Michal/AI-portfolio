@@ -95,6 +95,48 @@ export async function getPostBySlug(slug: string, locale: Locale): Promise<Post>
   };
 }
 
+/** Posts sharing the most tags with `slug`, newest-tag-overlap first; backfilled with the most recent other posts if too few share a tag. */
+export function getRelatedPosts(slug: string, locale: Locale, limit = 3): PostSummary[] {
+  const all = getAllPosts(locale);
+  const current = all.find((post) => post.slug === slug);
+  if (!current) return [];
+
+  const others = all.filter((post) => post.slug !== slug);
+  const bySharedTags = others
+    .map((post) => ({
+      post,
+      shared: post.tags.filter((tag) => current.tags.includes(tag)).length,
+    }))
+    .filter(({ shared }) => shared > 0)
+    .sort((a, b) => b.shared - a.shared)
+    .map(({ post }) => post);
+
+  const related = bySharedTags.slice(0, limit);
+  if (related.length < limit) {
+    const fillers = others.filter((post) => !related.includes(post)).slice(0, limit - related.length);
+    related.push(...fillers);
+  }
+  return related;
+}
+
+export type TagSummary = { tag: string; count: number };
+
+export function getAllTags(locale: Locale): TagSummary[] {
+  const counts = new Map<string, number>();
+  for (const post of getAllPosts(locale)) {
+    for (const tag of post.tags) {
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  return [...counts.entries()]
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag));
+}
+
+export function getPostsByTag(tag: string, locale: Locale): PostSummary[] {
+  return getAllPosts(locale).filter((post) => post.tags.includes(tag));
+}
+
 export function collectSourceUrls(posts: PostSummary[]): Set<string> {
   return new Set(posts.map((post) => post.source_url).filter((url): url is string => Boolean(url)));
 }

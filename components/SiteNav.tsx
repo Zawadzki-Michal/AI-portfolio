@@ -3,6 +3,7 @@ import { Link } from "@/i18n/navigation";
 import { StatusDot } from "./StatusDot";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function SiteNav() {
   const t = useTranslations("nav");
@@ -29,6 +30,7 @@ export function SiteNav() {
         </nav>
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
+          <ThemeToggle />
           <StatusDot label={t("status")} labelClassName="hidden sm:inline" />
           <MobileNav links={links} />
         </div>

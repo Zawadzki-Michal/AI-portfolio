@@ -134,7 +134,22 @@
     "metaDescription": "Dziennik tego, czego się uczę: infrastruktura Azure, automatyzacja DevOps i praktyczne AI — pisane w trakcie, nie po fakcie.",
     "title": "Log",
     "entriesLabel": "{count} wpisów",
-    "emptyMsg": "Jeszcze brak wpisów. Pierwszy post w drodze."
+    "emptyMsg": "Jeszcze brak wpisów. Pierwszy post w drodze.",
+    "browseTags": "przeglądaj po tagach →"
+  },
+  "relatedPosts": {
+    "heading": "Powiązane wpisy"
+  },
+  "tagsIndex": {
+    "metaTitle": "Tagi — System Status",
+    "metaDescription": "Wpisy pogrupowane tematycznie — Azure, DevOps, AI i wszystko pomiędzy.",
+    "title": "Tagi",
+    "countLabel": "{count} wpisów",
+    "emptyMsg": "Brak tagów."
+  },
+  "tagPage": {
+    "back": "← wszystkie tagi",
+    "countLabel": "{count} wpisów"
   },
   "comments": {
     "heading": "Komentarze",

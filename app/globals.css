@@ -3,8 +3,30 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* dark (default) */
+    --color-ink: 14 17 22;
+    --color-panel: 22 27 34;
+    --color-line: 42 49 60;
+    --color-paper: 236 232 225;
+    --color-amber: 242 169 59;
+    --color-teal: 79 209 197;
+  }
+
+  :root[data-theme="light"] {
+    --color-ink: 245 243 237;
+    --color-panel: 255 255 255;
+    --color-line: 223 216 203;
+    --color-paper: 23 26 32;
+    --color-amber: 179 106 15;
+    --color-teal: 13 122 112;
+  }
+
   body {
     @apply bg-ink text-paper font-body;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
   }
 }
 

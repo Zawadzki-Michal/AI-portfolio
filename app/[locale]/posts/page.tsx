@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { PostList } from "@/components/PostList";
@@ -40,6 +41,9 @@ export default async function PostsIndexPage({
         <h1 className="font-display text-3xl font-semibold">{t("title")}</h1>
         <StatusDot label={t("entriesLabel", { count: posts.length })} />
       </div>
+      <Link href={`/${locale}/tags`} className="label-mono mb-6 inline-block transition hover:text-teal">
+        {t("browseTags")}
+      </Link>
       <PostList posts={posts} />
     </section>
   );

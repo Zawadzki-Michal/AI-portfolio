@@ -1,10 +1,14 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import Link from "next/link";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
-import { getAllPostSlugs, getPostBySlug } from "@/lib/posts";
+import { getAllPostSlugs, getPostBySlug, getRelatedPosts } from "@/lib/posts";
+import { tagUrl } from "@/lib/post-url";
 import { CtaBlock } from "@/components/CtaBlock";
 import { StatusDot } from "@/components/StatusDot";
 import { Comments } from "@/components/Comments";
+import { PostList } from "@/components/PostList";
+import { ReadingProgress } from "@/components/ReadingProgress";
 import { buildMetadata } from "@/lib/seo";
 import { articleSchema } from "@/lib/structured-data";
 import { JsonLd } from "@/components/JsonLd";
@@ -54,8 +58,12 @@ export default async function PostPage({
     notFound();
   }
 
+  const related = getRelatedPosts(slug, locale as Locale);
+  const tRelated = await getTranslations({ locale, namespace: "relatedPosts" });
+
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
+      <ReadingProgress />
       <JsonLd
         data={articleSchema({
           title: post.title,
@@ -74,16 +82,22 @@ export default async function PostPage({
       <h1 className="font-display text-3xl font-semibold sm:text-4xl">{post.title}</h1>
       <div className="mt-3 flex flex-wrap gap-2">
         {post.tags.map((tag) => (
-          <span key={tag} className="label-mono">
+          <Link key={tag} href={tagUrl(tag, locale as Locale)} className="label-mono transition hover:text-teal">
             #{tag}
-          </span>
+          </Link>
         ))}
       </div>
       <div
-        className="prose prose-invert prose-headings:font-display prose-a:text-teal mt-10 max-w-none"
+        className="prose prose-headings:font-display prose-a:text-teal mt-10 max-w-none"
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
       <CtaBlock ctaText={post.cta_text} ctaLink={post.cta_link} />
+      {related.length > 0 && (
+        <section className="mt-16 border-t border-line pt-10">
+          <h2 className="font-display text-xl font-semibold">{tRelated("heading")}</h2>
+          <PostList posts={related} />
+        </section>
+      )}
       <Comments slug={slug} />
     </article>
   );
