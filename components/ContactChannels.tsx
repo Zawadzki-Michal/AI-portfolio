@@ -17,11 +17,6 @@ function buildChannels(pendingSetup: string, messageMe: string, followCommits: s
       href: social.linkedin || null,
       value: social.linkedin ? messageMe : pendingSetup,
     },
-    {
-      label: "telegram",
-      href: social.telegram ? `https://t.me/${social.telegram.replace(/^@/, "")}` : null,
-      value: social.telegram ? social.telegram : pendingSetup,
-    },
     { label: "github", href: social.github || null, value: social.github ? followCommits : pendingSetup },
   ];
 }
