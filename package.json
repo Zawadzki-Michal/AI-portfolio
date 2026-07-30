@@ -9,6 +9,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "generate-draft": "tsx scripts/generate-draft.ts",
+    "generate-linkedin-description": "tsx scripts/generate-linkedin-description.ts",
     "publish-linkedin": "tsx scripts/publish-to-linkedin.ts",
     "db:init": "tsx --env-file=.env.local scripts/init-comments-db.ts",
     "test": "vitest run"

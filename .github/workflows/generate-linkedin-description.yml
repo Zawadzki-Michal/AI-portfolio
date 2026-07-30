@@ -1,0 +1,49 @@
+name: Generate LinkedIn description
+
+on:
+  push:
+    branches-ignore: [main]
+    paths:
+      - "posts/**"
+  workflow_dispatch: {}
+
+concurrency:
+  group: linkedin-description-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate missing LinkedIn descriptions
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
+        run: npm run generate-linkedin-description
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- posts; then
+            echo "No new descriptions to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add posts
+          git commit -m "content: add LinkedIn description"
+          git push origin HEAD:${{ github.ref_name }}
