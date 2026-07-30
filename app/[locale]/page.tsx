@@ -9,9 +9,23 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { getAllPosts } from "@/lib/posts";
 import { getProjects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site-config";
+import { buildMetadata } from "@/lib/seo";
+import { personSchema, websiteSchema } from "@/lib/structured-data";
+import { JsonLd } from "@/components/JsonLd";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "site" });
+  return buildMetadata({
+    title: t("title"),
+    description: t("description"),
+    locale: locale as Locale,
+    path: "",
+  });
 }
 
 export default async function HomePage({
@@ -28,6 +42,8 @@ export default async function HomePage({
 
   return (
     <>
+      <JsonLd data={websiteSchema()} />
+      <JsonLd data={personSchema()} />
       <Hero />
 
       {/* Log leads right after the hero — this is a blog first, portfolio second */}

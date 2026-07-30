@@ -5,6 +5,7 @@ import { ContactChannels } from "@/components/ContactChannels";
 import { StatusDot } from "@/components/StatusDot";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { AnimatedCard } from "@/components/AnimatedCard";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -17,7 +18,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "collaborate" });
-  return { title: t("metaTitle") };
+  return buildMetadata({
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    locale: locale as Locale,
+    path: "/collaborate",
+  });
 }
 
 export default async function CollaboratePage({

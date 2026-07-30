@@ -10,6 +10,7 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Content:** Markdown files in `posts/YYYY-MM-DD-slug/index.en.md` (front-matter, no database)
 - **Comments:** LinkedIn sign-in ([Auth.js](https://authjs.dev)) + Postgres ([Neon](https://neon.com)) — see [Post comments](#post-comments)
 - **Admin panel:** `/admin`, GitHub sign-in restricted to the site owner, full post CRUD + comment moderation, commits straight to `main` via the GitHub API — see [Admin panel](#admin-panel)
+- **SEO:** real per-page descriptions, Open Graph/Twitter cards, canonical + hreflang tags, JSON-LD, `robots.txt`, `sitemap.xml`, and generated favicons/OG images — see [SEO](#seo)
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
@@ -199,6 +200,43 @@ Setup (one-time):
 `AUTH_SECRET` is shared with the comments sign-in and only needs setting
 once (see [Post comments](#post-comments)).
 
+## SEO
+
+- **`lib/seo.ts`'s `buildMetadata()`** — Next.js doesn't deep-merge
+  `openGraph`/`twitter`/`alternates` between a layout's `generateMetadata`
+  and a page's; whichever sets one of those keys fully replaces it. So
+  every page builds its own complete metadata through this one helper
+  (title, description, canonical, hreflang for both locales, Open
+  Graph, Twitter card) instead of partially inheriting from
+  `app/[locale]/layout.tsx`. That layout sets `metadataBase` — from
+  `siteConfig.url` (`SITE_URL` env var, falls back to
+  `https://michalzawadzki.dev`) — which *is* inherited and resolves every
+  relative URL `buildMetadata()` returns.
+- **Individual posts reuse `linkedin_description`** as the meta
+  description — it's already a short (under 220 chars), human-reviewed
+  teaser (see [LinkedIn description](#linkedin-description)), which is
+  exactly what a good meta description is. Falls back to the post's tags
+  for posts written before that field existed.
+- **`app/robots.ts`, `app/sitemap.ts`** — sitemap covers every static page,
+  post, and project, in both locales; robots disallows `/admin` and `/api`.
+- **`app/icon.tsx`, `app/apple-icon.tsx`** — generated favicon /
+  apple-touch-icon (a dark square + amber dot, matching the site's status-dot
+  motif). These needed a `middleware.ts` matcher fix too: Next's generated
+  `/icon`/`/apple-icon` routes have no file extension in the URL despite
+  serving an image, so next-intl's middleware was catching them and 404ing
+  under a locale prefix — excluded the same way `/admin` and `/api` are.
+- **JSON-LD** (`lib/structured-data.ts` + `components/JsonLd.tsx`) —
+  `Person`/`WebSite` on the homepage, `BlogPosting` per post.
+- **Dynamic Open Graph images** — `app/[locale]/opengraph-image.tsx` (sitewide
+  default) and `app/[locale]/posts/[slug]/opengraph-image.tsx` (post title +
+  tags), so a post shared to LinkedIn gets a real branded preview image
+  instead of nothing. Built with `next/og`'s `ImageResponse`; its renderer
+  (Satori) needs every `<div>` with more than one child to have an explicit
+  `display: "flex"` — it has no block-layout fallback.
+
+Nothing here needs new secrets beyond `SITE_URL` (optional — only needed if
+the production domain ever changes from the hardcoded fallback).
+
 ## Required configuration
 
 ### GitHub Actions secrets
@@ -311,6 +349,9 @@ app/api/admin/               Admin API routes (posts CRUD, comment moderation) �
 app/posts/[slug]/[...file]  Image-serving route — outside [locale], images aren't localized
 app/projects/[slug]/[...file]  Screenshot-serving route — outside [locale], mirrors the posts route
 app/api/contact/            Contact form API route — outside [locale]
+app/robots.ts, app/sitemap.ts   Generated /robots.txt, /sitemap.xml
+app/icon.tsx, app/apple-icon.tsx   Generated favicon / apple-touch-icon
+app/[locale]/opengraph-image.tsx, app/[locale]/posts/[slug]/opengraph-image.tsx   Generated OG share images
 i18n/routing.ts             Locale list + default locale + prefix strategy
 i18n/navigation.ts          Locale-aware Link/usePathname/useRouter (re-exported from next-intl)
 i18n/request.ts             Loads messages/<locale>.json per request
@@ -324,7 +365,9 @@ lib/github-content.ts       GitHub Contents API client (list/get/put/delete), us
 lib/require-admin.ts        Session check shared by every app/api/admin/** route
 lib/projects.ts             Project data — content is per-locale, see getProjects(locale)
 lib/project-gallery.ts      Reads projects/<slug>/desktop|mobile screenshot folders
-lib/site-config.ts          Name, role, headline, social links — edit this for your own bio
+lib/site-config.ts          Name, role, headline, social links, canonical URL — edit this for your own bio
+lib/seo.ts                  Shared buildMetadata() helper — every page's title/description/OG/canonical/hreflang
+lib/structured-data.ts      JSON-LD schema builders (Person, WebSite, BlogPosting)
 lib/linkedin.ts             LinkedIn REST API client (images + posts)
 lib/slugify.ts, lib/markdown.ts   Small pure helpers shared by the scripts and covered by tests
 posts/                       Content — one folder per post, index.en.md (English-only going forward)

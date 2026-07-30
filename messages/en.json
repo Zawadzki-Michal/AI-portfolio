@@ -60,6 +60,7 @@
   },
   "about": {
     "metaTitle": "About — System Status",
+    "metaDescription": "Career-changer two years into a System Engineer role on Azure — Terraform, disaster recovery, and CI/CD automation, written without pretending to have it all figured out.",
     "onlineStatus": "online",
     "p1": "I changed careers into tech, and I'm two years into a System Engineer role now, working day to day with Azure infrastructure — network design, IP whitelisting, Terraform-managed environments, disaster recovery. I don't write this as someone who's got it all figured out. Most weeks I'm still looking things up, breaking things in a test environment first, and learning from people on my team who've been doing this a lot longer than I have. What got me here wasn't a head start — it was sticking with it long enough to stop feeling like an impostor most days.",
     "p2": "Lately I've been pulled toward the DevOps and platform side of the job — automation, CI/CD, pipelines that remove the manual steps I used to do by hand. Outside work I've been curious about applied AI too, not as a buzzword but as something to actually build with. This site is one example: new posts deploy and publish themselves to LinkedIn automatically, no manual copy-paste. See <projects>/projects</projects> for how it actually works.",
@@ -100,6 +101,7 @@
   },
   "collaborate": {
     "metaTitle": "Collaborate — System Status",
+    "metaDescription": "Two years into a System Engineer role, leaning into DevOps and platform work. If you're on a similar path or working through similar Azure/AI problems, I'd like to hear from you.",
     "statusLabel": "open to a conversation",
     "title": "Let's talk, if any of this sounds familiar.",
     "intro": "I'm not pitching consulting services here — I'm two years into a System Engineer role, leaning more into DevOps and platform work these days, still learning plenty of it. If you're working through similar Azure/DevOps/AI problems, made a similar career change, or just want to compare notes, I'd genuinely like to hear from you.",
@@ -129,6 +131,7 @@
   },
   "postsIndex": {
     "metaTitle": "Log — System Status",
+    "metaDescription": "A running log of what I'm learning: Azure infrastructure, DevOps automation, and applied AI — written as I actually work through it, not after the fact.",
     "title": "Log",
     "entriesLabel": "{count} entries",
     "emptyMsg": "No entries logged yet. First post incoming."

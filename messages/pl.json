@@ -60,6 +60,7 @@
   },
   "about": {
     "metaTitle": "O mnie — System Status",
+    "metaDescription": "Zmiana branży na tech, od dwóch lat System Engineer przy Azure — Terraform, disaster recovery i automatyzacja CI/CD, pisane bez udawania, że wszystko już ogarnąłem.",
     "onlineStatus": "online",
     "p1": "Zmieniłem branżę na tech i od dwóch lat pracuję jako System Engineer, na co dzień zajmując się infrastrukturą Azure — projektowaniem sieci, whitelistingiem IP, środowiskami zarządzanymi przez Terraform, disaster recovery. Nie piszę tego jako ktoś, kto ma to wszystko ogarnięte. Większość tygodni wciąż coś sprawdzam, najpierw psuję rzeczy w środowisku testowym i uczę się od ludzi w zespole, którzy robią to dużo dłużej niż ja. To, co mnie tu zaprowadziło, to nie był łatwy start — to było wytrwanie na tyle długo, żeby przestać czuć się oszustem większość dni.",
     "p2": "Ostatnio coraz bardziej ciągnie mnie w stronę DevOps i platformy — automatyzacja, CI/CD, pipeline'y, które zdejmują ręczne kroki, jakie kiedyś robiłem sam. Poza pracą interesuję się też praktycznym zastosowaniem AI — nie jako modnym hasłem, tylko czymś, co chcę realnie zbudować. Ta strona jest tego przykładem: nowe posty wdrażają się i same trafiają na LinkedIn, bez ręcznego kopiowania i wklejania. Zobacz <projects>/projects</projects>, żeby zobaczyć, jak to działa.",
@@ -100,6 +101,7 @@
   },
   "collaborate": {
     "metaTitle": "Kontakt — System Status",
+    "metaDescription": "Dwa lata w roli System Engineer, coraz bardziej w stronę DevOps i platformy. Jeśli jesteś na podobnej ścieżce albo mierzysz się z podobnymi problemami Azure/AI — odezwij się.",
     "statusLabel": "otwarty na rozmowę",
     "title": "Pogadajmy, jeśli to brzmi znajomo.",
     "intro": "Nie sprzedaję tu usług konsultingowych — jestem dwa lata w roli System Engineer, coraz bardziej w stronę DevOps i pracy platformowej, i wciąż sporo z tego się uczę. Jeśli mierzysz się z podobnymi problemami Azure/DevOps/AI, zmieniłeś/aś branżę podobnie jak ja, albo po prostu chcesz porównać notatki — chętnie się odezwij.",
@@ -129,6 +131,7 @@
   },
   "postsIndex": {
     "metaTitle": "Log — System Status",
+    "metaDescription": "Dziennik tego, czego się uczę: infrastruktura Azure, automatyzacja DevOps i praktyczne AI — pisane w trakcie, nie po fakcie.",
     "title": "Log",
     "entriesLabel": "{count} wpisów",
     "emptyMsg": "Jeszcze brak wpisów. Pierwszy post w drodze."

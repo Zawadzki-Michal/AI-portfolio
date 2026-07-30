@@ -5,6 +5,7 @@ import { StatusDot } from "@/components/StatusDot";
 import { SkillsGrid } from "@/components/SkillsGrid";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { siteConfig } from "@/lib/site-config";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -17,7 +18,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "about" });
-  return { title: t("metaTitle") };
+  return buildMetadata({
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    locale: locale as Locale,
+    path: "/about",
+  });
 }
 
 export default async function AboutPage({
