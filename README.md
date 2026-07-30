@@ -236,6 +236,13 @@ To generate one locally instead: `npm run generate-linkedin-description --
 <slug>` (needs `OPENROUTER_API_KEY` in `.env.local`; omit the slug to check
 every post). Posts that already have `linkedin_description` are left alone.
 
+A branch built off `main` carries every already-deployed post along with it,
+not just the new one the PR is actually about — so the script also skips any
+post slug that already exists on `origin/main`, even if that post happens to
+be missing `linkedin_description` too. Without that check, running this on
+an unrelated PR would silently add a description (and commit) to a post
+that's already live, which has nothing to do with that PR.
+
 ## Project structure
 
 ```

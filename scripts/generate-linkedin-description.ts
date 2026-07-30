@@ -9,6 +9,13 @@
  * diff in the open PR before merge. Posts that already have
  * linkedin_description are left alone.
  *
+ * A branch checked out from (or merged with) main carries every post that's
+ * already deployed, not just the new one(s) the PR is actually about — so
+ * this never touches a post slug that already exists on origin/main, even
+ * if that post is missing linkedin_description too. Those are already
+ * published; editing them here would just be a stray, unrelated diff on
+ * someone else's PR.
+ *
  * Required env vars:
  *   OPENROUTER_API_KEY
  * Optional env vars:
@@ -21,6 +28,7 @@
 
 import fs from "fs";
 import path from "path";
+import { execSync } from "child_process";
 import matter from "gray-matter";
 import { getAllPostSlugs } from "../lib/posts";
 import { callOpenRouter } from "../lib/openrouter";
@@ -34,6 +42,28 @@ const INSTRUCTIONS_PATH = path.join(
 
 function postFilePath(slug: string): string {
   return path.join(POSTS_DIR, slug, "index.en.md");
+}
+
+/** Post slugs already on main — i.e. already deployed and off-limits here. */
+function getDeployedSlugs(): Set<string> {
+  try {
+    execSync("git fetch origin main --quiet", { stdio: "ignore" });
+  } catch {
+    // Best effort — fall through to whatever origin/main ref is already
+    // available locally (or fail closed below if there isn't one).
+  }
+
+  try {
+    const output = execSync("git ls-tree -d --name-only origin/main:posts", {
+      encoding: "utf8",
+    });
+    return new Set(output.split("\n").map((s) => s.trim()).filter(Boolean));
+  } catch (err) {
+    throw new Error(
+      `Could not read the post list from origin/main — refusing to run without it, ` +
+        `since that's what protects already-deployed posts from being edited: ${err}`,
+    );
+  }
 }
 
 /**
@@ -56,7 +86,12 @@ async function generateDescription(title: string, body: string): Promise<string>
   return callOpenRouter(systemPrompt, userPrompt, { maxTokens: 200 });
 }
 
-async function processPost(slug: string): Promise<boolean> {
+async function processPost(slug: string, deployedSlugs: Set<string>): Promise<boolean> {
+  if (deployedSlugs.has(slug)) {
+    console.log(`Skipping ${slug}: already deployed on main`);
+    return false;
+  }
+
   const filePath = postFilePath(slug);
   if (!fs.existsSync(filePath)) {
     console.log(`Skipping ${slug}: no index.en.md`);
@@ -81,12 +116,13 @@ async function processPost(slug: string): Promise<boolean> {
 }
 
 async function main() {
+  const deployedSlugs = getDeployedSlugs();
   const requestedSlug = process.argv[2];
   const slugs = requestedSlug ? [requestedSlug] : getAllPostSlugs();
 
   let changed = 0;
   for (const slug of slugs) {
-    if (await processPost(slug)) changed++;
+    if (await processPost(slug, deployedSlugs)) changed++;
   }
 
   console.log(
