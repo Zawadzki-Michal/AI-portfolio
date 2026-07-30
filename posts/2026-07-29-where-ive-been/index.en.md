@@ -7,6 +7,7 @@ tags:
   - career
 cta_text: "Been through a quiet stretch of your own and come back to things differently? I'd like to hear about it."
 cta_link: "/collaborate"
+linkedin_description: "I went quiet for two years. In that time I changed jobs, countries, and tech stacks — and spent a lot of evenings just trying to understand what people meant in meetings."
 ---
 
 Hi. It's been a while.

@@ -7,6 +7,7 @@ tags:
   - devops
 cta_text: "Career changer or not, has AI helped you get better, or just faster? I'd like to hear where you land on this."
 cta_link: "/collaborate"
+linkedin_description: "I'm hours into a CKA practice scenario I've already failed twice, and there's a voice asking what the point is when an AI agent just fixed a broken cluster faster than I could read the error."
 ---
 
 ![A cartoon of a discouraged developer next to a gravestone reading "R.I.P. Junior Developer," with an AI chip glowing behind a warning sign](/posts/2026-07-30-ai-cka-motivation/rip-junior-developer.jpg)
