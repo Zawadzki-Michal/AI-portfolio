@@ -1,5 +1,5 @@
 ---
-title: "AI helped me at work. It's messing with my CKA motivation."
+title: "AI helped me at work but it's messing with my CKA motivation."
 date: 2026-07-30
 tags:
   - ai
