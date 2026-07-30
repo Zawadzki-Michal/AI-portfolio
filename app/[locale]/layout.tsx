@@ -8,6 +8,7 @@ import "../globals.css";
 import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { ThemeScript } from "@/components/ThemeScript";
 import { siteConfig } from "@/lib/site-config";
 
 const spaceGrotesk = Space_Grotesk({
@@ -68,6 +69,7 @@ export default async function LocaleLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
       <body className="flex min-h-screen flex-col">
+        <ThemeScript />
         <NextIntlClientProvider>
           <SiteNav />
           <main className="flex-1">{children}</main>

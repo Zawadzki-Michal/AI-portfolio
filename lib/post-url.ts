@@ -8,3 +8,7 @@ import type { Locale } from "@/i18n/routing";
 export function postUrl(slug: string, locale: Locale): string {
   return `/${locale}/posts/${slug}`;
 }
+
+export function tagUrl(tag: string, locale: Locale): string {
+  return `/${locale}/tags/${encodeURIComponent(tag)}`;
+}

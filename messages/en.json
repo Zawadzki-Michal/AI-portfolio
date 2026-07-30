@@ -134,7 +134,22 @@
     "metaDescription": "A running log of what I'm learning: Azure infrastructure, DevOps automation, and applied AI — written as I actually work through it, not after the fact.",
     "title": "Log",
     "entriesLabel": "{count} entries",
-    "emptyMsg": "No entries logged yet. First post incoming."
+    "emptyMsg": "No entries logged yet. First post incoming.",
+    "browseTags": "browse by tag →"
+  },
+  "relatedPosts": {
+    "heading": "Related entries"
+  },
+  "tagsIndex": {
+    "metaTitle": "Tags — System Status",
+    "metaDescription": "Log entries grouped by topic — Azure, DevOps, AI, and everything in between.",
+    "title": "Tags",
+    "countLabel": "{count} entries",
+    "emptyMsg": "No tags yet."
+  },
+  "tagPage": {
+    "back": "← all tags",
+    "countLabel": "{count} entries"
   },
   "comments": {
     "heading": "Comments",

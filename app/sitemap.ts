@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
-import { getAllPosts } from "@/lib/posts";
+import { getAllPosts, getAllTags } from "@/lib/posts";
 import { getProjects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site-config";
 
-const STATIC_PATHS = ["", "/about", "/projects", "/posts", "/collaborate"];
+const STATIC_PATHS = ["", "/about", "/projects", "/posts", "/collaborate", "/tags"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
@@ -26,6 +26,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       entries.push({
         url: `${siteConfig.url}/${locale}/projects/${project.slug}`,
         changeFrequency: "monthly",
+      });
+    }
+
+    for (const { tag } of getAllTags(locale)) {
+      entries.push({
+        url: `${siteConfig.url}/${locale}/tags/${encodeURIComponent(tag)}`,
+        changeFrequency: "weekly",
       });
     }
   }
