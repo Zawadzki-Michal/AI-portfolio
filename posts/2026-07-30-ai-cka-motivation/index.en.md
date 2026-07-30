@@ -9,6 +9,8 @@ cta_text: "Career changer or not, has AI helped you get better, or just faster? 
 cta_link: "/collaborate"
 ---
 
+![A cartoon of a discouraged developer next to a gravestone reading "R.I.P. Junior Developer," with an AI chip glowing behind a warning sign](/posts/2026-07-30-ai-cka-motivation/rip-junior-developer.jpg)
+
 Hi again. I've been sitting with a question for a couple of weeks now and I don't think I've landed anywhere solid, so figured I'd just write through it instead of waiting until I did.
 
 The question is whether AI is actually good for someone like me, a career changer still building the fundamentals, or whether it quietly takes away the exact struggle that used to build them. And right now I've got one example pulling each way.
