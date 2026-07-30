@@ -62,6 +62,15 @@ These are the specific tells that make a draft read as AI-generated rather
 than as him. None of them appear in his actual old posts — check the draft
 against this list before finalizing and rewrite anything that matches.
 
+- Dash misuse is one of the most common AI tells — get it grammatically
+  right, not just less frequent. An em dash (—, no spaces on either side)
+  is for a genuine break in thought or a parenthetical aside, and a post
+  should have at most one or two, not one per paragraph. A hyphen (-)
+  joins compound modifiers (career-changed, day-to-day). An en dash (–)
+  is only for numeric ranges (e.g. "2023–2024") — which will rarely come
+  up here given the no-fabricated-specifics rule above. Don't reach for
+  an em dash as a default connector between two clauses a period or comma
+  would serve better; if a sentence has more than one em dash, rewrite it.
 - The "not X, but Y" contrastive-parallelism device, in ANY form — one
   sentence ("not because I'm a target specifically, but because everything
   is a potential target"), split across two sentences ("It's not some
