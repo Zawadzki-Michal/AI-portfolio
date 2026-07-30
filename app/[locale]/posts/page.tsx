@@ -3,6 +3,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { PostList } from "@/components/PostList";
 import { getAllPosts } from "@/lib/posts";
 import { StatusDot } from "@/components/StatusDot";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -15,7 +16,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "postsIndex" });
-  return { title: t("metaTitle") };
+  return buildMetadata({
+    title: t("metaTitle"),
+    description: t("metaDescription"),
+    locale: locale as Locale,
+    path: "/posts",
+  });
 }
 
 export default async function PostsIndexPage({

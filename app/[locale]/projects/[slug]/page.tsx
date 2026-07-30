@@ -9,6 +9,7 @@ import { postUrl } from "@/lib/post-url";
 import { StatusDot } from "@/components/StatusDot";
 import { CtaBlock } from "@/components/CtaBlock";
 import { ProjectGallery } from "@/components/ProjectGallery";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   const slugs = getProjectSlugs();
@@ -22,7 +23,13 @@ export async function generateMetadata({
 }) {
   const { locale, slug } = await params;
   const project = getProject(slug, locale as Locale);
-  return { title: project ? `${project.title} — System Status` : "Project not found" };
+  if (!project) return { title: "Project not found" };
+  return buildMetadata({
+    title: `${project.title} — System Status`,
+    description: project.summary,
+    locale: locale as Locale,
+    path: `/projects/${slug}`,
+  });
 }
 
 export default async function ProjectPage({

@@ -4,6 +4,7 @@ import { StatusDot } from "@/components/StatusDot";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { getProjects } from "@/lib/projects";
+import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -16,7 +17,12 @@ export async function generateMetadata({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "projectsPage" });
-  return { title: t("metaTitle") };
+  return buildMetadata({
+    title: t("metaTitle"),
+    description: t("intro"),
+    locale: locale as Locale,
+    path: "/projects",
+  });
 }
 
 export default async function ProjectsPage({

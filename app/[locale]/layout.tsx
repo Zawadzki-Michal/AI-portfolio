@@ -7,6 +7,7 @@ import "../globals.css";
 import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { siteConfig } from "@/lib/site-config";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -38,6 +39,9 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "site" });
   return {
+    // Inherited by every page in this tree, used to resolve every relative
+    // canonical/openGraph URL returned by lib/seo.ts's buildMetadata().
+    metadataBase: new URL(siteConfig.url),
     title: t("title"),
     description: t("description"),
   };
