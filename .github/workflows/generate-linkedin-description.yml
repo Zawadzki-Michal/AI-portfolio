@@ -20,6 +20,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Need origin/main reachable so the script can tell which posts
+          # are already deployed there and must not be touched.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
