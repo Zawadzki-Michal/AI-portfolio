@@ -27,11 +27,10 @@ import matter from "gray-matter";
 import { slugify } from "../lib/slugify";
 import { getAllSourceUrls } from "../lib/posts";
 import { stripCodeFence } from "../lib/markdown";
+import { callOpenRouter } from "../lib/openrouter";
 
 const POSTS_DIR = path.join(process.cwd(), "posts");
 const INSTRUCTIONS_PATH = path.join(process.cwd(), "automation", "draft-instructions.md");
-const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
-const DEFAULT_MODEL = "anthropic/claude-opus-4.5";
 
 const DEFAULT_FEEDS = [
   "https://azure.microsoft.com/en-us/updates/feed/",
@@ -83,38 +82,7 @@ async function collectFeedItems(feedUrls: string[]): Promise<FeedItem[]> {
 }
 
 async function callModel(systemPrompt: string, userPrompt: string): Promise<string> {
-  const apiKey = requireEnv("OPENROUTER_API_KEY");
-  const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
-
-  const res = await fetch(OPENROUTER_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": process.env.SITE_URL || "https://github.com",
-      "X-Title": "Personal Brand Draft Generator",
-    },
-    body: JSON.stringify({
-      model,
-      max_tokens: 1500,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-    }),
-    signal: AbortSignal.timeout(120_000),
-  });
-
-  if (!res.ok) {
-    throw new Error(`OpenRouter request failed: ${res.status} ${await res.text()}`);
-  }
-
-  const data = await res.json();
-  const text: string | undefined = data.choices?.[0]?.message?.content;
-  if (!text) {
-    throw new Error("OpenRouter response contained no content");
-  }
-
+  const text = await callOpenRouter(systemPrompt, userPrompt);
   return stripCodeFence(text);
 }
 
@@ -155,12 +123,6 @@ the full revised file in the same format (front-matter then body), and
 nothing else — no commentary about what you changed.`;
 
   return callModel(systemPrompt, userPrompt);
-}
-
-function requireEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) throw new Error(`Missing required env var: ${name}`);
-  return value;
 }
 
 async function main() {

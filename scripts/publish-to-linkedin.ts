@@ -72,7 +72,7 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
   }
 
   const tags = (data.tags ?? []).map((t: string) => `#${t}`).join(" ");
-  const commentary = [data.title, "", tags].filter(Boolean).join("\n");
+  const commentary = [data.title, data.linkedin_description, tags].filter(Boolean).join("\n");
 
   const id = await createPost(linkedin, {
     commentary,
