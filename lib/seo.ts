@@ -31,6 +31,7 @@ export function buildMetadata(params: {
     alternates: {
       canonical: canonicalPath,
       languages,
+      types: { "application/rss+xml": "/feed.xml" },
     },
     openGraph: {
       title: params.title,

@@ -11,6 +11,8 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
 - **Comments:** LinkedIn sign-in ([Auth.js](https://authjs.dev)) + Postgres ([Neon](https://neon.com)) — see [Post comments](#post-comments)
 - **Admin panel:** `/admin`, GitHub sign-in restricted to the site owner, full post CRUD + comment moderation, commits straight to `main` via the GitHub API — see [Admin panel](#admin-panel)
 - **SEO:** real per-page descriptions, Open Graph/Twitter cards, canonical + hreflang tags, JSON-LD, `robots.txt`, `sitemap.xml`, and generated favicons/OG images — see [SEO](#seo)
+- **RSS:** `/feed.xml`, English-only (matches the blog itself), autodiscoverable via a `<link>` tag on every page
+- **Analytics:** [Vercel Web Analytics](https://vercel.com/docs/analytics) — public site only, not `/admin`; needs enabling in the Vercel project dashboard to actually collect data
 - **Hosting:** Vercel, auto-deploy on push to `main`
 - **Automation:** GitHub Actions
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
@@ -273,6 +275,13 @@ as Vercel env vars — without them, `/admin` just shows the sign-in gate
 (GitHub login will fail) or, once signed in, the API routes will 500 on any
 write.
 
+**Web Analytics** needs enabling once, separately from the code: Vercel
+dashboard → your project → Analytics tab → Enable. The `<Analytics />`
+component (`app/[locale]/layout.tsx`) is already wired in and no-ops
+outside Vercel's production infrastructure (nothing sent from `localhost`
+or a non-Vercel deploy), so there's no env var for it — just that one
+dashboard toggle.
+
 ## LinkedIn API notes
 
 - Self-serve developer program, `w_member_social` scope.
@@ -350,6 +359,7 @@ app/posts/[slug]/[...file]  Image-serving route — outside [locale], images are
 app/projects/[slug]/[...file]  Screenshot-serving route — outside [locale], mirrors the posts route
 app/api/contact/            Contact form API route — outside [locale]
 app/robots.ts, app/sitemap.ts   Generated /robots.txt, /sitemap.xml
+app/feed.xml/route.ts       RSS 2.0 feed, English posts only
 app/icon.tsx, app/apple-icon.tsx   Generated favicon / apple-touch-icon
 app/[locale]/opengraph-image.tsx, app/[locale]/posts/[slug]/opengraph-image.tsx   Generated OG share images
 i18n/routing.ts             Locale list + default locale + prefix strategy
