@@ -9,6 +9,7 @@
     "log": "log",
     "changelog": "changelog",
     "collaborate": "collaborate",
+    "search": "search",
     "status": "all systems operational"
   },
   "footer": {
@@ -158,7 +159,16 @@
     "metaDescription": "What shipped, when — a running record of releases to this site, pulled straight from GitHub.",
     "title": "Changelog",
     "countLabel": "{count} releases",
-    "emptyMsg": "No releases yet."
+    "emptyMsg": "No releases yet.",
+    "fetchErrorMsg": "Couldn't load release history from GitHub right now — try refreshing, or check back after the next deploy."
+  },
+  "search": {
+    "metaTitle": "Search — System Status",
+    "metaDescription": "Search posts, projects, and tags across the site.",
+    "title": "Search",
+    "placeholder": "Search posts, projects, tags…",
+    "searching": "Searching…",
+    "noResults": "No results for \"{query}\"."
   },
   "comments": {
     "heading": "Comments",

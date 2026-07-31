@@ -4,6 +4,7 @@ import { StatusDot } from "./StatusDot";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
+import { SearchLink } from "./SearchLink";
 
 export function SiteNav() {
   const t = useTranslations("nav");
@@ -30,6 +31,7 @@ export function SiteNav() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
+          <SearchLink />
           <LanguageSwitcher />
           <ThemeToggle />
           <StatusDot label={t("status")} labelClassName="hidden sm:inline" />

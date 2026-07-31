@@ -77,7 +77,14 @@ export default async function LocaleLayout({
         <ThemeScript />
         <NextIntlClientProvider>
           <SiteNav />
-          <main className="flex-1">{children}</main>
+          {/* data-pagefind-body: scopes the search index (see postbuild script)
+              to actual page content, skipping nav/footer boilerplate. Once any
+              page on the site has this attribute, Pagefind only indexes pages
+              that do — which also quietly excludes standalone routes like
+              sentry-example-page that don't share this layout. */}
+          <main className="flex-1" data-pagefind-body>
+            {children}
+          </main>
           <SiteFooter />
         </NextIntlClientProvider>
         <Analytics />
