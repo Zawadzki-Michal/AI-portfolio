@@ -18,6 +18,8 @@ export default withSentryConfig(withNextIntl(nextConfig), {
   // local dev, or before the Sentry project has been created).
   silent: !process.env.SENTRY_AUTH_TOKEN,
   widenClientFileUpload: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
+  webpack: {
+    treeshake: { removeDebugLogging: true },
+    automaticVercelMonitors: true,
+  },
 });
