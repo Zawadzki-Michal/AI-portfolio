@@ -103,6 +103,7 @@ const projectsData: ProjectData[] = [
           "A GitHub OAuth-gated admin panel gives a manual path alongside the automated one — writing and editing posts directly, and moderating comments — without needing a PR for every small fix.",
           "The site itself is now properly discoverable: JSON-LD structured data, dynamically generated OG images per post, sitemap/robots.txt, and canonical/hreflang tags across both locales; a public RSS feed and Vercel Web Analytics track who's actually reading.",
           "Reader-facing polish followed the same pipeline discipline — a light/dark theme (recolored via CSS variables, not per-component), a reading-progress bar, tag-scored related posts, and a full tags index, all shipped through the same PR + CI review as everything else.",
+          "Sentry now watches client, server, and edge runtimes for unhandled errors — error capture only, tracing and session replay deliberately left off since neither earns its bundle-size cost at this site's traffic. No-ops safely if the DSN isn't set, so it never breaks a build.",
         ],
       },
       pl: {
@@ -117,6 +118,7 @@ const projectsData: ProjectData[] = [
           "Panel administracyjny, zablokowany logowaniem przez GitHub OAuth, daje ręczną ścieżkę obok automatycznej — pisanie i edytowanie postów wprost, a także moderację komentarzy — bez PR-a przy każdej drobnej poprawce.",
           "Sama strona jest teraz porządnie wykrywalna: dane strukturalne JSON-LD, dynamicznie generowane obrazki OG dla każdego posta, sitemap.xml/robots.txt oraz tagi canonical/hreflang w obu językach; publiczny kanał RSS i Vercel Web Analytics pokazują, kto faktycznie czyta.",
           "Udogodnienia dla czytelników poszły tą samą ścieżką co reszta pipeline'u — jasny/ciemny motyw (przekolorowany przez zmienne CSS, nie komponent po komponencie), pasek postępu czytania, powiązane wpisy dobierane po wspólnych tagach i pełny indeks tagów — wszystko wdrożone przez ten sam PR + CI, co każda inna zmiana na stronie.",
+          "Sentry pilnuje teraz błędów po stronie klienta, serwera i edge runtime — samo wyłapywanie błędów, bez tracingu i session replay, bo żadne z nich nie zwraca kosztu w rozmiarze bundle'a przy ruchu, jaki ma ta strona. Bezpiecznie nie robi nic, jeśli DSN nie jest ustawiony, więc nigdy nie psuje builda.",
         ],
       },
     },
