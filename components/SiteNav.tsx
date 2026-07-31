@@ -12,6 +12,7 @@ export function SiteNav() {
     { href: "/about", label: t("about") },
     { href: "/projects", label: t("projects") },
     { href: "/posts", label: t("log") },
+    { href: "/changelog", label: t("changelog") },
     { href: "/collaborate", label: t("collaborate") },
   ];
 

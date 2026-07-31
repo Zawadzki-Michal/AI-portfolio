@@ -21,6 +21,9 @@ export function SiteFooter() {
           <Link href="/posts" className="hover:text-paper">
             {t("log")}
           </Link>
+          <Link href="/changelog" className="hover:text-paper">
+            {t("changelog")}
+          </Link>
           <Link href="/collaborate" className="hover:text-paper">
             {t("collaborate")}
           </Link>
