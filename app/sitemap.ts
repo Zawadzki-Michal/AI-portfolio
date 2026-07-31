@@ -4,7 +4,7 @@ import { getAllPosts, getAllTags } from "@/lib/posts";
 import { getProjects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site-config";
 
-const STATIC_PATHS = ["", "/about", "/projects", "/posts", "/collaborate", "/tags"];
+const STATIC_PATHS = ["", "/about", "/projects", "/posts", "/collaborate", "/tags", "/changelog"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];

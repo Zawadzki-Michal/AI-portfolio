@@ -7,6 +7,7 @@
     "about": "o mnie",
     "projects": "projekty",
     "log": "log",
+    "changelog": "changelog",
     "collaborate": "kontakt",
     "status": "wszystko działa"
   },
@@ -15,6 +16,7 @@
     "about": "o mnie",
     "projects": "projekty",
     "log": "log",
+    "changelog": "changelog",
     "collaborate": "kontakt",
     "operational": "działa"
   },
@@ -150,6 +152,13 @@
   "tagPage": {
     "back": "← wszystkie tagi",
     "countLabel": "{count} wpisów"
+  },
+  "changelog": {
+    "metaTitle": "Changelog — System Status",
+    "metaDescription": "Co i kiedy wdrożono — historia wydań tej strony, pobierana bezpośrednio z GitHuba.",
+    "title": "Changelog",
+    "countLabel": "{count} wydań",
+    "emptyMsg": "Jeszcze brak wydań."
   },
   "comments": {
     "heading": "Komentarze",
