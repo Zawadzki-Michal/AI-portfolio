@@ -67,6 +67,11 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      // ThemeScript sets data-theme on this element synchronously, before
+      // hydration, based on localStorage — React has no way to know that
+      // value during SSR, so without this it flags a hydration mismatch on
+      // every page load for anyone who's picked the light theme.
+      suppressHydrationWarning
     >
       <body className="flex min-h-screen flex-col">
         <ThemeScript />
