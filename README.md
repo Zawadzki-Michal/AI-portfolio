@@ -282,6 +282,37 @@ outside Vercel's production infrastructure (nothing sent from `localhost`
 or a non-Vercel deploy), so there's no env var for it — just that one
 dashboard toggle.
 
+**Error monitoring** (see [Error monitoring](#error-monitoring)) needs
+`NEXT_PUBLIC_SENTRY_DSN` set as a Vercel env var — without it, Sentry's
+`init()` calls are no-ops (no crash, nothing reported). `SENTRY_ORG`,
+`SENTRY_PROJECT`, and `SENTRY_AUTH_TOKEN` are optional and only needed to
+upload source maps for readable stack traces.
+
+## Error monitoring
+
+[Sentry](https://sentry.io) catches unhandled errors across all three
+runtimes and reports them with source-mapped stack traces:
+
+- **`instrumentation.ts`** registers `sentry.server.config.ts` (Node runtime)
+  or `sentry.edge.config.ts` (Edge runtime, e.g. `middleware.ts`) depending
+  on `NEXT_RUNTIME`, and exports `onRequestError` so server-side rendering/
+  route-handler errors get reported automatically.
+- **`instrumentation-client.ts`** is the client-side equivalent (picked up
+  automatically by Next.js, no config needed) — session replay is off by
+  default to keep the client bundle small; flip `replaysOnErrorSampleRate`
+  in that file if you want it.
+- **`app/global-error.tsx`** is the last-resort boundary above every route's
+  own `error.tsx` — catches anything that escapes those and reports it
+  before rendering a fallback page.
+- **`next.config.mjs`**'s `withSentryConfig` wrapper uploads source maps
+  during `next build`, but only when `SENTRY_AUTH_TOKEN` is set (`silent`
+  otherwise) — local dev and PRs without the secret build exactly the same,
+  just without source-mapped traces on sentry.io.
+
+All three `Sentry.init()` calls read the same `NEXT_PUBLIC_SENTRY_DSN` — a
+DSN isn't a secret (it's fine to expose client-side), so one env var covers
+server, edge, and client instead of juggling separate public/private ones.
+
 ## LinkedIn API notes
 
 - Self-serve developer program, `w_member_social` scope.
