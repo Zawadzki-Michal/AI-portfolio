@@ -3,6 +3,7 @@ node_modules/
 out/
 .vercel
 public/pagefind/
+coverage/
 .env
 .env.local
 *.log
