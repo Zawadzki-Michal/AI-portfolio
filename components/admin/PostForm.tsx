@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export type PostFormInitial = {
@@ -225,10 +226,11 @@ export function PostForm({ initial }: { initial?: PostFormInitial }) {
             <div className="mt-2 flex flex-wrap gap-3">
               {existingImages.map((name) => (
                 <div key={name} className="relative">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={`/posts/${initial!.slug}/${name}`}
                     alt={name}
+                    width={64}
+                    height={64}
                     className="h-16 w-16 rounded-md border border-line object-cover"
                   />
                   <button
@@ -242,6 +244,10 @@ export function PostForm({ initial }: { initial?: PostFormInitial }) {
               ))}
               {newImages.map((file, index) => (
                 <div key={`${file.name}-${index}`} className="relative">
+                  {/* next/image can't load blob: URLs (its optimizer fetches
+                      src server-side, and a blob URL only exists in this
+                      tab's memory) — stays a plain img for the pre-upload
+                      preview. */}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={URL.createObjectURL(file)}

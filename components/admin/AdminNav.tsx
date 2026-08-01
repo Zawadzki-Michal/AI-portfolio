@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { signOut } from "@/auth";
 
 const links = [
@@ -28,8 +29,7 @@ export function AdminNav({ userName, userImage }: { userName: string; userImage:
             ← back to site
           </Link>
           {userImage && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={userImage} alt={userName} className="h-7 w-7 rounded-full" />
+            <Image src={userImage} alt={userName} width={28} height={28} className="h-7 w-7 rounded-full" />
           )}
           <form
             action={async () => {
