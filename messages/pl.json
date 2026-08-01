@@ -143,6 +143,12 @@
   "relatedPosts": {
     "heading": "Powiązane wpisy"
   },
+  "share": {
+    "label": "Udostępnij ten wpis",
+    "linkedin": "Udostępnij na LinkedIn",
+    "facebook": "Udostępnij na Facebooku",
+    "x": "Udostępnij na X"
+  },
   "tagsIndex": {
     "metaTitle": "Tagi — System Status",
     "metaDescription": "Wpisy pogrupowane tematycznie — Azure, DevOps, AI i wszystko pomiędzy.",

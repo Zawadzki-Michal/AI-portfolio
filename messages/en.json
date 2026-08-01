@@ -143,6 +143,12 @@
   "relatedPosts": {
     "heading": "Related entries"
   },
+  "share": {
+    "label": "Share this post",
+    "linkedin": "Share on LinkedIn",
+    "facebook": "Share on Facebook",
+    "x": "Share on X"
+  },
   "tagsIndex": {
     "metaTitle": "Tags — System Status",
     "metaDescription": "Log entries grouped by topic — Azure, DevOps, AI, and everything in between.",
