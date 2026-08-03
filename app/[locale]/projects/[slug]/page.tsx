@@ -9,6 +9,7 @@ import { postUrl } from "@/lib/post-url";
 import { StatusDot } from "@/components/StatusDot";
 import { CtaBlock } from "@/components/CtaBlock";
 import { ProjectGallery } from "@/components/ProjectGallery";
+import { Comments } from "@/components/Comments";
 import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -87,6 +88,8 @@ export default async function ProjectPage({
       )}
 
       <CtaBlock ctaText={t("cta")} />
+
+      <Comments slug={`project:${project.slug}`} />
     </article>
   );
 }
