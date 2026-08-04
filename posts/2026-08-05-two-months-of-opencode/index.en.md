@@ -8,6 +8,7 @@ tags:
 cta_text: "Found dead code like this in your own agent setup? I'd like to hear about it."
 cta_link: "/collaborate"
 source_url: "https://addyosmani.com/blog/agent-harness-engineering/"
+linkedin_description: "I spent two months building an AI setup I'd stopped thinking about — then a platform switch at work forced me to actually look at what I'd made."
 ---
 
 Hey, it's Michał. We only switched to Claude Code at work a few days ago, and tonight after work, kids finally asleep, I grabbed my last coffee of the day and placed it next to the laptop, then actually had time to sit with what that switch meant for my setup instead of just patching things enough to limp through the workday.
