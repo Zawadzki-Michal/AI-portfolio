@@ -11,6 +11,8 @@ source_url: "https://addyosmani.com/blog/agent-harness-engineering/"
 linkedin_description: "I spent two months building an AI setup I'd stopped thinking about — then a platform switch at work forced me to actually look at what I'd made."
 ---
 
+![OpenCode terminal fading out on the left, Claude Code terminal live on the right, connected by an arrow, with tools / skills / router pills underneath](/posts/2026-08-05-two-months-of-opencode/header.svg)
+
 Hey, it's Michał. We only switched to Claude Code at work a few days ago, and tonight after work, kids finally asleep, I grabbed my last coffee of the day and placed it next to the laptop, then actually had time to sit with what that switch meant for my setup instead of just patching things enough to limp through the workday.
 
 I've had my own OpenCode running for a few months before the switch, and I'm a little embarrassed by how attached I'd gotten to it. This is where I actually learned how to use AI, not just in a browser with a clean session every time. All the custom skills I'd written myself, a hand-rolled connection to our internal ticketing system, other connections that supported the agent in daily tasks, a little local database of support notes I could query, a pile of small Python scripts I reached for without remembering when I'd written half of them. Two months doesn't sound like long, but it was long enough that I'd stopped thinking of it as a tool and started thinking of it as just how my job worked. Then the switch happened, and a lot of that muscle memory stopped applying overnight, and honestly, it stung a bit more than I expected it to.
