@@ -8,7 +8,7 @@ tags:
 cta_text: "Found dead code like this in your own agent setup? I'd like to hear about it."
 cta_link: "/collaborate"
 source_url: "https://addyosmani.com/blog/agent-harness-engineering/"
-linkedin_description: "I spent two months building an AI setup I'd stopped thinking about — then a platform switch at work forced me to actually look at what I'd made."
+linkedin_description: "Please check out my latest post, where I admit how much of my own AI setup I'd stopped questioning until a tool switch forced me to look again."
 ---
 
 ![OpenCode terminal fading out on the left, Claude Code terminal live on the right, connected by an arrow, with tools / skills / router pills underneath](/posts/2026-08-05-two-months-of-opencode/header.svg)
