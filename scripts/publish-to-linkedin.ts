@@ -31,7 +31,7 @@ const IMAGE_EXTENSIONS = [".png", ".jpg", ".jpeg", ".webp"];
 // LinkedIn gets one post per article; English is the language published there.
 const LINKEDIN_LOCALE = "en";
 
-function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
+export function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
   const diffOutput = execSync(
     `git diff --diff-filter=A --name-only ${baseSha} ${headSha} -- posts`,
     { encoding: "utf8" },
@@ -45,7 +45,7 @@ function getAddedPostSlugs(baseSha: string, headSha: string): string[] {
   return [...slugs];
 }
 
-function findImages(slug: string): string[] {
+export function findImages(slug: string): string[] {
   const dir = path.join(POSTS_DIR, slug);
   return fs
     .readdirSync(dir)
@@ -59,17 +59,17 @@ function findImages(slug: string): string[] {
  * renders as bare text. Fetches the site's own generated OG image so posts
  * without a hand-picked image still show a picture.
  */
-async function fetchOgImageBuffer(url: string): Promise<Buffer> {
+export async function fetchOgImageBuffer(url: string, delayMs = 3_000): Promise<Buffer> {
   for (let attempt = 1; attempt <= 3; attempt++) {
     const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
     if (res.ok) return Buffer.from(await res.arrayBuffer());
     console.log(`[publish] OG image fetch -> ${res.status}, retrying (${attempt}/3)`);
-    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 3_000));
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, delayMs));
   }
   throw new Error(`Failed to fetch OG image at ${url}`);
 }
 
-async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConfig) {
+export async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConfig) {
   const filePath = path.join(POSTS_DIR, slug, `index.${LINKEDIN_LOCALE}.md`);
   const { data } = matter(fs.readFileSync(filePath, "utf8"));
 
@@ -107,7 +107,7 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
   console.log(`[publish] published "${data.title}" -> ${id ?? "(no id returned)"}`);
 }
 
-async function main() {
+export async function main() {
   const siteUrl = requireEnv("SITE_URL");
   const linkedin: LinkedInConfig = {
     accessToken: requireEnv("LINKEDIN_ACCESS_TOKEN"),
@@ -130,17 +130,23 @@ async function main() {
   }
 }
 
-function requireEnv(name: string): string {
+export function requireEnv(name: string): string {
   const value = process.env[name];
   if (!value) throw new Error(`Missing required env var: ${name}`);
   return value;
 }
 
-// Force-exit on completion: open keep-alive sockets from fetch() can
-// otherwise leave the event loop alive and hang the CI job indefinitely.
-main()
-  .then(() => process.exit(0))
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+// Only run when executed directly (`tsx scripts/publish-to-linkedin.ts`), not
+// when imported by tests — importing this module must not launch a real
+// publish or call process.exit() out from under the test runner.
+const isMainModule = process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
+if (isMainModule) {
+  // Force-exit on completion: open keep-alive sockets from fetch() can
+  // otherwise leave the event loop alive and hang the CI job indefinitely.
+  main()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}
