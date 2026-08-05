@@ -15,6 +15,7 @@
     "generate-draft": "tsx scripts/generate-draft.ts",
     "generate-linkedin-description": "tsx scripts/generate-linkedin-description.ts",
     "publish-linkedin": "tsx scripts/publish-to-linkedin.ts",
+    "check-linkedin-token": "tsx scripts/check-linkedin-token.ts",
     "db:init": "tsx --env-file=.env.local scripts/init-comments-db.ts",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
