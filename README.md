@@ -325,8 +325,11 @@ server, edge, and client instead of juggling separate public/private ones.
 - LinkedIn's Posts API allows only one content type per post: an image/
   multi-image block, **or** a link-preview (`article`) block — not both. If
   a post has images, they're attached as media and the article link is
-  appended as plain text in the commentary; if it has no images, the post
-  uses the `article` content type so LinkedIn renders a link preview.
+  appended as plain text in the commentary. The `article` block doesn't
+  crawl the URL for an `og:image` the way old-style shares did, so a post
+  with no hand-picked images falls back to uploading the site's own
+  generated OG image (`{post}/opengraph-image`) as its media instead of
+  using the imageless `article` type.
 
 ## Draft generation
 

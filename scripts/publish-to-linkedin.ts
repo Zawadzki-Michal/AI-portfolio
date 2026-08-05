@@ -53,6 +53,22 @@ function findImages(slug: string): string[] {
     .map((name) => path.join(dir, name));
 }
 
+/**
+ * LinkedIn's `article` (link-preview) content type doesn't crawl the URL for
+ * an og:image the way old-style shares did — without an uploaded image it
+ * renders as bare text. Fetches the site's own generated OG image so posts
+ * without a hand-picked image still show a picture.
+ */
+async function fetchOgImageBuffer(url: string): Promise<Buffer> {
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const res = await fetch(url, { signal: AbortSignal.timeout(15_000) });
+    if (res.ok) return Buffer.from(await res.arrayBuffer());
+    console.log(`[publish] OG image fetch -> ${res.status}, retrying (${attempt}/3)`);
+    if (attempt < 3) await new Promise((resolve) => setTimeout(resolve, 3_000));
+  }
+  throw new Error(`Failed to fetch OG image at ${url}`);
+}
+
 async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConfig) {
   const filePath = path.join(POSTS_DIR, slug, `index.${LINKEDIN_LOCALE}.md`);
   const { data } = matter(fs.readFileSync(filePath, "utf8"));
@@ -69,6 +85,13 @@ async function publishPost(slug: string, siteUrl: string, linkedin: LinkedInConf
     const buffer = fs.readFileSync(imagePath);
     const urn = await uploadImage(linkedin, buffer, contentTypeFor(imagePath));
     imageUrns.push(urn);
+  }
+
+  if (imageUrns.length === 0) {
+    const ogImageUrl = new URL(`${postUrl(slug, LINKEDIN_LOCALE)}/opengraph-image`, siteUrl).toString();
+    console.log(`[publish] no post images, falling back to generated OG image: ${ogImageUrl}`);
+    const buffer = await fetchOgImageBuffer(ogImageUrl);
+    imageUrns.push(await uploadImage(linkedin, buffer, "image/png"));
   }
 
   const tags = (data.tags ?? []).map((t: string) => `#${t}`).join(" ");
