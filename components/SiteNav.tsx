@@ -4,6 +4,7 @@ import { StatusDot } from "./StatusDot";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
+import { LiveClock } from "./LiveClock";
 
 export function SiteNav() {
   const t = useTranslations("nav");
@@ -32,6 +33,7 @@ export function SiteNav() {
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
           <ThemeToggle />
+          <LiveClock className="hidden border-l border-line pl-4 lg:inline" />
           <StatusDot label={t("status")} labelClassName="hidden sm:inline" />
           <MobileNav links={links} />
         </div>

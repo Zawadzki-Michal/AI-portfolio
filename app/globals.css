@@ -23,10 +23,25 @@
   }
 
   body {
-    @apply bg-ink text-paper font-body;
+    @apply relative bg-ink text-paper font-body;
     transition:
       background-color 0.2s ease,
       color 0.2s ease;
+  }
+
+  /* Two soft accent glows anchored to the top of the page, behind the
+     hero — a fixed-height layer so their extent doesn't stretch across
+     a multi-thousand-pixel-tall document. */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    height: 640px;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse 900px 560px at 12% -10%, rgb(var(--color-amber) / 0.12), transparent 65%),
+      radial-gradient(ellipse 800px 520px at 88% 4%, rgb(var(--color-teal) / 0.13), transparent 65%);
   }
 }
 

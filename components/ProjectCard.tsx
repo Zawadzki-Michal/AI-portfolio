@@ -32,11 +32,11 @@ export function ProjectCard({
           {project.title}
         </LocaleLink>
       </h3>
-      <p className="text-sm text-paper/70">{project.summary}</p>
-      <ul className="flex flex-col gap-2">
+      <p className="max-w-2xl text-sm text-paper/70">{project.summary}</p>
+      <ul className="flex max-w-2xl flex-col gap-2">
         {visibleDetails.map((detail) => (
           <li key={detail} className="flex gap-2 text-sm text-paper/60">
-            <span className="text-teal">›</span>
+            <span className="shrink-0 text-teal">›</span>
             {detail}
           </li>
         ))}
