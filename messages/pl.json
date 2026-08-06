@@ -92,7 +92,8 @@
   "projectPage": {
     "back": "← wróć do projektów",
     "readLog": "zobacz wpis →",
-    "cta": "Pracujesz nad czymś podobnym? Chętnie posłucham"
+    "cta": "Pracujesz nad czymś podobnym? Chętnie posłucham",
+    "status": "działa"
   },
   "projectGallery": {
     "heading": "Zrzuty ekranu",
@@ -100,7 +101,9 @@
     "mobile": "Telefon",
     "close": "Zamknij",
     "prev": "Poprzedni zrzut ekranu",
-    "next": "Następny zrzut ekranu"
+    "next": "Następny zrzut ekranu",
+    "desktopThumbnail": "Zrzut ekranu (desktop) {index} z {total}",
+    "mobileThumbnail": "Zrzut ekranu (telefon) {index} z {total}"
   },
   "collaborate": {
     "metaTitle": "Kontakt — System Status",
@@ -183,7 +186,8 @@
     "placeholder": "Dodaj komentarz…",
     "submit": "Dodaj komentarz",
     "submitting": "Publikowanie…",
-    "error": "Coś poszło nie tak. Spróbuj ponownie."
+    "error": "Coś poszło nie tak. Spróbuj ponownie.",
+    "unavailable": "Komentarze są chwilowo niedostępne."
   },
   "notFound": {
     "metaTitle": "404 — System Status",

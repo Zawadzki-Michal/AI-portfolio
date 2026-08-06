@@ -1,16 +1,30 @@
 import type { Locale } from "@/i18n/routing";
 
+export type DetailGroup = {
+  heading?: string;
+  items: string[];
+};
+
 type ProjectContent = {
   title: string;
   summary: string;
-  details: string[];
+  ctaText?: string;
+  /** Flat list, used by card teasers. Required unless `detailGroups` is set. */
+  details?: string[];
+  /** Optional grouped view for the full project page; also the source of truth for `details` when set. */
+  detailGroups?: DetailGroup[];
 };
 
-export type Project = ProjectContent & {
+export type Project = {
   slug: string;
   category: "azure" | "ai" | "devops";
   tags: string[];
   relatedPostSlug?: string;
+  title: string;
+  summary: string;
+  ctaText?: string;
+  details: string[];
+  detailGroups?: DetailGroup[];
 };
 
 type ProjectData = {
@@ -20,6 +34,10 @@ type ProjectData = {
   relatedPostSlug?: string;
   content: Record<Locale, ProjectContent>;
 };
+
+function resolveDetails(content: ProjectContent): string[] {
+  return content.detailGroups ? content.detailGroups.flatMap((group) => group.items) : (content.details ?? []);
+}
 
 const projectsData: ProjectData[] = [
   {
@@ -66,34 +84,66 @@ const projectsData: ProjectData[] = [
         title: "AI-assisted booking system for a small service business",
         summary:
           "A client management and scheduling tool I built for someone close to me who runs a one-person, appointment-based business — natural-language input instead of forms, on top of a self-hosted stack.",
-        details: [
-          "What's live today didn't start on Vercel — the first version was a self-hosted FastAPI + Postgres + Redis stack in Docker Compose, tunneled out via ngrok from a home computer, so the whole booking system went down whenever that machine was off or the power blipped.",
-          "Rewrote it as a single Next.js app — API routes and frontend together — deployed on Vercel with Supabase as the managed database, so uptime no longer depends on a home PC; the local Ollama chat model is now the only piece still tied to that machine, reached through its own secured tunnel, same pattern as LifeOS.",
-          "That rewrite meant redoing auth too: swapped a hand-rolled OAuth flow (raw httpx calls plus itsdangerous-signed cookies) for Auth.js — kept the same email-allowlist trust model, even the same environment variable name for continuity, with far less auth code left to maintain.",
-          "Two-way SMS reminders through a self-hosted gateway running on an actual Android phone's SIM card, instead of a paid per-message API.",
-          "An AI chat assistant running on a local model, so client names and notes never leave the machine — the harder part was getting tool-calling reliable enough to trust with real bookings.",
-          "A GitHub Actions pipeline runs the backend test suite against a disposable Postgres database on every push, since a bug here affects someone else's actual income.",
-          "Beyond bookings — client documents with an on-canvas signature saved as a generated PDF, and a business finance view (revenue, costs, per-period totals) kept entirely separate from the owner's personal budget.",
-          "Prepaid packages and vouchers that draw down over visits, plus a before/after photo log per client — both stored in private Supabase buckets, never public.",
-          "A product resale ledger — catalog with stock levels and a per-sale record that snapshots cost at the time of sale, so margin stays accurate even after supplier prices change later.",
-          "A second Supabase + Vercel environment, seeded with realistic-but-fake Polish client data, so this write-up could ship with real screenshots without exposing an actual client's information — its schema migrations apply automatically in CI on every merge, deliberately kept separate from production's manual, reviewed rollout.",
+        ctaText: "Building something for someone whose income depends on it? I'd like to hear about it.",
+        detailGroups: [
+          {
+            heading: "Infrastructure & reliability",
+            items: [
+              "What's live today didn't start on Vercel — the first version was a self-hosted FastAPI + Postgres + Redis stack in Docker Compose, tunneled out via ngrok from a home computer, so the whole booking system went down whenever that machine was off or the power blipped.",
+              "Rewrote it as a single Next.js app — API routes and frontend together — deployed on Vercel with Supabase as the managed database, so uptime no longer depends on a home PC; the local Ollama chat model is now the only piece still tied to that machine, reached through its own secured tunnel, same pattern as LifeOS.",
+              "That rewrite meant redoing auth too: swapped a hand-rolled OAuth flow (raw httpx calls plus itsdangerous-signed cookies) for Auth.js — kept the same email-allowlist trust model, even the same environment variable name for continuity, with far less auth code left to maintain.",
+              "A GitHub Actions pipeline runs the backend test suite against a disposable Postgres database on every push, since a bug here affects someone else's actual income.",
+            ],
+          },
+          {
+            heading: "Business features",
+            items: [
+              "Two-way SMS reminders through a self-hosted gateway running on an actual Android phone's SIM card, instead of a paid per-message API.",
+              "An AI chat assistant running on a local model, so client names and notes never leave the machine — the harder part was getting tool-calling reliable enough to trust with real bookings.",
+              "Beyond bookings — client documents with an on-canvas signature saved as a generated PDF, and a business finance view (revenue, costs, per-period totals) kept entirely separate from the owner's personal budget.",
+              "Prepaid packages and vouchers that draw down over visits, plus a before/after photo log per client — both stored in private Supabase buckets, never public.",
+              "A product resale ledger — catalog with stock levels and a per-sale record that snapshots cost at the time of sale, so margin stays accurate even after supplier prices change later.",
+            ],
+          },
+          {
+            heading: "Data & trust",
+            items: [
+              "A second Supabase + Vercel environment, seeded with realistic-but-fake Polish client data, so this write-up could ship with real screenshots without exposing an actual client's information — its schema migrations apply automatically in CI on every merge, deliberately kept separate from production's manual, reviewed rollout.",
+            ],
+          },
         ],
       },
       pl: {
         title: "System rezerwacji z AI dla małej firmy usługowej",
         summary:
           "Narzędzie do zarządzania klientami i kalendarzem, które zbudowałem dla kogoś bliskiego, kto prowadzi jednoosobową firmę usługową — wprowadzanie danych językiem naturalnym zamiast formularzy, na bazie samodzielnie hostowanego stacku.",
-        details: [
-          "To, co działa dziś, nie zaczęło się na Vercel — pierwsza wersja to samodzielnie hostowany stack FastAPI + Postgres + Redis w Docker Compose, wystawiony przez tunel ngrok z komputera w domu, więc cały system rezerwacji padał, gdy tylko ta maszyna była wyłączona albo zabrakło prądu.",
-          "Przepisałem to jako pojedynczą aplikację Next.js (API routes i frontend razem) hostowaną na Vercel z Supabase jako zarządzaną bazą danych, żeby dostępność przestała zależeć od domowego peceta — lokalny model czatu Ollama jest teraz jedynym elementem wciąż związanym z tą maszyną, wystawionym przez własny zabezpieczony tunel, ten sam wzorzec co w LifeOS.",
-          "To przepisanie wymagało też przerobienia auth: zamiast ręcznie napisanego flow OAuth (surowe wywołania httpx plus ciasteczka podpisywane przez itsdangerous) wszedł Auth.js — ten sam model zaufania oparty na allow-liście e-maili i ta sama nazwa zmiennej środowiskowej dla ciągłości, ale dużo mniej kodu auth do utrzymania.",
-          "Dwukierunkowe SMS-y z przypomnieniami przez samodzielnie hostowaną bramkę działającą na karcie SIM w prawdziwym telefonie Android, a nie płatne API rozliczane za wiadomość.",
-          "Asystent AI oparty na lokalnym modelu, żeby dane klientów nigdy nie wychodziły poza maszynę — trudniejsze niż oczekiwałem było uzyskanie tool-callingu wystarczająco pewnego, by ufać mu przy prawdziwych rezerwacjach.",
-          "Pipeline w GitHub Actions odpala zestaw testów backendu na jednorazowej bazie Postgres przy każdym pushu, bo bug tutaj wpływa na prawdziwy dochód kogoś innego.",
-          "Poza rezerwacjami — dokumenty klientki z podpisem na canvasie zapisywanym jako wygenerowany PDF oraz widok finansów biznesowych (przychody, koszty, sumy okresowe) całkowicie osobny od prywatnego budżetu właścicielki.",
-          "Przedpłacone karnety i vouchery rozliczane stopniowo przy kolejnych wizytach oraz log zdjęć przed/po dla każdej klientki — oba w prywatnych bucketach Supabase, nigdy publiczne.",
-          "Ewidencja sprzedaży produktów — katalog ze stanami magazynowymi i wpis dla każdej sprzedaży zapisujący koszt z chwili sprzedaży, żeby marża zostawała dokładna nawet po późniejszej zmianie cen u dostawcy.",
-          "Drugie środowisko Supabase + Vercel, zasiane realistycznymi, ale fikcyjnymi danymi po polsku, dzięki czemu ten opis mógł powstać z prawdziwymi zrzutami ekranu bez ujawniania danych żadnej prawdziwej klientki — jego migracje schematu stosują się automatycznie w CI przy każdym mergu, celowo osobno od ręcznego, recenzowanego wdrożenia na produkcji.",
+        ctaText: "Budujesz coś dla kogoś, kogo dochód od tego zależy? Chętnie posłucham.",
+        detailGroups: [
+          {
+            heading: "Infrastruktura i niezawodność",
+            items: [
+              "To, co działa dziś, nie zaczęło się na Vercel — pierwsza wersja to samodzielnie hostowany stack FastAPI + Postgres + Redis w Docker Compose, wystawiony przez tunel ngrok z komputera w domu, więc cały system rezerwacji padał, gdy tylko ta maszyna była wyłączona albo zabrakło prądu.",
+              "Przepisałem to jako pojedynczą aplikację Next.js (API routes i frontend razem) hostowaną na Vercel z Supabase jako zarządzaną bazą danych, żeby dostępność przestała zależeć od domowego peceta — lokalny model czatu Ollama jest teraz jedynym elementem wciąż związanym z tą maszyną, wystawionym przez własny zabezpieczony tunel, ten sam wzorzec co w LifeOS.",
+              "To przepisanie wymagało też przerobienia auth: zamiast ręcznie napisanego flow OAuth (surowe wywołania httpx plus ciasteczka podpisywane przez itsdangerous) wszedł Auth.js — ten sam model zaufania oparty na allow-liście e-maili i ta sama nazwa zmiennej środowiskowej dla ciągłości, ale dużo mniej kodu auth do utrzymania.",
+              "Pipeline w GitHub Actions odpala zestaw testów backendu na jednorazowej bazie Postgres przy każdym pushu, bo bug tutaj wpływa na prawdziwy dochód kogoś innego.",
+            ],
+          },
+          {
+            heading: "Funkcje biznesowe",
+            items: [
+              "Dwukierunkowe SMS-y z przypomnieniami przez samodzielnie hostowaną bramkę działającą na karcie SIM w prawdziwym telefonie Android, a nie płatne API rozliczane za wiadomość.",
+              "Asystent AI oparty na lokalnym modelu, żeby dane klientów nigdy nie wychodziły poza maszynę — trudniejsze niż oczekiwałem było uzyskanie tool-callingu wystarczająco pewnego, by ufać mu przy prawdziwych rezerwacjach.",
+              "Poza rezerwacjami — dokumenty klientki z podpisem na canvasie zapisywanym jako wygenerowany PDF oraz widok finansów biznesowych (przychody, koszty, sumy okresowe) całkowicie osobny od prywatnego budżetu właścicielki.",
+              "Przedpłacone karnety i vouchery rozliczane stopniowo przy kolejnych wizytach oraz log zdjęć przed/po dla każdej klientki — oba w prywatnych bucketach Supabase, nigdy publiczne.",
+              "Ewidencja sprzedaży produktów — katalog ze stanami magazynowymi i wpis dla każdej sprzedaży zapisujący koszt z chwili sprzedaży, żeby marża zostawała dokładna nawet po późniejszej zmianie cen u dostawcy.",
+            ],
+          },
+          {
+            heading: "Dane i zaufanie",
+            items: [
+              "Drugie środowisko Supabase + Vercel, zasiane realistycznymi, ale fikcyjnymi danymi po polsku, dzięki czemu ten opis mógł powstać z prawdziwymi zrzutami ekranu bez ujawniania danych żadnej prawdziwej klientki — jego migracje schematu stosują się automatycznie w CI przy każdym mergu, celowo osobno od ręcznego, recenzowanego wdrożenia na produkcji.",
+            ],
+          },
         ],
       },
     },
@@ -138,7 +188,10 @@ const projectsData: ProjectData[] = [
 ];
 
 export function getProjects(locale: Locale): Project[] {
-  return projectsData.map(({ content, ...base }) => ({ ...base, ...content[locale] }));
+  return projectsData.map(({ content, ...base }) => {
+    const c = content[locale];
+    return { ...base, ...c, details: resolveDetails(c) };
+  });
 }
 
 export function getProjectSlugs(): string[] {
@@ -149,5 +202,6 @@ export function getProject(slug: string, locale: Locale): Project | undefined {
   const data = projectsData.find((p) => p.slug === slug);
   if (!data) return undefined;
   const { content, ...base } = data;
-  return { ...base, ...content[locale] };
+  const c = content[locale];
+  return { ...base, ...c, details: resolveDetails(c) };
 }

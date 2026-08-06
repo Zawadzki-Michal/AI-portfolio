@@ -54,7 +54,7 @@ export default async function ProjectPage({
 
       <div className="mt-6 flex items-center justify-between">
         <span className="label-mono">{project.category}</span>
-        <StatusDot />
+        <StatusDot label={t("status")} />
       </div>
       <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">{project.title}</h1>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -67,14 +67,32 @@ export default async function ProjectPage({
 
       <p className="mt-8 text-lg text-paper/80">{project.summary}</p>
 
-      <ul className="mt-6 flex flex-col gap-4">
-        {project.details.map((detail) => (
-          <li key={detail} className="flex gap-3 text-paper/70">
-            <span className="text-teal">›</span>
-            <span>{detail}</span>
-          </li>
-        ))}
-      </ul>
+      {project.detailGroups ? (
+        <div className="mt-6 flex flex-col gap-6">
+          {project.detailGroups.map((group, i) => (
+            <div key={group.heading ?? i} className="flex flex-col gap-3">
+              {group.heading && <span className="label-mono text-paper/40">{group.heading}</span>}
+              <ul className="flex flex-col gap-4">
+                {group.items.map((detail) => (
+                  <li key={detail} className="flex gap-3 text-paper/70">
+                    <span className="text-teal">›</span>
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <ul className="mt-6 flex flex-col gap-4">
+          {project.details.map((detail) => (
+            <li key={detail} className="flex gap-3 text-paper/70">
+              <span className="text-teal">›</span>
+              <span>{detail}</span>
+            </li>
+          ))}
+        </ul>
+      )}
 
       <ProjectGallery slug={project.slug} desktop={gallery.desktop} mobile={gallery.mobile} />
 
@@ -87,7 +105,7 @@ export default async function ProjectPage({
         </NextLink>
       )}
 
-      <CtaBlock ctaText={t("cta")} />
+      <CtaBlock ctaText={project.ctaText ?? t("cta")} />
 
       <Comments slug={`project:${project.slug}`} />
     </article>

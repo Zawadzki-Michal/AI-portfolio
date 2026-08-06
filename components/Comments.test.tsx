@@ -13,6 +13,7 @@ vi.mock("next-intl", () => ({
       submit: "Post",
       submitting: "Posting…",
       error: "Failed to post — try again.",
+      unavailable: "Comments are temporarily unavailable.",
       signIn: "Sign in with LinkedIn",
     })[key],
 }));
@@ -44,6 +45,24 @@ describe("Comments", () => {
     const { container } = render(<Comments slug="my-post" />);
 
     await waitFor(() => expect(container).toBeEmptyDOMElement());
+  });
+
+  it("shows a degraded message instead of vanishing when the initial fetch errors", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValueOnce(new Error("network down")));
+    useSessionMock.mockReturnValue({ data: null, status: "unauthenticated" });
+
+    render(<Comments slug="my-post" />);
+
+    expect(await screen.findByText("Comments are temporarily unavailable.")).toBeInTheDocument();
+  });
+
+  it("shows a degraded message instead of vanishing when the API responds with a server error", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValueOnce(new Response("boom", { status: 500 })));
+    useSessionMock.mockReturnValue({ data: null, status: "unauthenticated" });
+
+    render(<Comments slug="my-post" />);
+
+    expect(await screen.findByText("Comments are temporarily unavailable.")).toBeInTheDocument();
   });
 
   it("shows existing comments and a sign-in button when unauthenticated", async () => {

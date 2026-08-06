@@ -92,7 +92,8 @@
   "projectPage": {
     "back": "← back to projects",
     "readLog": "read the log →",
-    "cta": "Working on something similar? I'd like to hear about it"
+    "cta": "Working on something similar? I'd like to hear about it",
+    "status": "operational"
   },
   "projectGallery": {
     "heading": "Screenshots",
@@ -100,7 +101,9 @@
     "mobile": "Mobile",
     "close": "Close",
     "prev": "Previous screenshot",
-    "next": "Next screenshot"
+    "next": "Next screenshot",
+    "desktopThumbnail": "Desktop screenshot {index} of {total}",
+    "mobileThumbnail": "Mobile screenshot {index} of {total}"
   },
   "collaborate": {
     "metaTitle": "Collaborate — System Status",
@@ -183,7 +186,8 @@
     "placeholder": "Add a comment…",
     "submit": "Post comment",
     "submitting": "Posting…",
-    "error": "Something went wrong. Try again."
+    "error": "Something went wrong. Try again.",
+    "unavailable": "Comments are temporarily unavailable."
   },
   "notFound": {
     "metaTitle": "404 — System Status",
