@@ -3,15 +3,17 @@ import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { getAllPostSlugs, getPostBySlug, getRelatedPosts } from "@/lib/posts";
-import { tagUrl } from "@/lib/post-url";
+import { postUrl, tagUrl } from "@/lib/post-url";
 import { CtaBlock } from "@/components/CtaBlock";
 import { StatusDot } from "@/components/StatusDot";
 import { Comments } from "@/components/Comments";
 import { PostList } from "@/components/PostList";
 import { ReadingProgress } from "@/components/ReadingProgress";
+import { ShareButtons } from "@/components/ShareButtons";
 import { buildMetadata } from "@/lib/seo";
 import { articleSchema } from "@/lib/structured-data";
 import { JsonLd } from "@/components/JsonLd";
+import { siteConfig } from "@/lib/site-config";
 
 export function generateStaticParams() {
   const slugs = getAllPostSlugs();
@@ -91,6 +93,7 @@ export default async function PostPage({
         className="prose prose-headings:font-display prose-a:text-teal mt-10 max-w-none"
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
+      <ShareButtons url={`${siteConfig.url}${postUrl(slug, locale as Locale)}`} title={post.title} />
       <CtaBlock ctaText={post.cta_text} ctaLink={post.cta_link} />
       {related.length > 0 && (
         <section className="mt-16 border-t border-line pt-10">

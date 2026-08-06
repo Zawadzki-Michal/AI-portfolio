@@ -68,6 +68,7 @@ export function getPostSummary(slug: string, locale: Locale): PostSummary {
     cta_text: data.cta_text,
     cta_link: data.cta_link,
     source_url: data.source_url,
+    linkedin_description: data.linkedin_description,
   };
 }
 
@@ -91,6 +92,7 @@ export async function getPostBySlug(slug: string, locale: Locale): Promise<Post>
     cta_text: data.cta_text,
     cta_link: data.cta_link,
     source_url: data.source_url,
+    linkedin_description: data.linkedin_description,
     contentHtml: processed.toString(),
   };
 }

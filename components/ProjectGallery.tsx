@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslations } from "next-intl";
 
@@ -80,12 +81,15 @@ export function ProjectGallery({
                   <span className="h-2 w-2 rounded-full bg-teal/70" />
                   <span className="h-2 w-2 rounded-full bg-paper/30" />
                 </div>
-                <img
-                  src={imageUrl(slug, "desktop", file)}
-                  alt=""
-                  loading="lazy"
-                  className="aspect-video w-full object-cover object-top"
-                />
+                <div className="relative aspect-video w-full">
+                  <Image
+                    src={imageUrl(slug, "desktop", file)}
+                    alt=""
+                    fill
+                    sizes="288px"
+                    className="object-cover object-top"
+                  />
+                </div>
               </button>
             ))}
           </div>
@@ -103,10 +107,11 @@ export function ProjectGallery({
                 onClick={() => setLightbox({ variant: "mobile", index: i })}
                 className="shrink-0 overflow-hidden rounded-[1.75rem] border-4 border-panel bg-panel shadow-xl shadow-black/40 transition-transform hover:-translate-y-1"
               >
-                <img
+                <Image
                   src={imageUrl(slug, "mobile", file)}
                   alt=""
-                  loading="lazy"
+                  width={128}
+                  height={256}
                   className="h-64 w-32 object-cover"
                 />
               </button>
@@ -160,6 +165,15 @@ export function ProjectGallery({
               </>
             )}
 
+            {/*
+              Left as a plain img rather than next/image: its box is sized
+              from its own natural dimensions (max-h-[85vh] max-w-full,
+              object-contain), which vary per screenshot and aren't known
+              ahead of time — next/image needs either a static import or an
+              explicit width/height to lay out before the image loads. It's
+              also opened on demand, not part of initial page load, so it
+              doesn't affect LCP the way the always-visible thumbnails do.
+            */}
             <motion.img
               key={`${lightbox.variant}-${lightbox.index}`}
               initial={{ opacity: 0, scale: 0.97 }}

@@ -5,6 +5,7 @@ import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNav } from "./MobileNav";
 import { ThemeToggle } from "./ThemeToggle";
 import { LiveClock } from "./LiveClock";
+import { SearchLink } from "./SearchLink";
 
 export function SiteNav() {
   const t = useTranslations("nav");
@@ -31,6 +32,7 @@ export function SiteNav() {
           ))}
         </nav>
         <div className="flex items-center gap-4">
+          <SearchLink />
           <LanguageSwitcher />
           <ThemeToggle />
           <LiveClock className="hidden border-l border-line pl-4 lg:inline" />

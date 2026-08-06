@@ -18,6 +18,7 @@ GitHub Action publishes it to LinkedIn with a link back to the article.
   - `publish-to-linkedin.yml` — on push to `main` touching `posts/**`, waits for the new post's page to go live, then publishes it to LinkedIn. Also runnable manually (`workflow_dispatch`) with a `post_slug` input to retry a single post without a new commit.
   - `generate-draft.yml` — scheduled job that pulls RSS feeds, asks a model to draft a post, and opens a PR for review
   - `generate-linkedin-description.yml` — on push to any branch other than `main` touching `posts/**` (covers both a manually-pushed post and `generate-draft.yml`'s draft branch), fills in `linkedin_description` on any post that doesn't have one yet and commits it back to that branch — so the LinkedIn teaser is visible in the PR diff before merge, see [LinkedIn description](#linkedin-description). Also runnable manually (`workflow_dispatch`) to backfill an existing branch that predates this workflow, without needing a throwaway `posts/**` edit just to trigger it.
+  - `linkedin-token-health-check.yml` — scheduled weekly job that reserves (but never completes) a LinkedIn image upload as a cheap way to confirm `LINKEDIN_ACCESS_TOKEN` is still valid, so a revoked/expired token (they last 60 days, see [LinkedIn API notes](#linkedin-api-notes)) is caught days ahead of the next post instead of failing mid-publish. Also runnable manually.
   - `ci.yml` — typecheck, unit tests, and build on every push/PR to `main`
 - **AI drafting:** [OpenRouter](https://openrouter.ai/) (routed to a Claude model by default — see `automation/draft-instructions.md`)
 - **Testing:** Vitest, unit tests for the content layer, the LinkedIn API client, and the draft pipeline's pure helpers
@@ -245,8 +246,8 @@ the production domain ever changes from the hardcoded fallback).
 
 | Secret | Used by | Notes |
 | --- | --- | --- |
-| `LINKEDIN_ACCESS_TOKEN` | publish-to-linkedin | `w_member_social` scope, 60-day token (see below) |
-| `LINKEDIN_AUTHOR_URN` | publish-to-linkedin | e.g. `urn:li:person:xxxxxxxx` |
+| `LINKEDIN_ACCESS_TOKEN` | publish-to-linkedin, linkedin-token-health-check | `w_member_social` scope, 60-day token (see below) |
+| `LINKEDIN_AUTHOR_URN` | publish-to-linkedin, linkedin-token-health-check | e.g. `urn:li:person:xxxxxxxx` |
 | `OPENROUTER_API_KEY` | generate-draft | From [openrouter.ai/keys](https://openrouter.ai/keys) |
 
 ### GitHub Actions repository variables
@@ -325,8 +326,11 @@ server, edge, and client instead of juggling separate public/private ones.
 - LinkedIn's Posts API allows only one content type per post: an image/
   multi-image block, **or** a link-preview (`article`) block — not both. If
   a post has images, they're attached as media and the article link is
-  appended as plain text in the commentary; if it has no images, the post
-  uses the `article` content type so LinkedIn renders a link preview.
+  appended as plain text in the commentary. The `article` block doesn't
+  crawl the URL for an `og:image` the way old-style shares did, so a post
+  with no hand-picked images falls back to uploading the site's own
+  generated OG image (`{post}/opengraph-image`) as its media instead of
+  using the imageless `article` type.
 
 ## Draft generation
 

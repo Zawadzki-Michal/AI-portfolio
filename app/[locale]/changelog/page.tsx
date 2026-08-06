@@ -23,7 +23,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ loca
   const { locale } = await params;
   setRequestLocale(locale as Locale);
   const t = await getTranslations("changelog");
-  const entries = await getChangelog();
+  const { entries, ok } = await getChangelog();
 
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
@@ -32,7 +32,9 @@ export default async function ChangelogPage({ params }: { params: Promise<{ loca
         <StatusDot label={t("countLabel", { count: entries.length })} />
       </div>
 
-      {entries.length === 0 ? (
+      {!ok ? (
+        <p className="text-amber">{t("fetchErrorMsg")}</p>
+      ) : entries.length === 0 ? (
         <p className="text-paper/50">{t("emptyMsg")}</p>
       ) : (
         <ol className="flex flex-col gap-10 border-l border-line pl-6">

@@ -1,0 +1,54 @@
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4FD1C5" stop-opacity="0"/>
+      <stop offset="1" stop-color="#4FD1C5" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#0E1116"/>
+
+  <!-- brand mark, top-left -->
+  <circle cx="90" cy="86" r="10" fill="#F2A93B"/>
+  <text x="114" y="93" font-family="monospace" font-size="22" letter-spacing="2" fill="#ECE8E1" fill-opacity="0.6">mz.status / log</text>
+
+  <!-- left panel: opencode, faded/muted -->
+  <rect x="80" y="150" width="440" height="300" rx="10" fill="none" stroke="#2A313C" stroke-width="2"/>
+  <circle cx="112" cy="182" r="6" fill="#2A313C"/>
+  <circle cx="132" cy="182" r="6" fill="#2A313C"/>
+  <circle cx="152" cy="182" r="6" fill="#2A313C"/>
+  <text x="112" y="230" font-family="monospace" font-size="22" fill="#ECE8E1" fill-opacity="0.45">$ opencode</text>
+  <text x="112" y="264" font-family="monospace" font-size="18" fill="#ECE8E1" fill-opacity="0.3">get_ticket_number(...)</text>
+  <text x="112" y="292" font-family="monospace" font-size="18" fill="#ECE8E1" fill-opacity="0.3">kb.db · sqlite</text>
+  <text x="112" y="320" font-family="monospace" font-size="18" fill="#ECE8E1" fill-opacity="0.3">./scripts/*.py</text>
+  <text x="112" y="410" font-family="monospace" font-size="16" fill="#ECE8E1" fill-opacity="0.35">two months of habits</text>
+
+  <!-- right panel: claude code, live -->
+  <rect x="680" y="150" width="440" height="300" rx="10" fill="none" stroke="#4FD1C5" stroke-width="2"/>
+  <circle cx="712" cy="182" r="6" fill="#4FD1C5"/>
+  <circle cx="732" cy="182" r="6" fill="#4FD1C5"/>
+  <circle cx="752" cy="182" r="6" fill="#4FD1C5"/>
+  <text x="712" y="230" font-family="monospace" font-size="22" fill="#ECE8E1">$ claude</text>
+  <text x="712" y="264" font-family="monospace" font-size="18" fill="#4FD1C5">mcp__ticketing__get_ticket</text>
+  <text x="712" y="292" font-family="monospace" font-size="18" fill="#4FD1C5">router: CLAUDE.md</text>
+  <text x="712" y="320" font-family="monospace" font-size="18" fill="#4FD1C5">skills/*</text>
+  <text x="712" y="410" font-family="monospace" font-size="16" fill="#ECE8E1" fill-opacity="0.55">gone in a few days</text>
+
+  <!-- connecting arrow -->
+  <rect x="520" y="296" width="160" height="8" fill="url(#fade)"/>
+  <path d="M672 300 L648 288 L648 312 Z" fill="#4FD1C5"/>
+
+  <!-- three pillars, bottom -->
+  <g font-family="monospace" font-size="18" fill="#ECE8E1" fill-opacity="0.7">
+    <rect x="80" y="500" width="140" height="44" rx="22" fill="none" stroke="#2A313C" stroke-width="1.5"/>
+    <text x="150" y="528" text-anchor="middle">tools</text>
+
+    <rect x="240" y="500" width="140" height="44" rx="22" fill="none" stroke="#2A313C" stroke-width="1.5"/>
+    <text x="310" y="528" text-anchor="middle">skills</text>
+
+    <rect x="400" y="500" width="140" height="44" rx="22" fill="none" stroke="#2A313C" stroke-width="1.5"/>
+    <text x="470" y="528" text-anchor="middle">router</text>
+  </g>
+
+  <text x="1120" y="565" font-family="monospace" font-size="18" fill="#F2A93B" text-anchor="end" opacity="0.85">#ai #automation #devops</text>
+</svg>
