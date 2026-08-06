@@ -9,6 +9,7 @@
     "log": "log",
     "changelog": "changelog",
     "collaborate": "kontakt",
+    "search": "szukaj",
     "status": "wszystko działa"
   },
   "footer": {
@@ -142,6 +143,12 @@
   "relatedPosts": {
     "heading": "Powiązane wpisy"
   },
+  "share": {
+    "label": "Udostępnij ten wpis",
+    "linkedin": "Udostępnij na LinkedIn",
+    "facebook": "Udostępnij na Facebooku",
+    "x": "Udostępnij na X"
+  },
   "tagsIndex": {
     "metaTitle": "Tagi — System Status",
     "metaDescription": "Wpisy pogrupowane tematycznie — Azure, DevOps, AI i wszystko pomiędzy.",
@@ -158,7 +165,23 @@
     "metaDescription": "Co i kiedy wdrożono — historia wydań tej strony, pobierana bezpośrednio z GitHuba.",
     "title": "Changelog",
     "countLabel": "{count} wydań",
-    "emptyMsg": "Jeszcze brak wydań."
+    "emptyMsg": "Jeszcze brak wydań.",
+    "fetchErrorMsg": "Nie udało się teraz pobrać historii wydań z GitHuba — odśwież stronę albo sprawdź ponownie po kolejnym wdrożeniu."
+  },
+  "search": {
+    "metaTitle": "Szukaj — System Status",
+    "metaDescription": "Przeszukaj wpisy, projekty i tagi na stronie.",
+    "title": "Szukaj",
+    "placeholder": "Szukaj wpisów, projektów, tagów…",
+    "searching": "Szukam…",
+    "noResults": "Brak wyników dla „{query}”."
+  },
+  "notFound": {
+    "metaTitle": "404 — System Status",
+    "status": "404 · trasa niemonitorowana",
+    "title": "Ta strona nie jest częścią wdrożenia.",
+    "description": "Szukana trasa nie istnieje albo się przeniosła. Sprawdź adres URL albo wróć na stronę główną.",
+    "cta": "← Wróć na stronę główną"
   },
   "comments": {
     "heading": "Komentarze",

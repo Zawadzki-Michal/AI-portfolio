@@ -11,6 +11,12 @@ export type ChangelogEntry = {
   bodyHtml: string;
 };
 
+export type ChangelogResult = {
+  entries: ChangelogEntry[];
+  /** false if the GitHub API request itself failed — distinct from a real "no releases yet". */
+  ok: boolean;
+};
+
 type GithubRelease = {
   tag_name: string;
   name: string | null;
@@ -21,8 +27,9 @@ type GithubRelease = {
   prerelease: boolean;
 };
 
-export async function getChangelog(): Promise<ChangelogEntry[]> {
+export async function getChangelog(): Promise<ChangelogResult> {
   let releases: GithubRelease[] = [];
+  let ok = true;
   try {
     // force-cache: fetched once at build time, same as every other content
     // source on this site (posts/projects read from disk). Release notes
@@ -34,13 +41,19 @@ export async function getChangelog(): Promise<ChangelogEntry[]> {
     });
     if (res.ok) {
       releases = await res.json();
+    } else {
+      ok = false;
+      console.error(`getChangelog: GitHub API returned ${res.status} ${res.statusText}`);
     }
-  } catch {
+  } catch (err) {
     // A GitHub API hiccup during build shouldn't fail the whole site build —
-    // the page below just renders its empty state until the next deploy.
+    // the page below renders a distinct "couldn't load" state instead of
+    // silently claiming there are no releases.
+    ok = false;
+    console.error("getChangelog: fetch failed", err);
   }
 
-  return Promise.all(
+  const entries = await Promise.all(
     releases
       .filter((release) => !release.draft && !release.prerelease)
       .map(async (release) => {
@@ -54,4 +67,6 @@ export async function getChangelog(): Promise<ChangelogEntry[]> {
         };
       }),
   );
+
+  return { entries, ok };
 }

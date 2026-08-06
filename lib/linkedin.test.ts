@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { contentTypeFor, createPost, uploadImage, type LinkedInConfig } from "./linkedin";
+import { checkTokenHealth, contentTypeFor, createPost, uploadImage, type LinkedInConfig } from "./linkedin";
 
 const config: LinkedInConfig = {
   accessToken: "token-123",
@@ -50,6 +50,33 @@ describe("uploadImage", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(uploadImage(config, Buffer.from("x"))).rejects.toThrow(/initializeUpload failed/);
+  });
+});
+
+describe("checkTokenHealth", () => {
+  it("resolves without completing an upload when initializeUpload succeeds", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          value: { uploadUrl: "https://upload.example/target", image: "urn:li:image:xyz" },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(checkTokenHealth(config)).resolves.toBeUndefined();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain("/rest/images?action=initializeUpload");
+  });
+
+  it("throws when the token is invalid or revoked", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response('{"code":"REVOKED_ACCESS_TOKEN"}', { status: 401 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(checkTokenHealth(config)).rejects.toThrow(/initializeUpload failed/);
   });
 });
 

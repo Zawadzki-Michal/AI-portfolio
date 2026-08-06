@@ -43,14 +43,9 @@ function authHeaders(config: LinkedInConfig, extra?: Record<string, string>) {
   };
 }
 
-/**
- * Uploads a single image buffer to LinkedIn and returns its image URN.
- */
-export async function uploadImage(
+async function initializeImageUpload(
   config: LinkedInConfig,
-  imageBuffer: Buffer,
-  contentType = "image/png",
-): Promise<string> {
+): Promise<{ uploadUrl: string; imageUrn: string }> {
   const initRes = await fetch(`${LINKEDIN_API_BASE}/rest/images?action=initializeUpload`, {
     method: "POST",
     headers: authHeaders(config, { "Content-Type": "application/json" }),
@@ -65,8 +60,18 @@ export async function uploadImage(
   }
 
   const initData = await initRes.json();
-  const uploadUrl: string = initData.value.uploadUrl;
-  const imageUrn: string = initData.value.image;
+  return { uploadUrl: initData.value.uploadUrl, imageUrn: initData.value.image };
+}
+
+/**
+ * Uploads a single image buffer to LinkedIn and returns its image URN.
+ */
+export async function uploadImage(
+  config: LinkedInConfig,
+  imageBuffer: Buffer,
+  contentType = "image/png",
+): Promise<string> {
+  const { uploadUrl, imageUrn } = await initializeImageUpload(config);
 
   const uploadRes = await fetch(uploadUrl, {
     method: "PUT",
@@ -83,6 +88,17 @@ export async function uploadImage(
   }
 
   return imageUrn;
+}
+
+/**
+ * Reserves (but never completes) an image upload as a cheap way to prove
+ * LINKEDIN_ACCESS_TOKEN is still valid and still has the w_member_social
+ * scope — the same failure mode (401 REVOKED_ACCESS_TOKEN) that only used
+ * to surface when a real post tried to publish. An unfinished upload
+ * session just expires on LinkedIn's side; nothing is created.
+ */
+export async function checkTokenHealth(config: LinkedInConfig): Promise<void> {
+  await initializeImageUpload(config);
 }
 
 export type CreatePostOptions = {

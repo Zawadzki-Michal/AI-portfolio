@@ -2,17 +2,23 @@
   "name": "ai-portfolio",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "pagefind --site .next/server/app --output-path public/pagefind",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "generate-draft": "tsx scripts/generate-draft.ts",
     "generate-linkedin-description": "tsx scripts/generate-linkedin-description.ts",
     "publish-linkedin": "tsx scripts/publish-to-linkedin.ts",
+    "check-linkedin-token": "tsx scripts/check-linkedin-token.ts",
     "db:init": "tsx --env-file=.env.local scripts/init-comments-db.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
@@ -20,7 +26,7 @@
     "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.42.2",
     "gray-matter": "^4.0.3",
-    "next": "^15.1.0",
+    "next": "^16.2.12",
     "next-auth": "^5.0.0-beta.32",
     "next-intl": "^4.13.4",
     "react": "^19.0.0",
@@ -30,15 +36,25 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.15",
-    "@types/node": "^22.10.2",
+    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.13.3",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^4.7.0",
+    "@vitest/coverage-v8": "^2.1.8",
     "autoprefixer": "^10.4.20",
+    "jsdom": "^30.0.1",
+    "pagefind": "^1.5.2",
     "postcss": "^8.4.49",
     "rss-parser": "^3.13.0",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
+  },
+  "overrides": {
+    "sharp": "^0.35.3"
   }
 }

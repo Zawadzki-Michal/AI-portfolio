@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
 import type { Comment } from "@/lib/comments";
@@ -72,10 +73,11 @@ function CommentsBody({ slug, initialComments }: { slug: string; initialComments
         {comments.map((comment) => (
           <li key={comment.id} className="panel-card flex gap-3 p-4">
             {comment.authorImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Image
                 src={comment.authorImage}
                 alt=""
+                width={36}
+                height={36}
                 className="h-9 w-9 shrink-0 rounded-full"
               />
             ) : (

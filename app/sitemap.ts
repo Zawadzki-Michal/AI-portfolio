@@ -4,6 +4,9 @@ import { getAllPosts, getAllTags } from "@/lib/posts";
 import { getProjects } from "@/lib/projects";
 import { siteConfig } from "@/lib/site-config";
 
+// /search isn't included here: it has no query-specific content of its own
+// to index (results render client-side), so a bare search page in a sitemap
+// is just noise for crawlers rather than a useful URL to prioritize.
 const STATIC_PATHS = ["", "/about", "/projects", "/posts", "/collaborate", "/tags", "/changelog"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

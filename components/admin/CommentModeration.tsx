@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Comment = {
   id: number;
@@ -55,8 +56,7 @@ export function CommentModeration() {
         <div key={comment.id} className="panel-card flex flex-col gap-3 p-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex gap-3">
             {comment.authorImage && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={comment.authorImage} alt={comment.authorName} className="h-9 w-9 rounded-full" />
+              <Image src={comment.authorImage} alt={comment.authorName} width={36} height={36} className="h-9 w-9 rounded-full" />
             )}
             <div>
               <p className="font-mono text-sm">
