@@ -5,8 +5,19 @@ import type { ReactNode } from "react";
 import { ProjectGallery } from "./ProjectGallery";
 
 vi.mock("next-intl", () => ({
-  useTranslations: () => (key: string) =>
-    ({ heading: "Screenshots", desktop: "Desktop", mobile: "Mobile", close: "Close", prev: "Previous", next: "Next" })[key],
+  useTranslations: () => (key: string, values?: { index: number; total: number }) =>
+    (
+      ({
+        heading: "Screenshots",
+        desktop: "Desktop",
+        mobile: "Mobile",
+        close: "Close",
+        prev: "Previous",
+        next: "Next",
+        desktopThumbnail: `Desktop screenshot ${values?.index} of ${values?.total}`,
+        mobileThumbnail: `Mobile screenshot ${values?.index} of ${values?.total}`,
+      }) as Record<string, string>
+    )[key],
 }));
 
 // AnimatePresence holds exiting elements mounted until their exit animation
@@ -34,6 +45,24 @@ describe("ProjectGallery", () => {
   it("renders a thumbnail button per desktop and mobile image", () => {
     render(<ProjectGallery slug="lifeos" desktop={["a.png", "b.png"]} mobile={["c.png"]} />);
     expect(screen.getAllByRole("button")).toHaveLength(3);
+  });
+
+  it("gives every thumbnail an accessible name with its position", () => {
+    render(<ProjectGallery slug="lifeos" desktop={["a.png", "b.png"]} mobile={["c.png"]} />);
+    expect(screen.getByRole("button", { name: "Desktop screenshot 1 of 2" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Desktop screenshot 2 of 2" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Mobile screenshot 1 of 1" })).toBeInTheDocument();
+  });
+
+  it("gives the lightbox image an accessible name matching the active thumbnail", async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <ProjectGallery slug="lifeos" desktop={["a.png", "b.png"]} mobile={[]} />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Desktop screenshot 2 of 2" }));
+
+    expect(lightboxImg(container)).toHaveAttribute("alt", "Desktop screenshot 2 of 2");
   });
 
   it("opens the lightbox on thumbnail click, showing prev/next for a multi-image set", async () => {

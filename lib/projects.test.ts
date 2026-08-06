@@ -27,6 +27,20 @@ describe("getProjects", () => {
     const plProject = getProjects("pl").find((p) => p.slug === "lifeos");
     expect(enProject?.title).not.toBe(plProject?.title);
   });
+
+  it("flattens detailGroups into details for a grouped project", () => {
+    const project = getProjects("en").find((p) => p.slug === "small-business-booking-assistant");
+    expect(project?.detailGroups).toBeDefined();
+    const flattened = project!.detailGroups!.flatMap((group) => group.items);
+    expect(project?.details).toEqual(flattened);
+    expect(project?.details.length).toBeGreaterThan(0);
+  });
+
+  it("leaves details as a plain flat list for an ungrouped project", () => {
+    const project = getProjects("en").find((p) => p.slug === "lifeos");
+    expect(project?.detailGroups).toBeUndefined();
+    expect(project?.details.length).toBeGreaterThan(0);
+  });
 });
 
 describe("getProject", () => {

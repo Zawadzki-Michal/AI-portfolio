@@ -7,18 +7,27 @@ import { SessionProvider, signIn, useSession } from "next-auth/react";
 import type { Comment } from "@/lib/comments";
 
 export function Comments({ slug }: { slug: string }) {
+  const t = useTranslations("comments");
   const [configured, setConfigured] = useState<boolean | null>(null);
+  const [fetchError, setFetchError] = useState(false);
   const [initialComments, setInitialComments] = useState<Comment[]>([]);
 
   useEffect(() => {
     fetch(`/api/comments?slug=${encodeURIComponent(slug)}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("failed");
+        return res.json();
+      })
       .then((data) => {
         setConfigured(Boolean(data.configured));
         setInitialComments(data.comments ?? []);
       })
-      .catch(() => setConfigured(false));
+      .catch(() => setFetchError(true));
   }, [slug]);
+
+  if (fetchError) {
+    return <p className="mt-16 text-sm text-paper/60">{t("unavailable")}</p>;
+  }
 
   if (!configured) return null;
 
