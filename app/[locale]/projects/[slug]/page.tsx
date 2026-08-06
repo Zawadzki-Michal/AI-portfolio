@@ -23,7 +23,7 @@ export async function generateMetadata({
 }) {
   const { locale, slug } = await params;
   const project = getProject(slug, locale as Locale);
-  if (!project) return { title: "Project not found" };
+  if (!project) return { title: "404 — System Status", robots: { index: false, follow: false } };
   return buildMetadata({
     title: `${project.title} — System Status`,
     description: project.summary,

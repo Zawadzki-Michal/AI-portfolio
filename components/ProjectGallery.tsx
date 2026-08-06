@@ -47,7 +47,12 @@ export function ProjectGallery({
       if (e.key === "ArrowLeft") step(-1);
     }
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = overflow;
+    };
   }, [lightbox, close, step]);
 
   if (desktop.length === 0 && mobile.length === 0) return null;

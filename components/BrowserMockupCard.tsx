@@ -29,13 +29,13 @@ export function BrowserMockupCard({ url, rows }: { url: string; rows: TaskRow[] 
             transition={{ delay: 0.35 + i * 0.15, duration: 0.3, ease: "easeOut" }}
             className="flex items-center justify-between gap-4 rounded-md border border-line bg-ink/40 px-3 py-2.5"
           >
-            <div className="flex items-center gap-2">
+            <div className="flex min-w-0 items-center gap-2">
               {row.state === "done" ? (
-                <span className="text-teal">✓</span>
+                <span className="shrink-0 text-teal">✓</span>
               ) : (
-                <span className="status-dot" />
+                <span className="status-dot shrink-0" />
               )}
-              <span className="text-sm text-paper/80">{row.label}</span>
+              <span className="truncate text-sm text-paper/80">{row.label}</span>
             </div>
             <span className="label-mono shrink-0">{row.meta}</span>
           </motion.div>

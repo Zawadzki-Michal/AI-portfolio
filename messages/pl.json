@@ -168,5 +168,12 @@
     "submit": "Dodaj komentarz",
     "submitting": "Publikowanie…",
     "error": "Coś poszło nie tak. Spróbuj ponownie."
+  },
+  "notFound": {
+    "metaTitle": "404 — System Status",
+    "statusLabel": "404 · trasa nieznaleziona",
+    "title": "Ta strona nigdy się nie wdrożyła.",
+    "body": "To, czego szukasz, albo się przeniosło, albo nigdy nie przeszło builda. Sprawdź loga albo wróć na stronę główną.",
+    "cta": "wróć na stronę główną →"
   }
 }
