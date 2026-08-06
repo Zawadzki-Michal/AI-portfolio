@@ -38,7 +38,12 @@ export default async function HomePage({
   const t = await getTranslations("home");
 
   const posts = getAllPosts(locale as Locale).slice(0, 5);
-  const featuredProjects = getProjects(locale as Locale).slice(0, 2);
+  // Prefer one project per category over raw array order, so the teaser
+  // doesn't accidentally show two projects from the same pillar.
+  const allProjects = getProjects(locale as Locale);
+  const featuredProjects = allProjects
+    .filter((project, i) => allProjects.findIndex((p) => p.category === project.category) === i)
+    .slice(0, 2);
 
   return (
     <>
