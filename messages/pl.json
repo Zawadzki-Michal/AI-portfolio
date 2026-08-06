@@ -176,13 +176,6 @@
     "searching": "Szukam…",
     "noResults": "Brak wyników dla „{query}”."
   },
-  "notFound": {
-    "metaTitle": "404 — System Status",
-    "status": "404 · trasa niemonitorowana",
-    "title": "Ta strona nie jest częścią wdrożenia.",
-    "description": "Szukana trasa nie istnieje albo się przeniosła. Sprawdź adres URL albo wróć na stronę główną.",
-    "cta": "← Wróć na stronę główną"
-  },
   "comments": {
     "heading": "Komentarze",
     "empty": "Brak komentarzy — bądź pierwszy.",

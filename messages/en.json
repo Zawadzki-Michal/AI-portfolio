@@ -176,13 +176,6 @@
     "searching": "Searching…",
     "noResults": "No results for \"{query}\"."
   },
-  "notFound": {
-    "metaTitle": "404 — System Status",
-    "status": "404 · route not monitored",
-    "title": "This page isn't part of the deployment.",
-    "description": "The route you're looking for doesn't exist, or it moved. Check the URL, or head back to the homepage.",
-    "cta": "← Return to home"
-  },
   "comments": {
     "heading": "Comments",
     "empty": "No comments yet — be the first.",
