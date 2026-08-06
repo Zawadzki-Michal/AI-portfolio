@@ -44,7 +44,7 @@ export default async function ProjectsPage({
         </div>
         <p className="max-w-2xl text-paper/70">{t("intro")}</p>
       </ScrollReveal>
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-10 flex flex-col gap-4">
         {projects.map((project, i) => (
           <ProjectCard key={project.slug} project={project} index={i} />
         ))}

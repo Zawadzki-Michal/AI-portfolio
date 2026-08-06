@@ -87,9 +87,9 @@ export default async function HomePage({
               {t("viewAll")}
             </Link>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid items-start gap-4 sm:grid-cols-2">
             {featuredProjects.map((project, i) => (
-              <ProjectCard key={project.slug} project={project} index={i} />
+              <ProjectCard key={project.slug} project={project} index={i} detailsLimit={3} />
             ))}
           </div>
         </ScrollReveal>

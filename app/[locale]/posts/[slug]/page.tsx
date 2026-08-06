@@ -41,7 +41,7 @@ export async function generateMetadata({
       publishedTime: post.date,
     });
   } catch {
-    return { title: "Post not found" };
+    return { title: "404 — System Status", robots: { index: false, follow: false } };
   }
 }
 

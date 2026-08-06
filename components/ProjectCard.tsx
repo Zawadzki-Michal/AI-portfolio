@@ -7,9 +7,19 @@ import type { Locale } from "@/i18n/routing";
 import { StatusDot } from "./StatusDot";
 import { AnimatedCard } from "./AnimatedCard";
 
-export function ProjectCard({ project, index = 0 }: { project: Project; index?: number }) {
+export function ProjectCard({
+  project,
+  index = 0,
+  detailsLimit,
+}: {
+  project: Project;
+  index?: number;
+  detailsLimit?: number;
+}) {
   const locale = useLocale() as Locale;
   const t = useTranslations("projectCard");
+  const details = project.details ?? [];
+  const visibleDetails = detailsLimit ? details.slice(0, detailsLimit) : details;
 
   return (
     <AnimatedCard index={index}>
@@ -22,11 +32,11 @@ export function ProjectCard({ project, index = 0 }: { project: Project; index?: 
           {project.title}
         </LocaleLink>
       </h3>
-      <p className="text-sm text-paper/70">{project.summary}</p>
-      <ul className="flex flex-col gap-2">
-        {(project.details ?? []).map((detail) => (
+      <p className="max-w-2xl text-sm text-paper/70">{project.summary}</p>
+      <ul className="flex max-w-2xl flex-col gap-2">
+        {visibleDetails.map((detail) => (
           <li key={detail} className="flex gap-2 text-sm text-paper/60">
-            <span className="text-teal">›</span>
+            <span className="shrink-0 text-teal">›</span>
             {detail}
           </li>
         ))}

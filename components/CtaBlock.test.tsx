@@ -4,7 +4,11 @@ import type { ReactNode } from "react";
 import { CtaBlock } from "./CtaBlock";
 
 vi.mock("next-intl", () => ({
-  useTranslations: () => (key: string) => ({ collaborateCta: "let's talk" })[key],
+  useTranslations: (namespace: string) => (key: string) =>
+    ({
+      home: { collaborateCta: "let's talk" },
+      projectPage: { cta: "Working on something similar? I'd like to hear about it" },
+    })[namespace]?.[key],
 }));
 
 vi.mock("@/i18n/navigation", () => ({
@@ -16,9 +20,11 @@ vi.mock("@/i18n/navigation", () => ({
 }));
 
 describe("CtaBlock", () => {
-  it("renders the default Polish CTA copy and collaborate link", () => {
+  it("falls back to the translated CTA copy when no ctaText is provided", () => {
     render(<CtaBlock />);
-    expect(screen.getByText(/Chcesz wdrożyć coś podobnego/)).toBeInTheDocument();
+    expect(
+      screen.getByText("Working on something similar? I'd like to hear about it"),
+    ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "let's talk" })).toHaveAttribute("href", "/collaborate");
   });
 
