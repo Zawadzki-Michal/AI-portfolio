@@ -24,7 +24,7 @@ export function SiteNav() {
         <Link href="/" className="font-display text-lg font-semibold tracking-tight">
           mz<span className="text-amber">.</span>status
         </Link>
-        <nav className="hidden items-center gap-6 font-mono text-sm text-paper/70 sm:flex">
+        <nav className="hidden items-center gap-6 font-mono text-sm text-paper/70 lg:flex">
           {links.map((link) => (
             <Link key={link.href} href={link.href} className="transition hover:text-paper">
               /{link.label}

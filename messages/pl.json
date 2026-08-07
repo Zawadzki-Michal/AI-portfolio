@@ -127,7 +127,8 @@
     "sendButton": "wyślij wiadomość →",
     "sending": "wysyłanie…",
     "successMsg": "> wiadomość dotarła. Odezwę się wkrótce.",
-    "errorMsg": "> coś poszło nie tak. Napisz do mnie bezpośrednio na maila."
+    "errorMsg": "> coś poszło nie tak. Napisz do mnie bezpośrednio na maila.",
+    "sendAnother": "wyślij kolejną wiadomość"
   },
   "contactChannels": {
     "directChannels": "bezpośredni kontakt",

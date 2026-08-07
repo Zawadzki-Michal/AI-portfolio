@@ -52,10 +52,7 @@ export default async function CollaboratePage({
       <div className="mt-12 grid gap-4 sm:grid-cols-3">
         {offers.map((offer, i) => (
           <AnimatedCard key={offer.title} index={i}>
-            <div className="flex flex-col gap-2">
-              <StatusDot />
-              <h2 className="font-display text-lg font-semibold">{offer.title}</h2>
-            </div>
+            <h2 className="font-display text-lg font-semibold">{offer.title}</h2>
             <p className="text-sm text-paper/70">{offer.description}</p>
           </AnimatedCard>
         ))}
@@ -63,14 +60,16 @@ export default async function CollaboratePage({
 
       <ScrollReveal delay={0.1}>
         <div className="mt-16 grid gap-8 sm:grid-cols-2">
-          <div>
+          <div className="order-2 sm:order-1">
             <h2 className="font-display text-2xl font-semibold">{t("getInTouch")}</h2>
             <p className="mt-3 max-w-md text-paper/70">{t("getInTouchBody")}</p>
             <div className="mt-6">
               <ContactChannels />
             </div>
           </div>
-          <ContactForm />
+          <div className="order-1 sm:order-2">
+            <ContactForm />
+          </div>
         </div>
       </ScrollReveal>
     </section>

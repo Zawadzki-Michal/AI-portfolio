@@ -90,7 +90,7 @@ export default async function PostPage({
         ))}
       </div>
       <div
-        className="prose prose-headings:font-display prose-a:text-teal mt-10 max-w-none"
+        className="prose prose-headings:font-display prose-a:text-teal prose-code:break-words mt-10 max-w-none"
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
       <ShareButtons url={`${siteConfig.url}${postUrl(slug, locale as Locale)}`} title={post.title} />
