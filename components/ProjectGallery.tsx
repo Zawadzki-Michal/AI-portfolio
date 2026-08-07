@@ -24,12 +24,20 @@ export function ProjectGallery({
 }) {
   const t = useTranslations("projectGallery");
   const [lightbox, setLightbox] = useState<LightboxState | null>(null);
+  // Which way the lightbox last moved, so the transition can slide in the
+  // matching direction instead of a directionless cross-fade.
+  const [direction, setDirection] = useState(0);
 
   const lists: Record<Variant, string[]> = { desktop, mobile };
 
   const close = useCallback(() => setLightbox(null), []);
+  const open = useCallback((variant: Variant, index: number) => {
+    setDirection(0);
+    setLightbox({ variant, index });
+  }, []);
   const step = useCallback(
     (delta: number) => {
+      setDirection(delta > 0 ? 1 : -1);
       setLightbox((current) => {
         if (!current) return current;
         const list = lists[current.variant];
@@ -80,14 +88,14 @@ export function ProjectGallery({
               <button
                 key={file}
                 type="button"
-                onClick={() => setLightbox({ variant: "desktop", index: i })}
+                onClick={() => open("desktop", i)}
                 aria-label={t("desktopThumbnail", { index: i + 1, total: desktop.length })}
                 className="panel-card w-72 shrink-0 overflow-hidden text-left transition-transform hover:-translate-y-1"
               >
                 <div className="flex items-center gap-1.5 border-b border-line bg-ink/60 px-3 py-2">
-                  <span className="h-2 w-2 rounded-full bg-amber/70" />
-                  <span className="h-2 w-2 rounded-full bg-teal/70" />
-                  <span className="h-2 w-2 rounded-full bg-paper/30" />
+                  <span className="h-2 w-2 animate-chrome-dot-breathe rounded-full bg-amber/70" />
+                  <span className="h-2 w-2 animate-chrome-dot-breathe rounded-full bg-teal/70 [animation-delay:200ms]" />
+                  <span className="h-2 w-2 animate-chrome-dot-breathe rounded-full bg-paper/30 [animation-delay:400ms]" />
                 </div>
                 <div className="relative aspect-video w-full">
                   <Image
@@ -112,7 +120,7 @@ export function ProjectGallery({
               <button
                 key={file}
                 type="button"
-                onClick={() => setLightbox({ variant: "mobile", index: i })}
+                onClick={() => open("mobile", i)}
                 aria-label={t("mobileThumbnail", { index: i + 1, total: mobile.length })}
                 className="shrink-0 overflow-hidden rounded-[1.75rem] border-4 border-panel bg-panel shadow-xl shadow-black/40 transition-transform hover:-translate-y-1"
               >
@@ -183,16 +191,19 @@ export function ProjectGallery({
               also opened on demand, not part of initial page load, so it
               doesn't affect LCP the way the always-visible thumbnails do.
             */}
-            <motion.img
-              key={`${lightbox.variant}-${lightbox.index}`}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2 }}
-              src={imageUrl(slug, lightbox.variant, activeFile)}
-              alt={activeAlt}
-              onClick={(e) => e.stopPropagation()}
-              className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"
-            />
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.img
+                key={`${lightbox.variant}-${lightbox.index}`}
+                initial={{ opacity: 0, scale: 0.97, x: direction * 32 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, x: direction * -32 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                src={imageUrl(slug, lightbox.variant, activeFile)}
+                alt={activeAlt}
+                onClick={(e) => e.stopPropagation()}
+                className="max-h-[85vh] max-w-full rounded-lg object-contain shadow-2xl"
+              />
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
