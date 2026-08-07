@@ -5,10 +5,12 @@ import { CtaBlock } from "./CtaBlock";
 
 vi.mock("next-intl", () => ({
   useTranslations: (namespace: string) => (key: string) =>
-    ({
-      home: { collaborateCta: "let's talk" },
-      projectPage: { cta: "Working on something similar? I'd like to hear about it" },
-    })[namespace]?.[key],
+    (
+      {
+        home: { collaborateCta: "let's talk" },
+        projectPage: { cta: "Working on something similar? I'd like to hear about it" },
+      } as Record<string, Record<string, string>>
+    )[namespace]?.[key],
 }));
 
 vi.mock("@/i18n/navigation", () => ({
