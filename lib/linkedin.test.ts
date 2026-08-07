@@ -6,6 +6,20 @@ const config: LinkedInConfig = {
   authorUrn: "urn:li:person:abc",
 };
 
+function registerUploadResponse(uploadUrl: string, asset: string) {
+  return new Response(
+    JSON.stringify({
+      value: {
+        uploadMechanism: {
+          "com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest": { uploadUrl },
+        },
+        asset,
+      },
+    }),
+    { status: 200 },
+  );
+}
+
 afterEach(() => {
   vi.unstubAllGlobals();
 });
@@ -23,51 +37,39 @@ describe("contentTypeFor", () => {
 });
 
 describe("uploadImage", () => {
-  it("initializes the upload, PUTs the binary, and returns the image URN", async () => {
+  it("registers the upload, PUTs the binary, and returns the image URN", async () => {
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({
-            value: { uploadUrl: "https://upload.example/target", image: "urn:li:image:xyz" },
-          }),
-          { status: 200 },
-        ),
-      )
+      .mockResolvedValueOnce(registerUploadResponse("https://upload.example/target", "urn:li:digitalmediaAsset:xyz"))
       .mockResolvedValueOnce(new Response(null, { status: 201 }));
     vi.stubGlobal("fetch", fetchMock);
 
     const urn = await uploadImage(config, Buffer.from("fake-image-bytes"), "image/png");
 
-    expect(urn).toBe("urn:li:image:xyz");
+    expect(urn).toBe("urn:li:digitalmediaAsset:xyz");
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(fetchMock.mock.calls[0][0]).toContain("/rest/images?action=initializeUpload");
+    expect(fetchMock.mock.calls[0][0]).toContain("/v2/assets?action=registerUpload");
     expect(fetchMock.mock.calls[1][0]).toBe("https://upload.example/target");
   });
 
-  it("throws if initializeUpload fails", async () => {
+  it("throws if registerUpload fails", async () => {
     const fetchMock = vi.fn().mockResolvedValueOnce(new Response("nope", { status: 401 }));
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(uploadImage(config, Buffer.from("x"))).rejects.toThrow(/initializeUpload failed/);
+    await expect(uploadImage(config, Buffer.from("x"))).rejects.toThrow(/registerUpload failed/);
   });
 });
 
 describe("checkTokenHealth", () => {
-  it("resolves without completing an upload when initializeUpload succeeds", async () => {
-    const fetchMock = vi.fn().mockResolvedValueOnce(
-      new Response(
-        JSON.stringify({
-          value: { uploadUrl: "https://upload.example/target", image: "urn:li:image:xyz" },
-        }),
-        { status: 200 },
-      ),
-    );
+  it("resolves without completing an upload when registerUpload succeeds", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(registerUploadResponse("https://upload.example/target", "urn:li:digitalmediaAsset:xyz"));
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(checkTokenHealth(config)).resolves.toBeUndefined();
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toContain("/rest/images?action=initializeUpload");
+    expect(fetchMock.mock.calls[0][0]).toContain("/v2/assets?action=registerUpload");
   });
 
   it("throws when the token is invalid or revoked", async () => {
@@ -76,7 +78,7 @@ describe("checkTokenHealth", () => {
       .mockResolvedValueOnce(new Response('{"code":"REVOKED_ACCESS_TOKEN"}', { status: 401 }));
     vi.stubGlobal("fetch", fetchMock);
 
-    await expect(checkTokenHealth(config)).rejects.toThrow(/initializeUpload failed/);
+    await expect(checkTokenHealth(config)).rejects.toThrow(/registerUpload failed/);
   });
 });
 
@@ -87,35 +89,38 @@ describe("createPost", () => {
     return fetchMock;
   }
 
-  it("uses a single media block for one image", async () => {
+  it("uses an IMAGE share for one or more images", async () => {
     const fetchMock = mockFetchOnce(201, { "x-restli-id": "urn:li:share:1" });
 
     await createPost(config, {
       commentary: "hello",
       linkUrl: "https://example.com/posts/foo",
       title: "Foo",
-      imageUrns: ["urn:li:image:1"],
+      imageUrns: ["urn:li:digitalmediaAsset:1"],
     });
 
     const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
-    expect(body.content).toEqual({ media: { id: "urn:li:image:1" } });
-    expect(body.commentary).toContain("https://example.com/posts/foo");
+    const content = body.specificContent["com.linkedin.ugc.ShareContent"];
+    expect(content.shareMediaCategory).toBe("IMAGE");
+    expect(content.media).toEqual([{ status: "READY", media: "urn:li:digitalmediaAsset:1" }]);
+    expect(content.shareCommentary.text).toContain("https://example.com/posts/foo");
   });
 
-  it("uses a multiImage block for more than one image", async () => {
+  it("includes one media entry per image for multiple images", async () => {
     const fetchMock = mockFetchOnce(201);
 
     await createPost(config, {
       commentary: "hello",
       linkUrl: "https://example.com/posts/foo",
       title: "Foo",
-      imageUrns: ["urn:li:image:1", "urn:li:image:2"],
+      imageUrns: ["urn:li:digitalmediaAsset:1", "urn:li:digitalmediaAsset:2"],
     });
 
     const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
-    expect(body.content.multiImage.images).toEqual([
-      { id: "urn:li:image:1" },
-      { id: "urn:li:image:2" },
+    const content = body.specificContent["com.linkedin.ugc.ShareContent"];
+    expect(content.media).toEqual([
+      { status: "READY", media: "urn:li:digitalmediaAsset:1" },
+      { status: "READY", media: "urn:li:digitalmediaAsset:2" },
     ]);
   });
 
@@ -129,9 +134,11 @@ describe("createPost", () => {
     });
 
     const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
-    expect(body.content).toEqual({
-      article: { source: "https://example.com/posts/foo", title: "Foo" },
-    });
+    const content = body.specificContent["com.linkedin.ugc.ShareContent"];
+    expect(content.shareMediaCategory).toBe("ARTICLE");
+    expect(content.media).toEqual([
+      { status: "READY", originalUrl: "https://example.com/posts/foo", title: { text: "Foo" } },
+    ]);
   });
 
   it("throws on a non-ok response", async () => {
