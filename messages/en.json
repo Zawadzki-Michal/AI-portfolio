@@ -127,7 +127,8 @@
     "sendButton": "send message →",
     "sending": "sending…",
     "successMsg": "> message received. I'll get back to you shortly.",
-    "errorMsg": "> something went wrong. Email me directly instead."
+    "errorMsg": "> something went wrong. Email me directly instead.",
+    "sendAnother": "send another message"
   },
   "contactChannels": {
     "directChannels": "direct channels",

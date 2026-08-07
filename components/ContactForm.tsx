@@ -33,7 +33,16 @@ export function ContactForm() {
   if (status === "success") {
     return (
       <div className="panel-card p-6">
-        <p className="font-mono text-sm text-teal">{t("successMsg")}</p>
+        <p role="status" aria-live="polite" className="font-mono text-sm text-teal">
+          {t("successMsg")}
+        </p>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="label-mono mt-4 text-teal underline-offset-2 hover:underline"
+        >
+          {t("sendAnother")}
+        </button>
       </div>
     );
   }
@@ -41,18 +50,18 @@ export function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="panel-card flex flex-col gap-4 p-6">
       <div className="flex flex-col gap-2">
-        <label htmlFor="name" className="label-mono">
+        <label htmlFor="name" className="label-mono text-paper/70">
           {t("nameLabel")}
         </label>
         <input
           id="name"
           name="name"
           required
-          className="rounded-md border border-line bg-ink px-3 py-2 text-sm outline-none focus:border-amber"
+          className="rounded-md border border-line bg-ink px-3 py-2 text-sm focus:border-amber"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="email" className="label-mono">
+        <label htmlFor="email" className="label-mono text-paper/70">
           {t("emailLabel")}
         </label>
         <input
@@ -60,11 +69,11 @@ export function ContactForm() {
           name="email"
           type="email"
           required
-          className="rounded-md border border-line bg-ink px-3 py-2 text-sm outline-none focus:border-amber"
+          className="rounded-md border border-line bg-ink px-3 py-2 text-sm focus:border-amber"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <label htmlFor="message" className="label-mono">
+        <label htmlFor="message" className="label-mono text-paper/70">
           {t("messageLabel")}
         </label>
         <textarea
@@ -72,7 +81,7 @@ export function ContactForm() {
           name="message"
           required
           rows={5}
-          className="rounded-md border border-line bg-ink px-3 py-2 text-sm outline-none focus:border-amber"
+          className="rounded-md border border-line bg-ink px-3 py-2 text-sm focus:border-amber"
         />
       </div>
       <button
@@ -82,7 +91,11 @@ export function ContactForm() {
       >
         {status === "submitting" ? t("sending") : t("sendButton")}
       </button>
-      {status === "error" && <p className="font-mono text-sm text-red-400">{t("errorMsg")}</p>}
+      {status === "error" && (
+        <p role="alert" aria-live="assertive" className="font-mono text-sm text-red-400">
+          {t("errorMsg")}
+        </p>
+      )}
     </form>
   );
 }

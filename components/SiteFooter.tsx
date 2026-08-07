@@ -11,7 +11,7 @@ export function SiteFooter() {
         <div className="font-mono">
           © {new Date().getFullYear()} · {t("uptimeSince")}
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
           <Link href="/about" className="hover:text-paper">
             {t("about")}
           </Link>

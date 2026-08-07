@@ -9,7 +9,7 @@ export function LanguageSwitcher() {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center overflow-hidden rounded-md border border-line font-mono text-xs uppercase tracking-widest">
+    <div className="flex shrink-0 items-center overflow-hidden rounded-md border border-line font-mono text-xs uppercase tracking-widest">
       {routing.locales.map((locale) => (
         <Link
           key={locale}

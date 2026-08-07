@@ -58,7 +58,7 @@ export default async function ChangelogPage({ params }: { params: Promise<{ loca
               </div>
               <h2 className="mt-1 font-display text-xl font-medium">{entry.title}</h2>
               <div
-                className="prose prose-headings:font-display prose-a:text-teal mt-4 max-w-none"
+                className="prose prose-headings:font-display prose-a:text-teal prose-code:break-words mt-4 max-w-none"
                 dangerouslySetInnerHTML={{ __html: entry.bodyHtml }}
               />
             </li>

@@ -34,6 +34,9 @@
 
   a:focus-visible,
   button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
   [tabindex]:focus-visible {
     outline: 2px solid rgb(var(--color-teal));
     outline-offset: 2px;
