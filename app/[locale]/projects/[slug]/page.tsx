@@ -9,6 +9,8 @@ import { postUrl } from "@/lib/post-url";
 import { StatusDot } from "@/components/StatusDot";
 import { CtaBlock } from "@/components/CtaBlock";
 import { ProjectGallery } from "@/components/ProjectGallery";
+import { ProjectDetailList } from "@/components/ProjectDetailList";
+import { ScrollReveal } from "@/components/ScrollReveal";
 import { Comments } from "@/components/Comments";
 import { buildMetadata } from "@/lib/seo";
 
@@ -48,66 +50,49 @@ export default async function ProjectPage({
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-16">
-      <Link href="/projects" className="label-mono text-teal hover:underline">
-        {t("back")}
-      </Link>
+      <ScrollReveal immediate>
+        <Link href="/projects" className="label-mono text-teal hover:underline">
+          {t("back")}
+        </Link>
 
-      <div className="mt-6 flex items-center justify-between">
-        <span className="label-mono">{project.category}</span>
-        <StatusDot label={t("status")} />
-      </div>
-      <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">{project.title}</h1>
-      <div className="mt-3 flex flex-wrap gap-2">
-        {project.tags.map((tag) => (
-          <span key={tag} className="label-mono">
-            #{tag}
-          </span>
-        ))}
-      </div>
-
-      <p className="mt-8 text-lg text-paper/80">{project.summary}</p>
-
-      {project.detailGroups ? (
-        <div className="mt-6 flex flex-col gap-6">
-          {project.detailGroups.map((group, i) => (
-            <div key={group.heading ?? i} className="flex flex-col gap-3">
-              {group.heading && <span className="label-mono text-paper/40">{group.heading}</span>}
-              <ul className="flex flex-col gap-4">
-                {group.items.map((detail) => (
-                  <li key={detail} className="flex gap-3 text-paper/70">
-                    <span className="text-teal">›</span>
-                    <span>{detail}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <div className="mt-6 flex items-center justify-between">
+          <span className="label-mono">{project.category}</span>
+          <StatusDot label={t("status")} />
+        </div>
+        <h1 className="mt-2 font-display text-3xl font-semibold sm:text-4xl">{project.title}</h1>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {project.tags.map((tag) => (
+            <span key={tag} className="label-mono">
+              #{tag}
+            </span>
           ))}
         </div>
-      ) : (
-        <ul className="mt-6 flex flex-col gap-4">
-          {project.details.map((detail) => (
-            <li key={detail} className="flex gap-3 text-paper/70">
-              <span className="text-teal">›</span>
-              <span>{detail}</span>
-            </li>
-          ))}
-        </ul>
-      )}
 
-      <ProjectGallery slug={project.slug} desktop={gallery.desktop} mobile={gallery.mobile} />
+        <p className="mt-8 text-lg text-paper/80">{project.summary}</p>
+      </ScrollReveal>
 
-      {project.relatedPostSlug && (
-        <NextLink
-          href={postUrl(project.relatedPostSlug, locale as Locale)}
-          className="label-mono mt-8 inline-block text-teal hover:underline"
-        >
-          {t("readLog")}
-        </NextLink>
-      )}
+      <ProjectDetailList details={project.details} detailGroups={project.detailGroups} />
 
-      <CtaBlock ctaText={project.ctaText ?? t("cta")} />
+      <ScrollReveal>
+        <ProjectGallery slug={project.slug} desktop={gallery.desktop} mobile={gallery.mobile} />
+      </ScrollReveal>
 
-      <Comments slug={`project:${project.slug}`} />
+      <ScrollReveal>
+        {project.relatedPostSlug && (
+          <NextLink
+            href={postUrl(project.relatedPostSlug, locale as Locale)}
+            className="label-mono mt-8 inline-block text-teal hover:underline"
+          >
+            {t("readLog")}
+          </NextLink>
+        )}
+
+        <CtaBlock ctaText={project.ctaText ?? t("cta")} />
+      </ScrollReveal>
+
+      <ScrollReveal>
+        <Comments slug={`project:${project.slug}`} />
+      </ScrollReveal>
     </article>
   );
 }

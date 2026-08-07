@@ -25,9 +25,20 @@ const config: Config = {
           "0%, 100%": { opacity: "1", transform: "scale(1)" },
           "50%": { opacity: "0.4", transform: "scale(0.85)" },
         },
+        "chrome-dot-breathe": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.5" },
+        },
+        "row-pulse-ring": {
+          "0%": { boxShadow: "0 0 0 0 rgb(var(--color-teal) / 0.35)" },
+          "70%": { boxShadow: "0 0 0 6px rgb(var(--color-teal) / 0)" },
+          "100%": { boxShadow: "0 0 0 0 rgb(var(--color-teal) / 0)" },
+        },
       },
       animation: {
         "pulse-dot": "pulse-dot 2s ease-in-out infinite",
+        "chrome-dot-breathe": "chrome-dot-breathe 2.6s ease-in-out infinite",
+        "row-pulse-ring": "row-pulse-ring 2s ease-in-out infinite",
       },
       typography: {
         // Wired to our CSS-variable color tokens (not fixed hex) so post

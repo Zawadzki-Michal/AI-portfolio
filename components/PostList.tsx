@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import type { PostSummary } from "@/lib/posts";
 import { postUrl, tagUrl } from "@/lib/post-url";
@@ -11,6 +11,7 @@ import { StatusDot } from "./StatusDot";
 export function PostList({ posts }: { posts: PostSummary[] }) {
   const locale = useLocale() as Locale;
   const t = useTranslations("postsIndex");
+  const shouldReduceMotion = useReducedMotion();
 
   if (posts.length === 0) {
     return <p className="text-paper/50">{t("emptyMsg")}</p>;
@@ -22,10 +23,14 @@ export function PostList({ posts }: { posts: PostSummary[] }) {
         <motion.li
           key={post.slug}
           className="py-5"
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-40px" }}
-          transition={{ duration: 0.35, delay: i * 0.06, ease: "easeOut" }}
+          transition={
+            shouldReduceMotion
+              ? { duration: 0.01 }
+              : { duration: 0.35, delay: i * 0.06, ease: "easeOut" }
+          }
         >
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <Link href={postUrl(post.slug, locale)} className="group flex items-center gap-3">

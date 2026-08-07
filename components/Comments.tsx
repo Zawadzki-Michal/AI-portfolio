@@ -72,7 +72,7 @@ function CommentsBody({ slug, initialComments }: { slug: string; initialComments
   return (
     <div className="mt-16">
       <div className="mb-6 flex items-center gap-3">
-        <span className="status-dot" />
+        <span className="inline-block h-2 w-2 rounded-full bg-teal" />
         <span className="label-mono">{t("heading")}</span>
       </div>
 

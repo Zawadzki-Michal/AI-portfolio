@@ -64,6 +64,13 @@
     content: "";
     @apply absolute inset-0 rounded-full bg-teal animate-pulse-dot;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .status-dot::after,
+    .animate-chrome-dot-breathe,
+    .animate-row-pulse-ring {
+      animation: none;
+    }
+  }
 
   .panel-card {
     @apply rounded-lg border border-line bg-panel;
