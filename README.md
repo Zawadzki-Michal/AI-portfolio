@@ -316,21 +316,30 @@ server, edge, and client instead of juggling separate public/private ones.
 
 ## LinkedIn API notes
 
-- Self-serve developer program, `w_member_social` scope.
+- Self-serve developer program, `w_member_social` scope, granted by the
+  **Share on LinkedIn** product on the app.
+- `lib/linkedin.ts` deliberately targets the legacy unversioned
+  `/v2/ugcPosts` + `/v2/assets` endpoints, not the newer `/rest/posts` +
+  `/rest/images` REST API. Those newer endpoints live under LinkedIn's
+  **Community Management API** product, which (a) requires a registered
+  business address to request and (b) can't be added to an app that already
+  has Share on LinkedIn — LinkedIn requires Community Management API be the
+  app's *only* product. Share on LinkedIn has neither restriction and is
+  what a personal/self-serve app actually gets, so the client stays on the
+  API surface that product grants.
 - Access tokens last 60 days; refresh tokens last 365 days — **token refresh
   is not automated here** (LinkedIn has no long-lived server-to-server auth
   for this scope). Plan to rotate `LINKEDIN_ACCESS_TOKEN` manually or add a
   scheduled refresh job before the 60-day expiry.
 - Rate limit: ~100 calls/day — each post = 1 call for the post + 1 per image
   uploaded, well within limits for a personal cadence.
-- LinkedIn's Posts API allows only one content type per post: an image/
-  multi-image block, **or** a link-preview (`article`) block — not both. If
-  a post has images, they're attached as media and the article link is
-  appended as plain text in the commentary. The `article` block doesn't
-  crawl the URL for an `og:image` the way old-style shares did, so a post
-  with no hand-picked images falls back to uploading the site's own
-  generated OG image (`{post}/opengraph-image`) as its media instead of
-  using the imageless `article` type.
+- The UGC Post API allows only one `shareMediaCategory` per post: `IMAGE`
+  **or** `ARTICLE` (link preview) — not both. If a post has images, they're
+  attached as media and the article link is appended as plain text in the
+  commentary. The `ARTICLE` category doesn't crawl the URL for an `og:image`
+  the way image shares do, so a post with no hand-picked images falls back
+  to uploading the site's own generated OG image (`{post}/opengraph-image`)
+  as its media instead of using the imageless `ARTICLE` type.
 
 ## Draft generation
 
@@ -413,7 +422,7 @@ lib/project-gallery.ts      Reads projects/<slug>/desktop|mobile screenshot fold
 lib/site-config.ts          Name, role, headline, social links, canonical URL — edit this for your own bio
 lib/seo.ts                  Shared buildMetadata() helper — every page's title/description/OG/canonical/hreflang
 lib/structured-data.ts      JSON-LD schema builders (Person, WebSite, BlogPosting)
-lib/linkedin.ts             LinkedIn REST API client (images + posts)
+lib/linkedin.ts             LinkedIn UGC Post API client (assets + ugcPosts)
 lib/slugify.ts, lib/markdown.ts   Small pure helpers shared by the scripts and covered by tests
 posts/                       Content — one folder per post, index.en.md (English-only going forward)
 projects/                    Screenshots — projects/<slug>/desktop/, projects/<slug>/mobile/
