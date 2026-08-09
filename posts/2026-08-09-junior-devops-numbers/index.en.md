@@ -11,6 +11,8 @@ source_url: "https://nofluffjobs.com/en/insights/report-it-job-market-in-poland/
 linkedin_description: "New post on https://michalzawadzki.dev is up — I got stuck on one number in the latest Polish IT job market report and couldn't shake what it might mean for how any of us actually learned to do this work in the first place."
 ---
 
+![Two terminal panels side by side: a muted "junior" panel showing too few postings to measure a salary range, and a live "senior" panel showing plenty of postings and 25-30k+ PLN, connected by a narrowing pipeline](/posts/2026-08-09-junior-devops-numbers/header.svg)
+
 Hi, it's me again. I sat down this weekend with No Fluff Jobs' [Kariera w IT 2026 report](https://nofluffjobs.com/en/insights/report-it-job-market-in-poland/), the kind of thing I'd normally check for the salary tables and overall job market health and close the tab, and ended up stuck on one part of it for a lot longer than I meant to.
 
 The overall market picture is actually decent this year, offers up, competition per posting down from 24 applications in 2025 to 21 in the first half of 2026. Juniors are still getting squeezed hardest though, and one stat made me stop scrolling: 146 applications for a single junior Frontend posting, against 3 to 5 for a senior Architecture or ERP role. Then I got to DevOps and AI, and it's a different shape of problem. There were so few junior postings in either category that the report couldn't even calculate a reliable salary range for them. Not low pay, just barely any listings to measure.
