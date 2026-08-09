@@ -8,6 +8,7 @@ tags:
 cta_text: "If you're hiring right now, or trying to get hired as a junior, I'd like to hear how it actually looks from your side."
 cta_link: "/collaborate"
 source_url: "https://nofluffjobs.com/en/insights/report-it-job-market-in-poland/"
+linkedin_description: "New post is up — I got stuck on one number in the latest Polish IT job market report and couldn't shake what it might mean for how any of us actually learned to do this work in the first place."
 ---
 
 Hi, it's Michał. I sat down this weekend with No Fluff Jobs' [Kariera w IT 2026 report](https://nofluffjobs.com/en/insights/report-it-job-market-in-poland/), the kind of thing I'd normally skim for the salary tables and close the tab, and ended up stuck on one part of it for a lot longer than I meant to.
