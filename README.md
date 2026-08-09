@@ -131,9 +131,14 @@ something this codebase can do for you):
 1. **LinkedIn app:** create one at
    [developer.linkedin.com](https://www.linkedin.com/developers/apps), add
    the "Sign In with LinkedIn using OpenID Connect" product, and set the
-   redirect URL to `<your-domain>/api/auth/callback/linkedin` (and
-   `http://localhost:3000/api/auth/callback/linkedin` for local dev). Copy
-   the Client ID/Secret.
+   redirect URL to `https://www.michalzawadzki.dev/api/auth/callback/linkedin`
+   (and `http://localhost:3000/api/auth/callback/linkedin` for local dev).
+   Copy the Client ID/Secret. **Must be the exact host the site actually
+   serves on** — Vercel redirects the bare apex (`michalzawadzki.dev`) to
+   `www` (see the comment on `siteConfig.url` in `lib/site-config.ts`), so
+   registering the apex domain here causes a "redirect_uri does not match
+   the registered value" error at login, since the request Auth.js sees is
+   always on `www`.
 2. **Database:** in Vercel → Storage, create a Postgres database (or use
    [console.neon.tech](https://console.neon.tech) directly) and copy its
    connection string.
@@ -180,12 +185,13 @@ Setup (one-time):
 
 1. **GitHub OAuth App** (for login): github.com → Settings → Developer
    settings → OAuth Apps → New OAuth App.
-   - Homepage URL: `https://<your-domain>`
-   - Authorization callback URL: `https://<your-domain>/api/auth/callback/github`
+   - Homepage URL: `https://www.michalzawadzki.dev`
+   - Authorization callback URL: `https://www.michalzawadzki.dev/api/auth/callback/github`
      (and `http://localhost:3000/api/auth/callback/github` for local dev —
      GitHub OAuth Apps only accept one callback URL each, so use two
      separate OAuth Apps for local vs. prod, or just re-point the one App
-     at localhost while developing).
+     at localhost while developing). Use the `www` host, not the bare
+     apex — same reasoning as the LinkedIn app above.
    - Copy the Client ID, generate a Client Secret.
 2. **Fine-grained personal access token** (for writes): github.com →
    Settings → Developer settings → Personal access tokens → Fine-grained
