@@ -124,6 +124,19 @@ describe("createPost", () => {
     ]);
   });
 
+  it("rewrites the configured person URN to the member URN /v2/ugcPosts requires", async () => {
+    const fetchMock = mockFetchOnce(201);
+
+    await createPost(config, {
+      commentary: "hello",
+      linkUrl: "https://example.com/posts/foo",
+      title: "Foo",
+    });
+
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
+    expect(body.author).toBe("urn:li:member:abc");
+  });
+
   it("falls back to an article link preview with no images", async () => {
     const fetchMock = mockFetchOnce(201);
 
