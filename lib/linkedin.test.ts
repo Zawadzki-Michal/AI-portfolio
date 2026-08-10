@@ -1,5 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { checkTokenHealth, contentTypeFor, createPost, uploadImage, type LinkedInConfig } from "./linkedin";
+import {
+  checkTokenHealth,
+  contentTypeFor,
+  createPost,
+  getUserInfoSub,
+  uploadImage,
+  type LinkedInConfig,
+} from "./linkedin";
 
 const config: LinkedInConfig = {
   accessToken: "token-123",
@@ -79,6 +86,23 @@ describe("checkTokenHealth", () => {
     vi.stubGlobal("fetch", fetchMock);
 
     await expect(checkTokenHealth(config)).rejects.toThrow(/registerUpload failed/);
+  });
+});
+
+describe("getUserInfoSub", () => {
+  it("returns the sub claim from /v2/userinfo", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response(JSON.stringify({ sub: "abc123" }), { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getUserInfoSub("token-123")).resolves.toBe("abc123");
+    expect(fetchMock.mock.calls[0][0]).toContain("/v2/userinfo");
+  });
+
+  it("throws on a non-ok response", async () => {
+    const fetchMock = vi.fn().mockResolvedValueOnce(new Response("nope", { status: 401 }));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(getUserInfoSub("token-123")).rejects.toThrow(/userinfo failed/);
   });
 });
 
