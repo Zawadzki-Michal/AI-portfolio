@@ -130,6 +130,16 @@ export type CreatePostOptions = {
  * so images and an ARTICLE preview can't be combined). Without images, the
  * post uses the ARTICLE media category so LinkedIn renders a link preview.
  */
+/**
+ * `/v2/ugcPosts` validates its `author` field against
+ * `urn:li:company:\d+|urn:li:member:-?\d+` — it rejects the `urn:li:person:`
+ * form that LINKEDIN_AUTHOR_URN is configured with (and that `/v2/assets`
+ * registerUpload's `owner` field accepts fine). Rewrite just for this call.
+ */
+function ugcAuthorUrn(authorUrn: string): string {
+  return authorUrn.replace(/^urn:li:person:/, "urn:li:member:");
+}
+
 export async function createPost(config: LinkedInConfig, options: CreatePostOptions) {
   const commentary = `${options.commentary}\n\n${options.linkUrl}`;
 
@@ -147,7 +157,7 @@ export async function createPost(config: LinkedInConfig, options: CreatePostOpti
     method: "POST",
     headers: authHeaders(config, { "Content-Type": "application/json" }),
     body: JSON.stringify({
-      author: config.authorUrn,
+      author: ugcAuthorUrn(config.authorUrn),
       lifecycleState: "PUBLISHED",
       specificContent: {
         "com.linkedin.ugc.ShareContent": {
