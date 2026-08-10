@@ -114,6 +114,27 @@ export async function checkTokenHealth(config: LinkedInConfig): Promise<void> {
   await registerImageUpload(config);
 }
 
+/**
+ * Fetches the OpenID Connect `sub` claim for the access token's owner via
+ * LinkedIn's `/v2/userinfo` endpoint (the same claim Auth.js stores as
+ * `author_linkedin_id` on comments). Used to check whether LINKEDIN_AUTHOR_URN
+ * was actually built from this claim, since `/v2/ugcPosts` rejects it in ways
+ * that suggest it may expect a different member identifier entirely.
+ */
+export async function getUserInfoSub(accessToken: string): Promise<string> {
+  const res = await fetch(`${LINKEDIN_API_BASE}/v2/userinfo`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+  });
+
+  if (!res.ok) {
+    throw new Error(`LinkedIn userinfo failed: ${res.status} ${await res.text()}`);
+  }
+
+  const data = await res.json();
+  return data.sub;
+}
+
 export type CreatePostOptions = {
   commentary: string;
   linkUrl: string;
