@@ -7,6 +7,7 @@ tags:
   - career
 cta_text: "Figured out how to actually switch off during time away? I'd like to hear how you did it."
 cta_link: "/collaborate"
+linkedin_description: "New post is up — I'm halfway through a two-week camping trip and still checking Slack most mornings, even though nobody asked me to. Trying to figure out when watching for problems becomes a reflex you can't turn off."
 ---
 
 Hi, it's Michał. I'm on a two-week camping trip with my wife and kids right now, tents, no fixed plans, the kind of holiday where the biggest decision some days is which lake to drive to. And somehow I still open Slack most mornings before I've properly woken up, and again some evenings after the kids are asleep.
